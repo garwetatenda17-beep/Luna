@@ -36,7 +36,7 @@ export default function LunaApp() {
   const [msg, setMsg] = useState("");
   const [typing, setTyping] = useState(false);
   const [lastProduct, setLastProduct] = useState(null);
-  const [aiOff, setAiOff] = useState(false);
+  const [aiOff, setAiOff] = useState(() => typeof window !== "undefined" && window.LUNA_OFFLINE === true);
   const chatEnd = useRef(null);
 
   const country = findCountry(countryName);
@@ -123,10 +123,8 @@ export default function LunaApp() {
   };
 
   const shopLink = `luna.app/${slugify(shopName)}`;
-  const shareOnWhatsApp = () => {
-    const text = `🌙 ${shopName || "My shop"} is LIVE in ${city}!${product ? ` ${product.emoji} ${product.name} available now.` : ""} Order here and pay with ${pay[0]}: https://${shopLink}`;
-    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
-  };
+  const shareText = `🌙 ${shopName || "My shop"} is LIVE in ${city}!${product ? ` ${product.emoji} ${product.name} available now.` : ""} Order here and pay with ${pay[0]}: https://${shopLink}`;
+  const shareLink = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
 
   if (!started) {
     return (
@@ -250,7 +248,7 @@ export default function LunaApp() {
           <p>Share this link on WhatsApp Status:</p>
           <div style={{ background: "black", padding: 12, borderRadius: 12, color: "#FFD700", wordBreak: "break-all" }}>{shopLink}</div>
           <p style={{ fontSize: 13, color: "#aaa" }}>Customers pay you with {pay.join(", ")}.</p>
-          <button onClick={shareOnWhatsApp} style={{ background: "#25D366", padding: 16, borderRadius: 30, width: "100%", marginTop: 8, fontWeight: "bold", border: "none", fontSize: 16, cursor: "pointer" }}>Share on WhatsApp →</button>
+          <a href={shareLink} target="_blank" rel="noopener noreferrer" style={{ display: "block", boxSizing: "border-box", background: "#25D366", color: "black", textDecoration: "none", padding: 16, borderRadius: 30, width: "100%", marginTop: 8, fontWeight: "bold", fontSize: 16 }}>Share on WhatsApp →</a>
         </div>
       )}
 
