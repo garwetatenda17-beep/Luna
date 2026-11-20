@@ -1,0 +1,966 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LUNA</title>
+<meta name="description" content="LUNA — build your online shop in 2 minutes. Get paid with EcoCash or cash on delivery.">
+<meta name="theme-color" content="#0B0B0C">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: three worlds — a black/gold setup wizard, a white admin dashboard, a bright public storefront. */
+:root{
+  --ink:#0B0B0C; --ink-2:#17171A; --ink-3:#26262B;
+  --gold:#F5B700; --gold-2:#FFD34D; --green:#12B76A; --green-d:#0A8F52; --hot:#FF4D1C;
+  --bg:#F5F5F2; --card:#FFFFFF; --line:#E7E6E1; --text:#15171C; --muted:#6A6F78; --soft:#F0EFEA;
+  --red:#E5484D; --amber:#B7791F;
+  --display:"Bricolage Grotesque", "Inter", system-ui, sans-serif;
+  --body:"Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --r:14px; --r-lg:22px;
+  --shadow:0 1px 2px rgba(20,20,10,.06), 0 4px 16px rgba(20,20,10,.05);
+  color-scheme: light;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:var(--body);font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.tnum{font-variant-numeric:tabular-nums}
+[hidden]{display:none!important}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation-duration:.001s!important;animation-iteration-count:1!important;transition:none!important}}
+
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:999px;padding:12px 20px;font-weight:600;text-decoration:none;transition:transform .12s, background .2s}
+.btn:active{transform:scale(.98)}
+.btn-gold{background:var(--gold);color:#111}
+.btn-gold:hover{background:var(--gold-2)}
+.btn-green{background:var(--green);color:#fff}
+.btn-green:hover{background:var(--green-d)}
+.btn-dark{background:var(--ink);color:#fff}
+.btn-ghost{background:transparent;border:1px solid var(--line);color:var(--text)}
+.btn-ghost-dark{background:transparent;border:1px solid #3a3a40;color:#fff}
+.btn-sm{padding:8px 14px;font-size:13px}
+.btn-block{width:100%}
+.btn[disabled]{opacity:.45;pointer-events:none}
+
+/* ---------- WIZARD (black + gold + green) ---------- */
+.wz{min-height:100vh;background:radial-gradient(1200px 500px at 80% -10%, rgba(245,183,0,.16), transparent 60%), radial-gradient(900px 500px at -10% 110%, rgba(18,183,106,.14), transparent 60%), var(--ink);color:#fff;padding:20px max(16px, env(safe-area-inset-right)) 40px max(16px, env(safe-area-inset-left))}
+.wz-in{max-width:560px;margin:0 auto}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:800;letter-spacing:.14em;font-size:18px}
+.moon{width:30px;height:30px;border-radius:50%;background:radial-gradient(circle at 35% 35%, #FFE58A, var(--gold) 55%, #C98E00);box-shadow:0 0 24px rgba(245,183,0,.5);position:relative;flex:none}
+.moon::after{content:"";position:absolute;width:24px;height:24px;border-radius:50%;background:var(--ink);top:-3px;left:10px}
+.hero-h{font-family:var(--display);font-size:clamp(36px,9vw,58px);line-height:1.02;font-weight:800;margin:28px 0 12px;text-wrap:balance;letter-spacing:-.02em}
+.hero-h em{font-style:normal;color:var(--gold)}
+.wz p.lead{color:#B9B9C0;font-size:17px;max-width:46ch}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0}
+.pill{display:inline-flex;align-items:center;gap:6px;border:1px solid #2f2f35;background:#141417;border-radius:999px;padding:7px 12px;font-size:13px;color:#d8d8de}
+.pill b{color:var(--gold)}
+.landing-cta{display:grid;gap:10px;margin-top:26px}
+.demo-peek{margin-top:34px;border:1px solid #26262c;border-radius:var(--r-lg);overflow:hidden;background:#111114}
+.demo-peek .row{display:grid;grid-template-columns:repeat(4,1fr);gap:2px}
+.demo-peek img{aspect-ratio:1;object-fit:cover;width:100%}
+.demo-peek .cap{padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:14px;color:#cfcfd6}
+
+.steps{display:flex;gap:6px;margin:22px 0 8px}
+.steps i{flex:1;height:5px;border-radius:9px;background:#2a2a30}
+.steps i.on{background:linear-gradient(90deg,var(--gold),var(--green))}
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:700}
+.wz h2{font-family:var(--display);font-size:32px;line-height:1.08;margin:8px 0 6px;letter-spacing:-.01em;text-wrap:balance}
+.wz .sub{color:#A9A9B2;margin:0 0 20px}
+.choice-grid{display:grid;gap:12px}
+.choice{display:flex;gap:14px;align-items:center;text-align:left;background:#141417;border:1.5px solid #2a2a30;border-radius:18px;padding:18px;color:#fff;transition:border-color .2s, background .2s}
+.choice:hover{border-color:#4a4a52}
+.choice.on{border-color:var(--gold);background:linear-gradient(180deg,rgba(245,183,0,.09),rgba(245,183,0,.02))}
+.choice .ic{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;font-size:24px;background:#1e1e23;flex:none}
+.choice b{display:block;font-size:17px}
+.choice small{color:#A0A0A8;font-size:13px}
+.choice .tick{margin-left:auto;width:22px;height:22px;border-radius:50%;border:2px solid #3a3a42;flex:none}
+.choice.on .tick{border-color:var(--gold);background:var(--gold);box-shadow:inset 0 0 0 4px #141417}
+.city-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.city{padding:18px 16px;border-radius:18px;border:1.5px solid #2a2a30;background:#141417;color:#fff;text-align:left}
+.city.on{border-color:var(--green);background:linear-gradient(180deg,rgba(18,183,106,.12),rgba(18,183,106,.02))}
+.city b{font-family:var(--display);font-size:20px;display:block}
+.city small{color:#9d9da6}
+.field{display:grid;gap:6px;margin-bottom:14px}
+.field label{font-size:13px;font-weight:600;color:#cfcfd6}
+.inp{width:100%;padding:14px 16px;border-radius:14px;border:1.5px solid #2c2c33;background:#111114;color:#fff;font-size:16px}
+.inp:focus{border-color:var(--gold);outline:none}
+.ask{display:flex;gap:8px}
+.ask .inp{flex:1;min-width:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 16px}
+.chip{border:1px solid #33333a;background:#151518;color:#ddd;border-radius:999px;padding:7px 12px;font-size:13px}
+.chip:hover{border-color:var(--gold);color:#fff}
+.verdict{border-radius:20px;overflow:hidden;background:#141417;border:1px solid #2a2a30;animation:rise .35s ease}
+@keyframes rise{from{transform:translateY(8px);opacity:.3}to{transform:none;opacity:1}}
+.verdict .top{display:flex;gap:14px;padding:16px}
+.verdict .ph{width:92px;height:92px;border-radius:14px;object-fit:cover;flex:none;background:#222}
+.verdict .ph.none{display:grid;place-items:center;font-size:34px}
+.lvl{display:inline-flex;align-items:center;gap:6px;font-weight:800;font-family:var(--display);font-size:22px;letter-spacing:.02em}
+.lvl.HOT{color:var(--hot)}
+.lvl.GOOD{color:var(--green)}
+.lvl.SATURATED{color:#FF5A5F}
+.verdict .nums{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid #26262c}
+.verdict .nums div{padding:12px 14px;border-right:1px solid #26262c}
+.verdict .nums div:last-child{border-right:0}
+.verdict .nums small{display:block;color:#8e8e98;font-size:11px;text-transform:uppercase;letter-spacing:.08em}
+.verdict .nums b{font-size:18px}
+.verdict .say{padding:14px 16px;border-top:1px solid #26262c;color:#d7d7de;font-size:14px}
+.verdict .say b{color:var(--gold)}
+.est{font-size:11px;color:#7d7d86;padding:0 16px 14px}
+.preview-card{border-radius:20px;padding:18px;background:linear-gradient(135deg,#1b1b1f,#121214);border:1px solid #2a2a30;display:flex;gap:14px;align-items:center}
+.logo{display:grid;place-items:center;border-radius:14px;font-family:var(--display);font-weight:800;color:#111;flex:none}
+.wz-nav{display:flex;gap:10px;margin-top:26px}
+.wz-nav .btn{padding:15px 20px;font-size:16px}
+.done{text-align:center;padding-top:10px}
+.done .burst{font-size:64px;animation:pop .6s cubic-bezier(.2,1.6,.4,1)}
+@keyframes pop{from{transform:scale(.3);opacity:0}to{transform:none;opacity:1}}
+.linkbox{display:flex;align-items:center;gap:8px;background:#0f0f12;border:1px dashed #3a3a42;border-radius:14px;padding:12px 14px;margin:16px 0;text-align:left}
+.linkbox code{flex:1;min-width:0;overflow-wrap:anywhere;color:var(--gold);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:14px}
+.err{color:#FF8A8A;font-size:13px;margin-top:-6px;margin-bottom:10px}
+
+/* ---------- ADMIN (white, clean) ---------- */
+.adm{min-height:100vh;background:var(--bg)}
+.topbar{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.92);backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid var(--line);padding:10px max(16px, env(safe-area-inset-right)) 10px max(16px, env(safe-area-inset-left))}
+.topbar-in{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:12px}
+.shopid{display:flex;align-items:center;gap:10px;min-width:0;flex:1}
+.shopid .nm{font-weight:700;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.online{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--green-d);font-weight:600}
+.online i{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(18,183,106,.6);animation:ping 2s infinite}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(18,183,106,.55)}80%,100%{box-shadow:0 0 0 7px rgba(18,183,106,0)}}
+.shop-switch{border:1px solid var(--line);background:#fff;border-radius:10px;padding:6px 8px;font-size:13px;max-width:170px}
+.topbar .shop-switch{display:none}
+@media (min-width:640px){.topbar .shop-switch{display:block}.switch-row{display:none!important}}
+.switch-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:22px;padding:12px 16px}
+.switch-row .shop-switch{max-width:60%}
+.online{white-space:nowrap}
+.adm-wrap{max-width:1180px;margin:0 auto;display:flex;gap:24px;padding:18px max(16px, env(safe-area-inset-right)) 110px max(16px, env(safe-area-inset-left))}
+.side{display:none}
+.main{flex:1;min-width:0}
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:30;background:#fff;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);padding:6px max(6px, env(safe-area-inset-right)) calc(6px + env(safe-area-inset-bottom)) max(6px, env(safe-area-inset-left))}
+.tab{border:0;background:none;display:grid;justify-items:center;gap:2px;padding:6px 2px;font-size:11px;font-weight:600;color:var(--muted);border-radius:10px}
+.tab svg{width:22px;height:22px}
+.tab.on{color:var(--text)}
+.tab.on svg{color:var(--green)}
+@media (min-width: 920px){
+  .tabs{display:none}
+  .side{display:block;width:210px;flex:none;position:sticky;top:76px;align-self:flex-start}
+  .side .tab{grid-template-columns:24px 1fr;justify-items:start;align-items:center;gap:10px;font-size:14px;padding:10px 12px;width:100%;text-align:left}
+  .side .tab.on{background:#fff;box-shadow:var(--shadow)}
+  .adm-wrap{padding-bottom:40px}
+}
+.h1{font-family:var(--display);font-size:26px;font-weight:700;margin:4px 0 2px;letter-spacing:-.01em}
+.mut{color:var(--muted)}
+.sec-h{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:24px 0 12px}
+.sec-h h3{font-size:16px;margin:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+@media (min-width:700px){.stats{grid-template-columns:repeat(4,1fr)}}
+.stat{padding:16px}
+.stat small{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+.stat b{display:block;font-family:var(--display);font-size:28px;margin-top:6px;letter-spacing:-.01em}
+.stat .delta{font-size:12px;color:var(--muted)}
+.stat.balance{background:var(--ink);color:#fff;border-color:var(--ink)}
+.stat.balance small{color:#B9B9C0}
+.stat.balance b{color:var(--gold)}
+.notice{display:flex;gap:10px;align-items:flex-start;background:#FFF8E1;border:1px solid #F6E2A4;color:#6b5200;border-radius:12px;padding:10px 12px;font-size:13px;margin-top:12px}
+.notice button{margin-left:auto;flex:none}
+.linkcard{padding:16px;display:grid;gap:12px;margin-top:14px}
+.urlrow{display:flex;gap:8px;align-items:center;background:var(--soft);border-radius:12px;padding:10px 12px}
+.urlrow code{flex:1;min-width:0;overflow-wrap:anywhere;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px}
+.btnrow{display:flex;gap:8px;flex-wrap:wrap}
+.grid2{display:grid;gap:14px}
+@media (min-width:900px){.grid2{grid-template-columns:1.3fr 1fr}}
+.list{display:grid}
+.li{display:flex;gap:12px;align-items:center;padding:12px 16px;border-top:1px solid var(--line)}
+.li:first-child{border-top:0}
+.thumb{width:52px;height:52px;border-radius:12px;object-fit:cover;flex:none;background:var(--soft)}
+.li .grow{flex:1;min-width:0}
+.li .t{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.li .s{font-size:13px;color:var(--muted)}
+.badge{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:3px 9px;font-size:12px;font-weight:600;white-space:nowrap}
+.b-green{background:#E3F8EE;color:#08744A}
+.b-amber{background:#FFF3D6;color:#8A5A00}
+.b-gray{background:#EEEEEA;color:#4c5058}
+.b-blue{background:#E6F0FF;color:#1D4ED8}
+.b-sample{background:#F3E8FF;color:#6B21A8}
+.prod-grid{display:grid;gap:12px}
+@media (min-width:640px){.prod-grid{grid-template-columns:1fr 1fr}}
+@media (min-width:1100px){.prod-grid{grid-template-columns:1fr 1fr 1fr}}
+.pcard{display:flex;gap:14px;padding:12px;align-items:center}
+.pcard img{width:88px;height:88px;border-radius:12px;object-fit:cover;flex:none;background:var(--soft)}
+.pcard .grow{flex:1;min-width:0}
+.pcard .t{font-weight:700}
+.pcard .price{font-family:var(--display);font-size:20px;font-weight:700}
+.pcard .was{color:var(--muted);text-decoration:line-through;font-size:13px;margin-left:6px}
+.stock{font-size:13px;color:var(--muted)}
+.stock.low{color:var(--red);font-weight:600}
+.add-tile{display:grid;place-items:center;gap:6px;border:2px dashed #D4D3CC;border-radius:var(--r);padding:22px;color:var(--muted);background:transparent;font-weight:600;min-height:112px}
+.add-tile:hover{border-color:var(--green);color:var(--green-d)}
+.seg{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:12px}
+.seg button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 12px;font-size:13px;font-weight:600;white-space:nowrap}
+.seg button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.order{padding:14px 16px;display:grid;gap:10px}
+.order .hd{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.order .who{font-weight:700}
+.order .items{font-size:14px;color:#3a3d44}
+.order .ft{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.order .total{font-family:var(--display);font-size:20px;font-weight:700;margin-right:auto}
+.empty{padding:34px 18px;text-align:center;color:var(--muted)}
+.empty b{display:block;color:var(--text);font-size:16px;margin-bottom:4px}
+.promo-hero{border-radius:var(--r-lg);padding:20px;background:linear-gradient(120deg,#FF4D1C,#FF8A00 60%,#F5B700);color:#fff;position:relative;overflow:hidden}
+.promo-hero h2{font-family:var(--display);font-size:28px;margin:0 0 4px;line-height:1.05}
+.promo-hero p{margin:0;max-width:46ch;opacity:.95}
+.promo-hero::after{content:"♪";position:absolute;right:18px;top:6px;font-size:90px;opacity:.18;font-family:var(--display)}
+.promo-list{display:grid;gap:12px;margin-top:14px}
+@media (min-width:700px){.promo-list{grid-template-columns:1fr 1fr}}
+.wallet{border-radius:var(--r-lg);padding:22px;color:#fff;background:radial-gradient(500px 200px at 100% 0%, rgba(245,183,0,.35), transparent 60%), linear-gradient(140deg,#121214,#1f1f24);position:relative;overflow:hidden}
+.wallet small{color:#B9B9C0;text-transform:uppercase;letter-spacing:.1em;font-size:11px;font-weight:700}
+.wallet .bal{font-family:var(--display);font-size:44px;font-weight:800;color:var(--gold);margin:4px 0 12px;letter-spacing:-.02em}
+.ecocash{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:10px 12px;margin-bottom:16px}
+.ecocash .ec{width:34px;height:34px;border-radius:9px;background:#fff;display:grid;place-items:center;font-weight:800;color:#0A4D9C;font-size:12px}
+.checklist{padding:6px 0}
+.check{display:flex;gap:10px;align-items:center;padding:10px 16px;font-size:14px}
+.check i{width:20px;height:20px;border-radius:50%;border:2px solid #CFCEC7;flex:none;display:grid;place-items:center;font-style:normal;font-size:12px;color:#fff}
+.check.ok i{background:var(--green);border-color:var(--green)}
+.check.ok span{color:var(--muted);text-decoration:line-through}
+
+/* ---------- sheets / modals ---------- */
+.scrim{position:fixed;inset:0;z-index:60;background:rgba(10,10,12,.55);display:flex;align-items:flex-end;justify-content:center;animation:fade .2s}
+@keyframes fade{from{opacity:0}}
+.sheet{background:#fff;color:var(--text);width:100%;max-width:560px;max-height:92vh;overflow:auto;border-radius:22px 22px 0 0;padding:18px max(18px, env(safe-area-inset-right)) calc(22px + env(safe-area-inset-bottom)) max(18px, env(safe-area-inset-left));animation:up .28s cubic-bezier(.2,.9,.3,1)}
+@keyframes up{from{transform:translateY(40px);opacity:.4}}
+@media (min-width:700px){.scrim{align-items:center}.sheet{border-radius:22px}}
+.sheet h3{font-family:var(--display);font-size:22px;margin:0}
+.sheet-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:10px}
+.x{border:0;background:var(--soft);width:34px;height:34px;border-radius:50%;font-size:18px;flex:none}
+.f{display:grid;gap:6px;margin-bottom:12px}
+.f label{font-size:13px;font-weight:600}
+.f input,.f textarea,.f select{border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;background:#fff;font-size:16px;width:100%}
+.f input:focus,.f textarea:focus{border-color:var(--green);outline:none}
+.f .hint{font-size:12px;color:var(--muted)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.gallery button{padding:0;border:2.5px solid transparent;border-radius:12px;overflow:hidden;background:var(--soft)}
+.gallery button.on{border-color:var(--green)}
+.gallery img{aspect-ratio:1;object-fit:cover;width:100%}
+.toast{position:fixed;left:50%;bottom:calc(86px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:90;background:var(--ink);color:#fff;padding:11px 16px;border-radius:12px;font-size:14px;font-weight:600;box-shadow:0 10px 30px rgba(0,0,0,.25);animation:fade .2s;max-width:calc(100% - 32px)}
+
+/* ---------- promo video ---------- */
+.reel{position:relative;width:min(100%, 330px);aspect-ratio:9/16;margin:0 auto;border-radius:20px;overflow:hidden;background:#000;color:#fff;box-shadow:0 18px 50px rgba(0,0,0,.35)}
+.reel .bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:kb 6s ease-in-out infinite alternate}
+@keyframes kb{from{transform:scale(1.02) translate(0,0)}to{transform:scale(1.3) translate(-3%,-4%)}}
+.reel .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.45) 0%,rgba(0,0,0,0) 30%,rgba(0,0,0,.15) 55%,rgba(0,0,0,.85) 100%)}
+.reel .tag{position:absolute;top:18px;left:16px;background:var(--hot);font-family:var(--display);font-weight:800;font-size:22px;padding:6px 12px;border-radius:8px;transform:rotate(-4deg);animation:wob 1s ease-in-out infinite alternate;box-shadow:0 6px 18px rgba(255,77,28,.5)}
+@keyframes wob{to{transform:rotate(3deg) scale(1.06)}}
+.reel .copy{position:absolute;left:16px;right:16px;bottom:62px}
+.reel .copy .pr{font-family:var(--display);font-weight:800;font-size:46px;line-height:.95;color:var(--gold);text-shadow:0 4px 18px rgba(0,0,0,.5);animation:pulse 1.2s ease-in-out infinite}
+@keyframes pulse{50%{transform:scale(1.05)}}
+.reel .copy .city{font-family:var(--display);font-weight:800;font-size:22px;letter-spacing:.02em}
+.reel .copy .pn{font-size:14px;opacity:.9;margin-top:4px}
+.reel .music{position:absolute;left:14px;right:14px;bottom:16px;display:flex;gap:8px;align-items:center;font-size:13px;overflow:hidden;white-space:nowrap}
+.reel .music .note{display:inline-block;animation:bounce .6s ease-in-out infinite alternate;font-size:18px}
+@keyframes bounce{to{transform:translateY(-5px) rotate(-12deg)}}
+.reel .music span.mq{display:inline-block;animation:mq 8s linear infinite}
+@keyframes mq{from{transform:translateX(40%)}to{transform:translateX(-100%)}}
+.reel .side-ic{position:absolute;right:12px;bottom:110px;display:grid;gap:14px;text-align:center;font-size:11px}
+.reel .side-ic div{font-size:24px}
+.reel .bar{position:absolute;left:0;top:0;height:3px;background:var(--gold);animation:bar 6s linear infinite}
+@keyframes bar{from{width:0}to{width:100%}}
+.reel .shop{position:absolute;top:22px;right:14px;font-size:12px;font-weight:700;background:rgba(0,0,0,.45);padding:5px 9px;border-radius:999px}
+
+/* ---------- STOREFRONT ---------- */
+.sf{min-height:100vh;background:#FBFAF7}
+.ownerbar{background:var(--ink);color:#fff;font-size:13px;padding:8px max(16px, env(safe-area-inset-right)) 8px max(16px, env(safe-area-inset-left));display:flex;gap:10px;align-items:center;justify-content:space-between}
+.ownerbar a,.ownerbar button{color:var(--gold);background:none;border:0;font-weight:700;text-decoration:none;padding:0}
+.urlbar{background:#EDECE7;padding:8px max(16px, env(safe-area-inset-right)) 8px max(16px, env(safe-area-inset-left))}
+.urlbar div{max-width:1180px;margin:0 auto;background:#fff;border-radius:999px;padding:7px 14px;font-size:13px;color:#4c5058;display:flex;gap:8px;align-items:center;overflow:hidden;white-space:nowrap}
+.urlbar b{color:var(--text);font-weight:600;overflow:hidden;text-overflow:ellipsis}
+.sf-head{position:sticky;top:0;z-index:20;background:rgba(251,250,247,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.sf-head-in{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:12px;padding:12px max(16px, env(safe-area-inset-right)) 12px max(16px, env(safe-area-inset-left))}
+.sf-head .nm{font-family:var(--display);font-weight:800;font-size:18px;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cartbtn{position:relative;border:0;background:var(--ink);color:#fff;border-radius:999px;padding:10px 14px;font-weight:700;display:flex;gap:8px;align-items:center}
+.cartbtn i{font-style:normal;background:var(--gold);color:#111;border-radius:999px;min-width:20px;height:20px;display:grid;place-items:center;font-size:12px;padding:0 5px}
+.banner{position:relative;overflow:hidden;background:var(--ink);color:#fff}
+.banner-in{max-width:1180px;margin:0 auto;display:grid;gap:20px;padding:34px max(16px, env(safe-area-inset-right)) 30px max(16px, env(safe-area-inset-left));position:relative;z-index:1}
+@media (min-width:860px){.banner-in{grid-template-columns:1.1fr 1fr;align-items:center;padding-block:56px}}
+.banner h1{font-family:var(--display);font-size:clamp(34px,8vw,64px);line-height:1;margin:10px 0 12px;letter-spacing:-.02em;text-wrap:balance}
+.banner p{color:#C9C9D0;max-width:44ch;margin:0 0 18px}
+.banner .kick{display:inline-flex;gap:8px;align-items:center;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:700}
+.collage{display:grid;grid-template-columns:1.2fr 1fr;grid-template-rows:1fr 1fr;gap:10px;height:210px}
+@media (min-width:860px){.collage{height:340px}}
+.collage img{width:100%;height:100%;object-fit:cover;border-radius:16px}
+.collage img:first-child{grid-row:span 2}
+.banner::before{content:"";position:absolute;inset:0;background:radial-gradient(700px 300px at 90% 10%, rgba(245,183,0,.22), transparent 60%), radial-gradient(500px 300px at 0% 100%, rgba(18,183,106,.2), transparent 60%)}
+.trust{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:14px max(16px, env(safe-area-inset-right)) 0 max(16px, env(safe-area-inset-left))}
+.trust div{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px;font-size:12px;text-align:center;color:#3e424a}
+.trust b{display:block;font-size:18px;margin-bottom:2px}
+.sf-main{max-width:1180px;margin:0 auto;padding:6px max(16px, env(safe-area-inset-right)) 60px max(16px, env(safe-area-inset-left))}
+.shop-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (min-width:860px){.shop-grid{grid-template-columns:repeat(4,1fr);gap:20px}}
+.item{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;display:flex;flex-direction:column}
+.item .pic{position:relative;background:#f1f0eb;border:0;padding:0;display:block;width:100%}
+.item .pic img{aspect-ratio:1;object-fit:cover;width:100%;transition:transform .5s}
+.item:hover .pic img{transform:scale(1.04)}
+.item .sale{position:absolute;top:10px;left:10px;background:var(--hot);color:#fff;font-size:11px;font-weight:800;border-radius:999px;padding:4px 8px}
+.item .body{padding:12px;display:grid;gap:6px;flex:1}
+.item .nm{font-weight:600;font-size:14px;line-height:1.3}
+.item .pr{font-family:var(--display);font-weight:800;font-size:20px}
+.item .pr s{font-family:var(--body);font-weight:500;font-size:13px;color:var(--muted);margin-left:6px}
+.item .acts{display:grid;gap:6px;margin-top:auto}
+.item .btn{padding:10px 12px;font-size:13px}
+.sold{font-size:12px;color:var(--muted)}
+.paybar{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.paybar span{font-size:12px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:5px 10px}
+.sf-foot{border-top:1px solid var(--line);padding:26px 16px 40px;text-align:center;color:var(--muted);font-size:13px}
+.sf-foot .brand{justify-content:center;color:var(--text);font-size:14px;margin-bottom:6px}
+.sf-foot .moon::after{background:#FBFAF7}
+.qty{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.qty button{border:0;background:#fff;width:32px;height:32px;font-size:18px}
+.qty span{min-width:26px;text-align:center;font-weight:700}
+.pay-opt{display:flex;gap:12px;align-items:flex-start;border:1.5px solid var(--line);border-radius:14px;padding:14px;margin-bottom:10px;cursor:pointer}
+.pay-opt.on{border-color:var(--green);background:#F2FBF6}
+.pay-opt input{margin-top:3px;accent-color:var(--green)}
+.steps-ec{background:var(--soft);border-radius:12px;padding:12px 14px;font-size:14px;margin:4px 0 12px}
+.steps-ec ol{margin:6px 0 0;padding-left:20px}
+.pd-img{border-radius:16px;aspect-ratio:1;object-fit:cover;width:100%;margin-bottom:14px}
+.big-price{font-family:var(--display);font-size:30px;font-weight:800}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="sheet"></div>
+<div id="toast"></div>
+
+<script>
+/* =========================================================================
+   LUNA — AI Store Builder for Zimbabwe. One file. No build step.
+   Data: saved in this browser (localStorage). Store links carry the shop's
+   products in the URL so customers on other phones can open the real store.
+   ========================================================================= */
+"use strict";
+
+/* ---------- helpers ---------- */
+const $ = (s, el = document) => el.querySelector(s);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const money = (n) => { n = Math.round((+n || 0) * 100) / 100; return "$" + (Number.isInteger(n) ? n : n.toFixed(2)); };
+const uid = () => Math.random().toString(36).slice(2, 7).toUpperCase();
+const slugify = (s) => (String(s || "").toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") || "my-shop").slice(0, 40);
+const today = (t) => new Date(t).toDateString() === new Date().toDateString();
+const ago = (t) => { const m = Math.round((Date.now() - t) / 60000); if (m < 1) return "just now"; if (m < 60) return m + " min ago"; const h = Math.round(m / 60); if (h < 24) return h + "h ago"; return Math.round(h / 24) + "d ago"; };
+const hash = (s) => { let h = 2166136261; for (let i = 0; i < s.length; i++) h = Math.imul(h ^ s.charCodeAt(i), 16777619); return ((h >>> 0) % 1000) / 1000; };
+const EMBED = window.LUNA_EMBED || {}; // optional inlined images (used only for offline previews)
+const src = (u) => { const m = /photo-([\w-]+)\?/.exec(u); return (m && EMBED[m[1]]) || EMBED[u] || u; };
+
+/* ---------- real product photos (Unsplash, every link checked) ---------- */
+const PH = (id, w = 900) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=80`;
+const PHOTOS = {
+  earbuds: "1590658268037-6bf12165a8df", airpods: "1572569511254-d8f925fe2cbb", earbudsRed: "1606220588913-b3aacb4d2f46",
+  stand: "1618478594486-c65b899c4936", charger: "1583863788434-e58a36330cf0", magsafe: "1615526675159-e248c3021d3f",
+  watch: "1546868871-7041f2a55e12", watchBlue: "1631281956016-3cdc1b2fe5fb", watchWhite: "1523275335684-37898b6baf30",
+  headphones: "1505740420928-5e560c06d30e", headphonesW: "1583394838336-acd977736f90", iphone: "1591337676887-a217a6970a8a",
+  laptop: "1588872657578-7efd1f1555ed", gamepad: "1606318801954-d46d46d3360a",
+};
+const GALLERY = Object.entries(PHOTOS).map(([k, id]) => ({ k, url: PH(id) }));
+
+/* ---------- Luna's market guide (estimates per city) ---------- */
+const CITIES = [
+  { name: "Harare", country: "Zimbabwe", size: 1, note: "Capital · biggest market" },
+  { name: "Bulawayo", country: "Zimbabwe", size: 0.55, note: "City of Kings" },
+  { name: "Mutare", country: "Zimbabwe", size: 0.32, note: "Eastern border trade" },
+  { name: "Lusaka", country: "Zambia", size: 0.8, note: "Cross-border buyers" },
+];
+const CATALOG = [
+  { id: "earphones", name: "Wireless Earphones", photo: "earbuds", supplier: 8, sell: 15, base: 18, keys: ["earphone", "earbud", "airpod", "buds", "bluetooth"] },
+  { id: "stand", name: "Phone Holder + Stand", photo: "stand", supplier: 4, sell: 10, base: 14, keys: ["phone holder", "phone stand", "holder", "stand", "tripod"] },
+  { id: "charger", name: "Fast Charger + Cable", photo: "charger", supplier: 3, sell: 8, base: 45, keys: ["charger", "cable", "charging", "usb", "type c", "adapter"] },
+  { id: "watch", name: "Smart Watch", photo: "watch", supplier: 9, sell: 20, base: 24, keys: ["smart watch", "smartwatch", "watch"] },
+  { id: "headphones", name: "Bluetooth Headphones", photo: "headphones", supplier: 12, sell: 25, base: 30, keys: ["headphone", "headset"] },
+  { id: "magsafe", name: "Wireless Charging Pad", photo: "magsafe", supplier: 6, sell: 14, base: 16, keys: ["wireless charger", "charging pad", "magsafe"] },
+  { id: "gamepad", name: "Game Controller", photo: "gamepad", supplier: 14, sell: 28, base: 20, keys: ["controller", "gamepad", "playstation", "ps5", "ps4", "xbox", "gaming"] },
+  { id: "powerbank", name: "Power Bank 20,000mAh", supplier: 10, sell: 20, base: 34, keys: ["power bank", "powerbank"] },
+  { id: "solar", name: "Solar Lamps & Panels", supplier: 12, sell: 25, base: 22, keys: ["solar", "lamp", "zesa", "load shedding", "power cut", "light"] },
+  { id: "cases", name: "Phone Cases & Screen Guards", supplier: 2, sell: 6, base: 95, keys: ["phone case", "case", "cover", "screen guard", "protector"] },
+  { id: "wigs", name: "Wigs & Hair Extensions", supplier: 15, sell: 28, base: 220, keys: ["wig", "weave", "braid", "hair", "lace", "bundles", "brazilian"] },
+  { id: "sneakers", name: "Sneakers", supplier: 18, sell: 30, base: 140, keys: ["sneaker", "shoe", "trainer", "air force", "jordan", "nike"] },
+  { id: "perfume", name: "Perfumes", supplier: 6, sell: 15, base: 110, keys: ["perfume", "fragrance", "cologne", "body spray"] },
+  { id: "skincare", name: "Skincare & Lotions", supplier: 4, sell: 9, base: 85, keys: ["skincare", "lotion", "cream", "makeup", "beauty", "cosmetic"] },
+  { id: "dresses", name: "Ladies' Dresses", supplier: 7, sell: 16, base: 160, keys: ["dress", "clothes", "clothing", "fashion", "outfit"] },
+  { id: "baby", name: "Baby Clothes", supplier: 5, sell: 12, base: 40, keys: ["baby", "kids", "children", "newborn"] },
+  { id: "bags", name: "Handbags & Backpacks", supplier: 8, sell: 18, base: 60, keys: ["bag", "handbag", "backpack", "purse"] },
+];
+function askLuna(text, cityName) {
+  const q = String(text || "").toLowerCase().trim();
+  if (!q) return null;
+  const city = CITIES.find((c) => c.name === cityName) || CITIES[0];
+  let best = null, score = 0;
+  for (const p of CATALOG) { let s = 0; for (const k of p.keys) if (new RegExp("\\b" + k).test(q)) s += k.length; if (s > score) { score = s; best = p; } }
+  if (!best) {
+    return { known: false, name: text.trim().slice(0, 40), level: "GOOD", sellers: Math.round(4 + 10 * hash(q + city.name)), city: city.name,
+      say: `Luna hasn't seen many sellers of <b>${esc(text.trim())}</b> in ${esc(city.name)} yet — that's usually a good sign. Test it with 3–5 pieces before you buy more.` };
+  }
+  const sellers = Math.max(3, Math.round(best.base * city.size * (0.75 + 0.5 * hash(city.name + best.id))));
+  const level = sellers < 30 ? "HOT" : sellers < 90 ? "GOOD" : "SATURATED";
+  const keep = Math.max(1, Math.round((best.sell - best.supplier) * 0.7));
+  let say;
+  if (level === "HOT") say = `🔥 <b>Few sellers, lots of buyers</b> in ${esc(city.name)}. Great pick — list it today.`;
+  else if (level === "GOOD") say = `🟢 <b>Healthy market.</b> Stand out with clear photos, fast delivery and EcoCash.`;
+  else {
+    const alt = CATALOG.filter((p) => p.photo).map((p) => ({ p, s: Math.round(p.base * city.size * (0.75 + 0.5 * hash(city.name + p.id))) })).sort((a, b) => a.s - b.s)[0].p;
+    say = `🔴 <b>Too many sellers</b> in ${esc(city.name)} — prices get pushed down. Try <b>${esc(alt.name)}</b> instead.`;
+  }
+  return { known: true, product: best, level, sellers, keep, city: city.name, say };
+}
+
+/* ---------- data ---------- */
+const KEY = "luna.store.v1";
+const DEMO_SLUG = "luna-demo-store-harare";
+const ORDER_STATES = { awaiting: "To confirm", paid: "To deliver", cod: "To deliver", delivered: "Delivered" };
+function demoShop() {
+  const now = Date.now();
+  const products = [
+    { id: "p1", name: "Wireless Earphones Pro", price: 15, was: 22, stock: 24, img: PH(PHOTOS.earbuds), desc: "True wireless Bluetooth 5.3 earbuds with charging case. 24h battery, deep bass, works with Android & iPhone." },
+    { id: "p2", name: "Phone Holder + Stand", price: 10, was: 14, stock: 40, img: PH(PHOTOS.stand), desc: "Adjustable desk stand for phones and small tablets. Perfect for video calls, TikTok and watching in kombis." },
+    { id: "p3", name: "Fast Charger 20W + Cable", price: 8, was: 12, stock: 35, img: PH(PHOTOS.charger), desc: "20W USB-C fast charger with 1m cable. Charges to 50% in 30 minutes. Safe for all phones." },
+    { id: "p4", name: "Smart Watch Series X", price: 20, was: 30, stock: 3, img: PH(PHOTOS.watch), desc: "Calls, WhatsApp alerts, steps, heart rate and sleep. 7-day battery. Black strap." },
+  ];
+  const orders = [
+    { id: "LN-4821", customer: "Tendai Moyo", phone: "0772 345 678", area: "Avondale, Harare", items: [{ pid: "p1", name: "Wireless Earphones Pro", qty: 1, price: 15 }], total: 15, method: "ecocash", ref: "MP241120.1432.A12345", status: "paid", at: now - 38 * 60000, sample: true },
+    { id: "LN-4822", customer: "Rudo Kambarami", phone: "0783 112 909", area: "Borrowdale, Harare", items: [{ pid: "p4", name: "Smart Watch Series X", qty: 1, price: 20 }], total: 20, method: "cod", status: "cod", at: now - 95 * 60000, sample: true },
+    { id: "LN-4819", customer: "Farai Chikore", phone: "0715 220 431", area: "Mbare, Harare", items: [{ pid: "p3", name: "Fast Charger 20W + Cable", qty: 2, price: 8 }], total: 16, method: "ecocash", ref: "MP241120.0915.B77812", status: "delivered", at: now - 5 * 3600000, sample: true },
+  ];
+  return { slug: DEMO_SLUG, name: "LUNA Demo Store", city: "Harare", role: "Seller", ecocash: "0790007951", color: "#F5B700", demo: true, createdAt: now, products, orders, views: [], withdrawals: [] };
+}
+function load() { try { return JSON.parse(localStorage.getItem(KEY)); } catch { return null; } }
+let DB = load() || { shops: {}, current: null };
+if (!DB.shops[DEMO_SLUG]) DB.shops[DEMO_SLUG] = demoShop();
+if (!DB.current || !DB.shops[DB.current]) DB.current = DEMO_SLUG;
+function save() { try { localStorage.setItem(KEY, JSON.stringify(DB)); } catch {} }
+save();
+const shop = () => DB.shops[DB.current];
+
+/* Share link: luna.vercel.app/shop/<slug>?d=<shop data> so the store opens on any phone. */
+const SITE = /^https?:$/.test(location.protocol) && !/claude\.ai|claudeusercontent|localhost|127\.0\.0\.1/.test(location.host) ? location.origin : "https://luna.vercel.app";
+const prettyUrl = (s) => `${SITE.replace(/^https?:\/\//, "")}/shop/${s.slug}`;
+const b64e = (o) => btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+const b64d = (s) => JSON.parse(decodeURIComponent(escape(atob(s.replace(/-/g, "+").replace(/_/g, "/")))));
+function packShop(s) {
+  const ids = Object.fromEntries(Object.entries(PHOTOS).map(([k, id]) => [PH(id), k]));
+  return { n: s.name, c: s.city, e: s.ecocash, k: s.color, p: s.products.filter((p) => !/^data:/.test(p.img)).map((p) => [p.id, p.name, p.price, p.was || 0, p.stock, ids[p.img] || p.img, p.desc || ""]) };
+}
+function unpackShop(slug, d) {
+  return { slug, name: d.n, city: d.c, ecocash: d.e, color: d.k || "#F5B700", visitor: true, orders: [], views: [], withdrawals: [],
+    products: (d.p || []).map(([id, name, price, was, stock, img, desc]) => ({ id, name, price, was, stock, img: PHOTOS[img] ? PH(PHOTOS[img]) : img, desc })) };
+}
+const shareUrl = (s) => `${SITE}/shop/${s.slug}?d=${b64e(packShop(s))}`;
+
+/* ---------- UI state ---------- */
+const UI = { view: "landing", tab: "home", filter: "all", cart: [], store: null, wz: { step: 0, role: "", city: "", q: "", v: null, name: "", eco: "", err: "" }, toastT: 0 };
+function toast(msg) { const t = $("#toast"); t.innerHTML = `<div class="toast" role="status">${msg}</div>`; clearTimeout(UI.toastT); UI.toastT = setTimeout(() => (t.innerHTML = ""), 2600); }
+function copy(text, label = "Link copied") { if (navigator.clipboard?.writeText) navigator.clipboard.writeText(text).then(() => toast("✓ " + label), () => showCopy(text)); else showCopy(text); }
+function showCopy(text) { openSheet(`<div class="sheet-h"><h3>Copy this</h3><button class="x" data-a="close" aria-label="Close">×</button></div><div class="f"><input id="copyfield" readonly value="${esc(text)}"></div><p class="mut" style="font-size:13px">Press and hold the box, then tap Copy.</p>`); const f = $("#copyfield"); f.focus(); f.select(); }
+const waLink = (text, phone) => `https://wa.me/${phone ? "263" + String(phone).replace(/\D/g, "").replace(/^0/, "") : ""}?text=${encodeURIComponent(text)}`;
+const initials = (n) => String(n || "S").split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0].toUpperCase()).join("");
+const logo = (s, size = 38) => `<span class="logo" style="width:${size}px;height:${size}px;background:${esc(s.color || "#F5B700")};font-size:${Math.round(size * 0.4)}px">${esc(initials(s.name))}</span>`;
+const icon = {
+  home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>',
+  products: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="m3 8 9 5 9-5M12 13v8"/></svg>',
+  orders: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h12l2 5H4z"/><path d="M4 7v13a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V7"/><path d="M9 11a3 3 0 0 0 6 0"/></svg>',
+  promote: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="14" height="14" rx="2"/><path d="m17 10 4-2v8l-4-2"/></svg>',
+  wallet: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h13v4"/><path d="M3 7v11a2 2 0 0 0 2 2h15V9H5a2 2 0 0 1-2-2z"/><circle cx="16" cy="14.5" r="1.3"/></svg>',
+};
+
+/* ---------- metrics (computed from real orders & visits) ---------- */
+function metrics(s) {
+  const paid = s.orders.filter((o) => o.status === "paid" || o.status === "delivered");
+  const todays = s.orders.filter((o) => today(o.at));
+  return {
+    salesToday: paid.filter((o) => today(o.at)).reduce((a, o) => a + o.total, 0),
+    ordersToday: todays.length,
+    pending: s.orders.filter((o) => o.status !== "delivered").length,
+    viewsToday: s.views.filter(today).length,
+    viewsAll: s.views.length,
+    balance: paid.reduce((a, o) => a + o.total, 0) - s.withdrawals.reduce((a, w) => a + w.amt, 0),
+    hasSamples: s.orders.some((o) => o.sample),
+  };
+}
+
+/* =========================== VIEWS =========================== */
+function vLanding() {
+  const d = DB.shops[DEMO_SLUG];
+  const mine = Object.values(DB.shops).filter((s) => !s.demo);
+  return `<div class="wz"><div class="wz-in">
+    <div class="brand"><span class="moon"></span>LUNA</div>
+    <h1 class="hero-h">Your shop is <em>online</em> in 2 minutes.</h1>
+    <p class="lead">Luna checks what sells in your city, builds your store, and gets you paid with EcoCash or cash on delivery. No bank card. No website skills.</p>
+    <div class="pills"><span class="pill">🇿🇼 <b>Built for Zimbabwe</b></span><span class="pill">💚 EcoCash</span><span class="pill">🚚 Pay on Delivery</span><span class="pill">🎬 Promo videos</span></div>
+    <div class="landing-cta">
+      <button class="btn btn-gold btn-block" style="padding:16px;font-size:17px" data-a="startWizard">Build my shop — free →</button>
+      <button class="btn btn-ghost-dark btn-block" data-a="openDemo">Open the demo store</button>
+      ${mine.length ? `<button class="btn btn-ghost-dark btn-block" data-a="openShop" data-slug="${esc(mine[mine.length - 1].slug)}">Go to ${esc(mine[mine.length - 1].name)}</button>` : ""}
+    </div>
+    <button class="demo-peek" data-a="openDemo" style="padding:0;width:100%;text-align:left;color:inherit">
+      <div class="row">${d.products.slice(0, 4).map((p) => `<img src="${esc(src(p.img))}" alt="${esc(p.name)}" loading="lazy">`).join("")}</div>
+      <div class="cap"><span><b style="color:#fff">${esc(d.name)} — Harare</b><br>4 products ready to test</span><span style="color:var(--gold);font-weight:700">Try it →</span></div>
+    </button>
+  </div></div>`;
+}
+
+function vWizard() {
+  const w = UI.wz, n = w.step;
+  const bar = `<div class="steps">${[0, 1, 2, 3, 4].map((i) => `<i class="${i <= n ? "on" : ""}"></i>`).join("")}</div>`;
+  let body = "", canNext = true;
+  if (n === 0) {
+    canNext = !!w.role;
+    body = `<div class="eyebrow">Step 1 of 5</div><h2>Are you a seller or a supplier?</h2><p class="sub">You can change this later.</p>
+    <div class="choice-grid">
+      ${[["Seller", "🛍️", "I sell to customers", "Open a shop, share your link, get orders."], ["Supplier", "🏭", "I supply stock", "Sell in bulk to Luna sellers across Zimbabwe."]].map(([r, ic, t, d]) =>
+        `<button class="choice ${w.role === r ? "on" : ""}" data-a="wzSet" data-k="role" data-v="${r}"><span class="ic">${ic}</span><span><b>${t}</b><small>${d}</small></span><span class="tick"></span></button>`).join("")}
+    </div>`;
+  } else if (n === 1) {
+    canNext = !!w.city;
+    body = `<div class="eyebrow">Step 2 of 5</div><h2>Where is your shop?</h2><p class="sub">Luna shows you what's hot in your city.</p>
+    <div class="city-grid">${CITIES.map((c) => `<button class="city ${w.city === c.name ? "on" : ""}" data-a="wzSet" data-k="city" data-v="${c.name}"><b>${c.name}</b><small>${c.note}</small></button>`).join("")}</div>`;
+  } else if (n === 2) {
+    const v = w.v;
+    body = `<div class="eyebrow">Step 3 of 5</div><h2>Ask Luna what to ${w.role === "Supplier" ? "supply" : "sell"}</h2><p class="sub">Type a product. Luna checks how many people already sell it in ${esc(w.city)}.</p>
+    <form class="ask" data-form="ask"><input class="inp" id="askq" name="q" placeholder="e.g. wireless earphones" value="${esc(w.q)}" autocomplete="off" aria-label="Product to check"><button class="btn btn-green" type="submit">Ask Luna</button></form>
+    <div class="chips">${["Earphones", "Smart watch", "Phone stand", "Charger", "Wigs", "Sneakers", "Solar lamps"].map((c) => `<button class="chip" data-a="askChip" data-v="${c}">${c}</button>`).join("")}</div>
+    ${v ? `<div class="verdict">
+      <div class="top">${v.known && v.product.photo ? `<img class="ph" src="${esc(src(PH(PHOTOS[v.product.photo], 300)))}" alt="">` : `<div class="ph none">🛍️</div>`}
+        <div><div class="lvl ${v.level}">${v.level === "HOT" ? "🔥" : v.level === "GOOD" ? "🟢" : "🔴"} ${v.level}</div>
+        <div style="font-weight:700;margin-top:2px">${esc(v.known ? v.product.name : v.name)}</div>
+        <div style="color:#9d9da6;font-size:13px">About ${v.sellers} sellers in ${esc(v.city)}</div></div></div>
+      ${v.known ? `<div class="nums"><div><small>Supplier</small><b class="tnum">${money(v.product.supplier)}</b></div><div><small>You sell</small><b class="tnum">${money(v.product.sell)}</b></div><div><small>You keep</small><b class="tnum" style="color:var(--gold)">~${money(v.keep)}</b></div></div>` : ""}
+      <div class="say">${v.say}</div><div class="est">Luna market estimate for ${esc(v.city)} · not a guarantee</div></div>` : ""}`;
+  } else if (n === 3) {
+    const nm = w.name || "Your Shop";
+    canNext = w.name.trim().length >= 2;
+    body = `<div class="eyebrow">Step 4 of 5</div><h2>Name your shop</h2><p class="sub">This is what customers see at the top of your store.</p>
+    <form data-form="name">
+      <div class="field"><label for="shopname">Shop name</label><input class="inp" id="shopname" name="name" maxlength="40" placeholder="e.g. Tino's Gadgets Harare" value="${esc(w.name)}" autocomplete="off"></div>
+      <div class="field"><label for="eco">EcoCash number (customers pay you here)</label><input class="inp" id="eco" name="eco" inputmode="tel" maxlength="13" placeholder="07X XXX XXXX" value="${esc(w.eco)}"></div>
+      ${w.err ? `<div class="err">${esc(w.err)}</div>` : ""}
+    </form>
+    <div class="preview-card" id="namePrev">${logo({ name: nm, color: "#F5B700" }, 54)}<div style="min-width:0"><b style="font-size:18px" id="prevName">${esc(nm)}</b><div style="color:#9d9da6;font-size:13px;overflow-wrap:anywhere" id="prevUrl">${esc(SITE.replace(/^https?:\/\//, ""))}/shop/${esc(slugify(w.name || "your-shop"))}</div></div></div>`;
+  } else {
+    const s = shop();
+    body = `<div class="done"><div class="burst">🎉</div><div class="eyebrow" style="margin-top:8px">Step 5 of 5</div><h2>${esc(s.name)} is live!</h2>
+      <p class="sub">Your store is online. Share the link on WhatsApp Status, TikTok and Facebook groups.</p>
+      <div class="linkbox"><code>${esc(prettyUrl(s))}</code><button class="btn btn-gold btn-sm" data-a="copyLink">Copy</button></div>
+      <div style="display:grid;gap:10px"><button class="btn btn-green btn-block" style="padding:15px" data-a="goAdmin">Open my dashboard →</button><button class="btn btn-ghost-dark btn-block" data-a="viewStore">View my store</button></div></div>`;
+  }
+  const nav = n < 4 ? `<div class="wz-nav">
+    <button class="btn btn-ghost-dark" data-a="wzBack">← Back</button>
+    <button class="btn btn-gold" style="flex:1" data-a="wzNext" ${canNext ? "" : "disabled"}>${n === 3 ? "Create my shop" : n === 2 && !w.v ? "Skip for now →" : "Next →"}</button></div>` : "";
+  return `<div class="wz"><div class="wz-in"><div class="brand"><span class="moon"></span>LUNA</div>${bar}${body}${nav}</div></div>`;
+}
+
+function vAdmin() {
+  const s = shop(), m = metrics(s);
+  const tabs = [["home", "Home"], ["products", "Products"], ["orders", "Orders"], ["promote", "Promote"], ["wallet", "Wallet"]];
+  const tabBtns = tabs.map(([k, l]) => `<button class="tab ${UI.tab === k ? "on" : ""}" data-a="tab" data-v="${k}" aria-label="${l}">${icon[k]}<span>${l}${k === "orders" && m.pending ? ` (${m.pending})` : ""}</span></button>`).join("");
+  const shops = Object.values(DB.shops);
+  return `<div class="adm">
+    <header class="topbar"><div class="topbar-in">
+      <div class="shopid">${logo(s)}<div style="min-width:0"><div class="nm">${esc(s.name)}</div><div class="online"><i></i>ONLINE · ${esc(s.city)}</div></div></div>
+      <select class="shop-switch" data-change="switchShop" aria-label="Switch shop">${shops.map((x) => `<option value="${esc(x.slug)}" ${x.slug === s.slug ? "selected" : ""}>${esc(x.name)}</option>`).join("")}<option value="__new">+ New shop</option></select>
+      <button class="btn btn-green btn-sm" data-a="viewStore">View My Store</button>
+    </div></header>
+    <div class="adm-wrap"><nav class="side">${tabBtns}</nav><main class="main">${({ home: tHome, products: tProducts, orders: tOrders, promote: tPromote, wallet: tWallet })[UI.tab](s, m)}</main></div>
+    <nav class="tabs">${tabBtns}</nav></div>`;
+}
+
+function tHome(s, m) {
+  const recent = [...s.orders].sort((a, b) => b.at - a.at).slice(0, 4);
+  const shared = !!s.shared, hasSale = s.orders.some((o) => !o.sample);
+  const hr = new Date().getHours();
+  return `<div class="mut" style="font-size:13px">${new Date().toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" })}</div>
+  <div class="h1">Good ${hr < 12 ? "morning" : hr < 17 ? "afternoon" : "evening"} 👋</div>
+  <div class="stats">
+    <div class="card stat"><small>Today's sales</small><b class="tnum">${money(m.salesToday)}</b><span class="delta">paid orders today</span></div>
+    <div class="card stat"><small>Orders</small><b class="tnum">${m.ordersToday}</b><span class="delta">${m.pending} need action</span></div>
+    <div class="card stat"><small>Store views</small><b class="tnum">${m.viewsToday}</b><span class="delta">${m.viewsAll} all time</span></div>
+    <div class="card stat balance"><small>Balance</small><b class="tnum">${money(m.balance)}</b><span class="delta" style="color:#9d9da6">EcoCash ${esc(fmtPhone(s.ecocash))}</span></div>
+  </div>
+  ${m.hasSamples ? `<div class="notice"><span>🧪</span><span>Some orders are <b>samples</b> so you can test the buttons. Real orders come from your store page.</span><button class="btn btn-ghost btn-sm" data-a="clearSamples">Remove samples</button></div>` : ""}
+  <div class="card linkcard"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><b>Your store link</b><span class="badge b-green">● Online</span></div>
+    <div class="urlrow"><code>${esc(prettyUrl(s))}</code></div>
+    <div class="btnrow"><button class="btn btn-dark btn-sm" data-a="copyLink">Copy link</button><a class="btn btn-green btn-sm" href="${esc(waLink(`🛍️ Shop at ${s.name} — ${s.city}. Pay with EcoCash or on delivery 👇\n${shareUrl(s)}`))}" target="_blank" rel="noopener" data-a="markShared">Share on WhatsApp</a><button class="btn btn-ghost btn-sm" data-a="viewStore">Preview</button></div></div>
+  <div class="grid2">
+    <div><div class="sec-h"><h3>Recent orders</h3><button class="btn btn-ghost btn-sm" data-a="tab" data-v="orders">See all</button></div>
+      <div class="card list">${recent.length ? recent.map((o) => `<div class="li"><div class="grow"><div class="t">${esc(o.customer)}</div><div class="s">${esc(o.items.map((i) => i.qty + "× " + i.name).join(", "))} · ${ago(o.at)}</div></div><div style="text-align:right"><b class="tnum">${money(o.total)}</b><div>${payBadge(o)}</div></div></div>`).join("") : `<div class="empty"><b>No orders yet</b>Share your store link to get your first order.</div>`}</div></div>
+    <div><div class="sec-h"><h3>Get your first sale</h3></div>
+      <div class="card checklist">
+        ${[[s.products.length > 0, "Add your products"], [!!s.ecocash, "Add your EcoCash number"], [shared, "Share your store link"], [(s.promos || 0) > 0, "Make a promo video"], [hasSale, "Get your first real order"]].map(([ok, t]) => `<div class="check ${ok ? "ok" : ""}"><i>${ok ? "✓" : ""}</i><span>${t}</span></div>`).join("")}
+      </div></div>
+  </div>
+  <div class="card switch-row"><span class="mut" style="font-size:13px">Your shops</span><select class="shop-switch" data-change="switchShop" aria-label="Switch shop">${Object.values(DB.shops).map((x) => `<option value="${esc(x.slug)}" ${x.slug === s.slug ? "selected" : ""}>${esc(x.name)}</option>`).join("")}<option value="__new">+ New shop</option></select></div>`;
+}
+
+function tProducts(s) {
+  return `<div class="sec-h" style="margin-top:4px"><div><div class="h1">My Products</div><div class="mut">${s.products.length} products · visible on your store</div></div><button class="btn btn-green" data-a="editProduct">+ Add Product</button></div>
+  <div class="prod-grid">${s.products.map((p) => `<div class="card pcard"><img src="${esc(src(p.img))}" alt="${esc(p.name)}" loading="lazy" onerror="this.style.visibility='hidden'">
+    <div class="grow"><div class="t">${esc(p.name)}</div><div><span class="price tnum">${money(p.price)}</span>${p.was > p.price ? `<span class="was">${money(p.was)}</span>` : ""}</div>
+    <div class="stock ${p.stock <= 5 ? "low" : ""}">${p.stock <= 0 ? "Out of stock" : p.stock + " in stock" + (p.stock <= 5 ? " · low" : "")}</div></div>
+    <button class="btn btn-ghost btn-sm" data-a="editProduct" data-id="${esc(p.id)}">Edit</button></div>`).join("")}
+    <button class="add-tile" data-a="editProduct"><span style="font-size:26px">＋</span>Add Product</button></div>`;
+}
+
+function payBadge(o) {
+  if (o.method === "cod") return o.status === "delivered" ? `<span class="badge b-green">Cash collected</span>` : `<span class="badge b-blue">Pay on Delivery</span>`;
+  return o.status === "awaiting" ? `<span class="badge b-amber">EcoCash · check</span>` : `<span class="badge b-green">EcoCash Paid</span>`;
+}
+function tOrders(s) {
+  const f = UI.filter;
+  const list = [...s.orders].sort((a, b) => b.at - a.at).filter((o) => f === "all" || (f === "confirm" && o.status === "awaiting") || (f === "deliver" && (o.status === "paid" || o.status === "cod")) || (f === "done" && o.status === "delivered"));
+  const count = (fn) => s.orders.filter(fn).length;
+  return `<div class="h1" style="margin-bottom:12px">Orders</div>
+  <div class="seg">${[["all", "All", s.orders.length], ["confirm", "To confirm", count((o) => o.status === "awaiting")], ["deliver", "To deliver", count((o) => o.status === "paid" || o.status === "cod")], ["done", "Delivered", count((o) => o.status === "delivered")]].map(([k, l, c]) => `<button class="${f === k ? "on" : ""}" data-a="filter" data-v="${k}">${l} · ${c}</button>`).join("")}</div>
+  <div class="card">${list.length ? list.map((o, i) => `<div class="order" style="${i ? "border-top:1px solid var(--line)" : ""}">
+    <div class="hd"><div><div class="who">${esc(o.customer)} ${o.sample ? `<span class="badge b-sample">Sample</span>` : ""}</div><div class="mut" style="font-size:13px">${esc(o.id)} · ${ago(o.at)} · ${esc(o.area || "")}</div></div>${payBadge(o)}</div>
+    <div class="items">${o.items.map((i) => `${i.qty}× ${esc(i.name)}`).join("<br>")}${o.ref ? `<div class="mut" style="font-size:12px;margin-top:4px">EcoCash ref: <span class="tnum">${esc(o.ref)}</span></div>` : ""}</div>
+    <div class="ft"><span class="total tnum">${money(o.total)}</span>
+      ${o.phone ? `<a class="btn btn-ghost btn-sm" href="${esc(waLink(`Hi ${o.customer}, this is ${s.name} about your order ${o.id} 🙂`, o.phone))}" target="_blank" rel="noopener">WhatsApp</a>` : ""}
+      ${o.status === "awaiting" ? `<button class="btn btn-gold btn-sm" data-a="orderStatus" data-id="${esc(o.id)}" data-v="paid">Confirm EcoCash</button>` : ""}
+      ${o.status === "paid" || o.status === "cod" ? `<button class="btn btn-green btn-sm" data-a="orderStatus" data-id="${esc(o.id)}" data-v="delivered">Deliver ✓</button>` : ""}
+      ${o.status === "delivered" ? `<span class="badge b-gray">Delivered</span>` : ""}
+    </div></div>`).join("") : `<div class="empty"><b>Nothing here</b>New orders from your store show up here.</div>`}</div>
+  <p class="mut" style="font-size:12px;margin-top:10px">EcoCash orders: check the code in your EcoCash SMS, then tap “Confirm EcoCash”. Pay on Delivery: collect cash, then tap “Deliver”.</p>`;
+}
+
+function tPromote(s) {
+  return `<div class="promo-hero"><h2>Promo videos that sell</h2><p>Pick one product. Luna makes a 6-second vertical video with music, made for TikTok and WhatsApp Status.</p></div>
+  <div class="promo-list">${s.products.map((p) => `<div class="card pcard"><img src="${esc(src(p.img))}" alt="${esc(p.name)}" loading="lazy"><div class="grow"><div class="t">${esc(p.name)}</div><div class="price tnum">${money(p.price)}</div></div>
+    <button class="btn btn-sm" style="background:var(--hot);color:#fff" data-a="promo" data-id="${esc(p.id)}">🎬 Create Promo Video</button></div>`).join("") || `<div class="empty card"><b>Add a product first</b></div>`}</div>`;
+}
+
+function tWallet(s, m) {
+  const hist = [
+    ...s.orders.filter((o) => o.status === "paid" || o.status === "delivered").map((o) => ({ t: o.at, label: `Sale · ${o.customer}`, amt: o.total, sample: o.sample })),
+    ...s.withdrawals.map((w) => ({ t: w.at, label: "Withdrawal to EcoCash", amt: -w.amt })),
+  ].sort((a, b) => b.t - a.t);
+  return `<div class="h1" style="margin-bottom:12px">Wallet</div>
+  <div class="wallet"><small>Balance</small><div class="bal tnum">${money(m.balance)}</div>
+    <div class="ecocash"><span class="ec">Eco</span><div style="flex:1"><div style="font-size:12px;color:#B9B9C0">EcoCash number</div><b class="tnum">${esc(fmtPhone(s.ecocash) || "Not set")}</b></div><button class="btn btn-ghost-dark btn-sm" data-a="editEco">Change</button></div>
+    <button class="btn btn-gold btn-block" data-a="withdraw" ${m.balance > 0 ? "" : "disabled"}>Withdraw to EcoCash</button></div>
+  <div class="sec-h"><h3>History</h3></div>
+  <div class="card list">${hist.length ? hist.map((h) => `<div class="li"><div class="grow"><div class="t">${esc(h.label)} ${h.sample ? `<span class="badge b-sample">Sample</span>` : ""}</div><div class="s">${new Date(h.t).toLocaleString(undefined, { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}</div></div><b class="tnum" style="color:${h.amt < 0 ? "var(--red)" : "var(--green-d)"}">${h.amt < 0 ? "−" : "+"}${money(Math.abs(h.amt))}</b></div>`).join("") : `<div class="empty"><b>No money in yet</b>Paid orders appear here.</div>`}</div>`;
+}
+const fmtPhone = (p) => { const d = String(p || "").replace(/\D/g, ""); return d.length === 10 ? `${d.slice(0, 4)} ${d.slice(4, 7)} ${d.slice(7)}` : p || ""; };
+
+function vStore() {
+  const s = UI.store;
+  const owner = !s.visitor && DB.shops[s.slug];
+  const cartN = UI.cart.reduce((a, c) => a + c.qty, 0);
+  const pics = s.products.slice(0, 3);
+  return `<div class="sf">
+    ${owner ? `<div class="ownerbar"><span>👀 Customer view of your store</span><button data-a="goAdmin">← Dashboard</button></div>` : ""}
+    <div class="urlbar"><div>🔒 <b>${esc(prettyUrl(s))}</b></div></div>
+    <header class="sf-head"><div class="sf-head-in">${logo(s, 36)}<div class="nm">${esc(s.name)}</div><button class="cartbtn" data-a="cart" aria-label="Cart">🛒 Cart <i>${cartN}</i></button></div></header>
+    <section class="banner"><div class="banner-in">
+      <div><span class="kick">● Open now · ${esc(s.city)}</span><h1>${esc(s.name)}</h1><p>Quality gadgets delivered across ${esc(s.city)}. Order online in a minute — pay with EcoCash or cash when it arrives.</p>
+        <div class="btnrow"><a href="#products" class="btn btn-gold">Shop now ↓</a>${s.ecocash ? `<a class="btn btn-ghost-dark" href="${esc(waLink(`Hi ${s.name}, I have a question 🙂`, s.ecocash))}" target="_blank" rel="noopener">Chat with seller</a>` : ""}</div></div>
+      ${pics.length >= 3 ? `<div class="collage">${pics.map((p) => `<img src="${esc(src(p.img))}" alt="${esc(p.name)}">`).join("")}</div>` : ""}
+    </div></section>
+    <div class="trust"><div><b>🚚</b>Delivery in ${esc(s.city)}</div><div><b>💚</b>Pay with EcoCash</div><div><b>🤝</b>Pay on delivery</div></div>
+    <main class="sf-main" id="products"><div class="sec-h"><h3 style="font-family:var(--display);font-size:22px">All products</h3><span class="mut" style="font-size:13px">${s.products.length} items</span></div>
+      <div class="shop-grid">${s.products.map((p) => `<article class="item">
+        <button class="pic" data-a="pd" data-id="${esc(p.id)}" aria-label="View ${esc(p.name)}">${p.was > p.price ? `<span class="sale">-${Math.round(100 - (p.price / p.was) * 100)}%</span>` : ""}<img src="${esc(src(p.img))}" alt="${esc(p.name)}" loading="lazy"></button>
+        <div class="body"><div class="nm">${esc(p.name)}</div><div class="pr tnum">${money(p.price)}${p.was > p.price ? `<s>${money(p.was)}</s>` : ""}</div>
+          <div class="sold">${p.stock <= 0 ? "Sold out" : p.stock <= 5 ? `🔥 Only ${p.stock} left` : "In stock"}</div>
+          <div class="acts"><button class="btn btn-dark" data-a="addCart" data-id="${esc(p.id)}" ${p.stock <= 0 ? "disabled" : ""}>Add to Cart</button><button class="btn btn-green" data-a="buyNow" data-id="${esc(p.id)}" ${p.stock <= 0 ? "disabled" : ""}>Buy with EcoCash</button></div></div>
+      </article>`).join("")}</div>
+      <div class="paybar"><span>💚 EcoCash</span><span>🤝 Pay on Delivery</span><span>🔒 Secure checkout</span></div>
+    </main>
+    <footer class="sf-foot"><div class="brand"><span class="moon"></span>LUNA</div>Store powered by LUNA · ${esc(s.city)}, ${esc((CITIES.find((c) => c.name === s.city) || CITIES[0]).country)}</footer>
+  </div>`;
+}
+
+/* =========================== SHEETS =========================== */
+function openSheet(html, onClose) { $("#sheet").innerHTML = `<div class="scrim" data-a="scrim"><div class="sheet" role="dialog" aria-modal="true">${html}</div></div>`; UI.onClose = onClose; }
+function closeSheet() { $("#sheet").innerHTML = ""; if (UI.onClose) { UI.onClose(); UI.onClose = null; } }
+
+function sheetProduct(id) {
+  const s = shop(), p = s.products.find((x) => x.id === id) || { name: "", price: "", was: "", stock: 10, img: GALLERY[0].url, desc: "" };
+  UI.pickImg = p.img;
+  openSheet(`<div class="sheet-h"><h3>${id ? "Edit product" : "Add product"}</h3><button class="x" data-a="close" aria-label="Close">×</button></div>
+  <form data-form="product" data-id="${esc(id || "")}">
+    <div class="f"><label for="pn">Product name</label><input id="pn" name="name" required maxlength="60" value="${esc(p.name)}" placeholder="e.g. Wireless Earphones Pro"></div>
+    <div class="row2"><div class="f"><label for="pp">Price (USD)</label><input id="pp" name="price" type="number" min="0.5" step="0.5" required value="${esc(p.price)}"></div>
+      <div class="f"><label for="pw">Was price (optional)</label><input id="pw" name="was" type="number" min="0" step="0.5" value="${esc(p.was || "")}"></div></div>
+    <div class="f"><label for="ps">Stock</label><input id="ps" name="stock" type="number" min="0" step="1" required value="${esc(p.stock)}"></div>
+    <div class="f"><label for="pdsc">Description</label><textarea id="pdsc" name="desc" rows="3" maxlength="400">${esc(p.desc)}</textarea></div>
+    <div class="f"><label>Photo</label><div class="gallery">${GALLERY.map((g) => `<button type="button" class="${g.url === p.img ? "on" : ""}" data-a="pickImg" data-url="${esc(g.url)}" aria-label="${esc(g.k)}"><img src="${esc(src(PH(PHOTOS[g.k], 240)))}" alt="" loading="lazy"></button>`).join("")}</div>
+      <input id="pu" name="url" placeholder="…or paste an image link (https://…)" value="${GALLERY.some((g) => g.url === p.img) ? "" : esc(p.img)}"><span class="hint">Use a clear photo on a plain background.</span></div>
+    <button class="btn btn-green btn-block" type="submit" style="padding:14px">${id ? "Save changes" : "Add to my store"}</button>
+    ${id ? `<button class="btn btn-ghost btn-block" type="button" style="margin-top:8px;color:var(--red)" data-a="delProduct" data-id="${esc(id)}">Delete product</button>` : ""}
+  </form>`);
+}
+
+function sheetPD(id) {
+  const p = UI.store.products.find((x) => x.id === id);
+  openSheet(`<div class="sheet-h"><h3>${esc(p.name)}</h3><button class="x" data-a="close" aria-label="Close">×</button></div>
+    <img class="pd-img" src="${esc(src(p.img))}" alt="${esc(p.name)}">
+    <div><span class="big-price tnum">${money(p.price)}</span>${p.was > p.price ? ` <s class="mut">${money(p.was)}</s> <span class="badge b-amber">Save ${money(p.was - p.price)}</span>` : ""}</div>
+    <p style="color:#3e424a">${esc(p.desc || "")}</p>
+    <div class="sold" style="margin-bottom:12px">${p.stock <= 0 ? "Sold out" : p.stock <= 5 ? `🔥 Only ${p.stock} left` : "✓ In stock · delivery in " + esc(UI.store.city)}</div>
+    <div style="display:grid;gap:8px"><button class="btn btn-green btn-block" data-a="buyNow" data-id="${esc(p.id)}" ${p.stock <= 0 ? "disabled" : ""}>Buy with EcoCash</button><button class="btn btn-dark btn-block" data-a="addCart" data-id="${esc(p.id)}" data-close="1" ${p.stock <= 0 ? "disabled" : ""}>Add to Cart</button></div>`);
+}
+
+function cartTotal() { return UI.cart.reduce((a, c) => a + c.qty * (UI.store.products.find((p) => p.id === c.id)?.price || 0), 0); }
+function sheetCart() {
+  const s = UI.store;
+  if (!UI.cart.length) return openSheet(`<div class="sheet-h"><h3>Your cart</h3><button class="x" data-a="close" aria-label="Close">×</button></div><div class="empty"><b>Your cart is empty</b>Tap “Add to Cart” on any product.</div>`);
+  openSheet(`<div class="sheet-h"><h3>Your cart</h3><button class="x" data-a="close" aria-label="Close">×</button></div>
+  <div class="list">${UI.cart.map((c) => { const p = s.products.find((x) => x.id === c.id); return `<div class="li" style="padding-inline:0"><img class="thumb" src="${esc(src(p.img))}" alt=""><div class="grow"><div class="t">${esc(p.name)}</div><div class="s tnum">${money(p.price)}</div></div><div class="qty"><button data-a="qty" data-id="${esc(c.id)}" data-v="-1" aria-label="Less">−</button><span class="tnum">${c.qty}</span><button data-a="qty" data-id="${esc(c.id)}" data-v="1" aria-label="More">+</button></div></div>`; }).join("")}</div>
+  <div style="display:flex;justify-content:space-between;margin:14px 0;font-size:18px"><b>Total</b><b class="tnum">${money(cartTotal())}</b></div>
+  <button class="btn btn-green btn-block" style="padding:14px" data-a="checkout">Checkout →</button>`);
+}
+
+function sheetCheckout(method = "ecocash") {
+  const s = UI.store, total = cartTotal();
+  UI.payMethod = method;
+  openSheet(`<div class="sheet-h"><h3>Checkout</h3><button class="x" data-a="close" aria-label="Close">×</button></div>
+  <form data-form="checkout">
+    <div class="f"><label for="cn">Your name</label><input id="cn" name="name" required maxlength="50" autocomplete="name"></div>
+    <div class="row2"><div class="f"><label for="cp">Phone</label><input id="cp" name="phone" required inputmode="tel" maxlength="13" placeholder="07X XXX XXXX" autocomplete="tel"></div>
+      <div class="f"><label for="ca">Delivery area</label><input id="ca" name="area" required maxlength="60" placeholder="e.g. Avondale"></div></div>
+    <label class="pay-opt ${method === "ecocash" ? "on" : ""}" data-a="payMethod" data-v="ecocash"><input type="radio" name="method" value="ecocash" ${method === "ecocash" ? "checked" : ""}><span><b>Pay with EcoCash</b><br><span class="mut" style="font-size:13px">Pay now from your phone</span></span></label>
+    <label class="pay-opt ${method === "cod" ? "on" : ""}" data-a="payMethod" data-v="cod"><input type="radio" name="method" value="cod" ${method === "cod" ? "checked" : ""}><span><b>Pay on Delivery</b><br><span class="mut" style="font-size:13px">Pay cash when your order arrives</span></span></label>
+    ${method === "ecocash" ? `<div class="steps-ec"><b>Send ${money(total)} with EcoCash</b><ol><li>Dial <b>*151#</b> → Send Money</li><li>Send to <b class="tnum">${esc(fmtPhone(s.ecocash))}</b> (${esc(s.name)})</li><li>Type the confirmation code from your SMS below</li></ol></div>
+      <div class="f"><label for="cr">EcoCash confirmation code</label><input id="cr" name="ref" required maxlength="40" placeholder="e.g. MP241120.1432.A12345"></div>` : ""}
+    <button class="btn btn-green btn-block" type="submit" style="padding:14px">${method === "ecocash" ? "I've paid " + money(total) + " — place order" : "Place order · " + money(total)}</button>
+  </form>`);
+}
+
+/* ---------- promo video ---------- */
+function sheetPromo(id) {
+  const s = shop(), p = s.products.find((x) => x.id === id);
+  UI.promo = { p, blob: null };
+  openSheet(`<div class="sheet-h"><h3>Promo video</h3><button class="x" data-a="close" aria-label="Close">×</button></div>
+  <div class="reel" id="reel"><img class="bg" src="${esc(src(p.img))}" alt="" crossorigin="anonymous"><div class="shade"></div><div class="bar"></div>
+    <div class="tag">HOT DEAL 🔥</div><div class="shop">@${esc(s.slug.slice(0, 18))}</div>
+    <div class="side-ic"><div>❤️</div>12.4K<div>💬</div>860<div>↗️</div>Share</div>
+    <div class="copy"><div class="pr">${money(p.price)} ONLY</div><div class="city">IN ${esc(s.city.toUpperCase())}</div><div class="pn">${esc(p.name)} · Pay with EcoCash</div></div>
+    <div class="music"><span class="note">🎵</span><span class="mq">Luna Beats — original sound · ${esc(s.name)} · order now ·</span></div></div>
+  <div style="display:grid;gap:8px;margin-top:16px">
+    <button class="btn btn-dark btn-block" data-a="playMusic" id="musicBtn">▶ Play with music</button>
+    <button class="btn btn-gold btn-block" data-a="makeVideo" id="makeBtn">⬇ Save video for TikTok / Status</button>
+    <button class="btn btn-green btn-block" data-a="sharePromo">Share</button>
+    <div id="promoOut"></div>
+  </div>`, stopMusic);
+  s.promos = (s.promos || 0) + 1; save();
+}
+
+let MUSIC = null;
+function beat(ac, out, t0, secs) {
+  const bpm = 120, b = 60 / bpm, bass = [55, 55, 65.41, 73.42];
+  const noise = ac.createBuffer(1, ac.sampleRate * 0.1, ac.sampleRate); const d = noise.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+  for (let i = 0; i * b < secs; i++) {
+    const t = t0 + i * b;
+    const k = ac.createOscillator(), kg = ac.createGain(); k.frequency.setValueAtTime(150, t); k.frequency.exponentialRampToValueAtTime(40, t + 0.15); kg.gain.setValueAtTime(0.9, t); kg.gain.exponentialRampToValueAtTime(0.001, t + 0.2); k.connect(kg).connect(out); k.start(t); k.stop(t + 0.22);
+    const h = ac.createBufferSource(), hf = ac.createBiquadFilter(), hg = ac.createGain(); h.buffer = noise; hf.type = "highpass"; hf.frequency.value = 7000; hg.gain.setValueAtTime(0.25, t + b / 2); hg.gain.exponentialRampToValueAtTime(0.001, t + b / 2 + 0.05); h.connect(hf).connect(hg).connect(out); h.start(t + b / 2); h.stop(t + b / 2 + 0.06);
+    const o = ac.createOscillator(), og = ac.createGain(), f = ac.createBiquadFilter(); o.type = "sawtooth"; o.frequency.value = bass[Math.floor(i / 2) % 4]; f.type = "lowpass"; f.frequency.value = 500; og.gain.setValueAtTime(0.0001, t); og.gain.exponentialRampToValueAtTime(0.22, t + 0.02); og.gain.exponentialRampToValueAtTime(0.001, t + b * 0.9); o.connect(f).connect(og).connect(out); o.start(t); o.stop(t + b);
+    if (i % 4 === 0) [440, 554.37, 659.25].forEach((fr) => { const c = ac.createOscillator(), cg = ac.createGain(); c.type = "triangle"; c.frequency.value = fr; cg.gain.setValueAtTime(0.06, t); cg.gain.exponentialRampToValueAtTime(0.001, t + 0.4); c.connect(cg).connect(out); c.start(t); c.stop(t + 0.42); });
+  }
+}
+function stopMusic() { if (MUSIC) { clearInterval(MUSIC.iv); MUSIC.ac.close(); MUSIC = null; } const b = $("#musicBtn"); if (b) b.textContent = "▶ Play with music"; }
+function toggleMusic() {
+  if (MUSIC) return stopMusic();
+  const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return toast("Music isn't supported on this browser");
+  const ac = new AC(); const out = ac.createGain(); out.gain.value = 0.7; out.connect(ac.destination);
+  let next = ac.currentTime + 0.05; beat(ac, out, next, 6); next += 6;
+  MUSIC = { ac, iv: setInterval(() => { if (ac.currentTime > next - 1.5) { beat(ac, out, next, 6); next += 6; } }, 400) };
+  $("#musicBtn").textContent = "■ Stop music";
+}
+function loadImg(url) { return new Promise((res, rej) => { const i = new Image(); i.crossOrigin = "anonymous"; i.onload = () => res(i); i.onerror = rej; i.src = url; }); }
+function drawPromo(ctx, W, H, t, img, p, s) {
+  const k = Math.min(1, t / 6), e = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2, sc = 1.02 + 0.28 * e;
+  ctx.fillStyle = "#000"; ctx.fillRect(0, 0, W, H);
+  const r = Math.max(W / img.width, H / img.height) * sc, iw = img.width * r, ih = img.height * r;
+  ctx.drawImage(img, (W - iw) / 2 - 20 * e, (H - ih) / 2 - 40 * e, iw, ih);
+  let g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, "rgba(0,0,0,.45)"); g.addColorStop(0.3, "rgba(0,0,0,0)"); g.addColorStop(0.6, "rgba(0,0,0,.15)"); g.addColorStop(1, "rgba(0,0,0,.9)"); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  ctx.fillStyle = "#F5B700"; ctx.fillRect(0, 0, W * k, 8);
+  ctx.save(); ctx.translate(70, 120); ctx.rotate((-4 + 7 * Math.sin(t * Math.PI)) * Math.PI / 180); const pop = 1 + 0.06 * Math.abs(Math.sin(t * Math.PI));
+  ctx.scale(pop, pop); ctx.fillStyle = "#FF4D1C"; roundRect(ctx, 0, -50, 330, 86, 16); ctx.fill(); ctx.fillStyle = "#fff"; ctx.font = "800 52px 'Bricolage Grotesque', Inter, sans-serif"; ctx.fillText("HOT DEAL 🔥", 22, 12); ctx.restore();
+  const appear = (d) => Math.max(0, Math.min(1, (t - d) / 0.4));
+  ctx.globalAlpha = appear(0.4); ctx.fillStyle = "#F5B700"; ctx.font = "800 130px 'Bricolage Grotesque', Inter, sans-serif"; const ps = 1 + 0.04 * Math.sin(t * 5); ctx.save(); ctx.translate(48, H - 330); ctx.scale(ps, ps); ctx.fillText(`${money(p.price)} ONLY`, 0, 0); ctx.restore();
+  ctx.globalAlpha = appear(0.9); ctx.fillStyle = "#fff"; ctx.font = "800 64px 'Bricolage Grotesque', Inter, sans-serif"; ctx.fillText(`IN ${s.city.toUpperCase()}`, 52, H - 245);
+  ctx.globalAlpha = appear(1.3); ctx.font = "600 34px Inter, sans-serif"; ctx.fillText(`${p.name}`.slice(0, 34), 52, H - 185); ctx.fillStyle = "#B9F5D0"; ctx.fillText("Pay with EcoCash · Pay on Delivery", 52, H - 140);
+  ctx.globalAlpha = 1; ctx.fillStyle = "#fff"; ctx.font = "600 30px Inter, sans-serif"; ctx.fillText(`🎵  Luna Beats — ${s.name}`.slice(0, 40), 52, H - 70);
+  ctx.font = "700 30px Inter, sans-serif"; ctx.fillText(prettyUrl(s).slice(0, 38), 52, H - 28);
+}
+function roundRect(c, x, y, w, h, r) { c.beginPath(); c.moveTo(x + r, y); c.arcTo(x + w, y, x + w, y + h, r); c.arcTo(x + w, y + h, x, y + h, r); c.arcTo(x, y + h, x, y, r); c.arcTo(x, y, x + w, y, r); c.closePath(); }
+async function makeVideo() {
+  const btn = $("#makeBtn"), out = $("#promoOut"), { p } = UI.promo, s = shop();
+  if (!window.MediaRecorder || !HTMLCanvasElement.prototype.captureStream) { out.innerHTML = `<p class="mut" style="font-size:13px">This browser can't save videos. Use Chrome on Android, or screen-record the preview.</p>`; return; }
+  btn.disabled = true; btn.textContent = "🎬 Making your video… 6s";
+  try {
+    const img = await loadImg(src(p.img));
+    const W = 720, H = 1280, cv = document.createElement("canvas"); cv.width = W; cv.height = H; const ctx = cv.getContext("2d");
+    const stream = cv.captureStream(30);
+    const AC = window.AudioContext || window.webkitAudioContext; let ac;
+    if (AC) { ac = new AC(); const dest = ac.createMediaStreamDestination(); beat(ac, dest, ac.currentTime + 0.05, 6.2); dest.stream.getAudioTracks().forEach((tr) => stream.addTrack(tr)); }
+    const mime = ["video/mp4;codecs=avc1,mp4a", "video/mp4", "video/webm;codecs=vp9,opus", "video/webm;codecs=vp8,opus", "video/webm"].find((m) => MediaRecorder.isTypeSupported(m)) || "";
+    const rec = new MediaRecorder(stream, mime ? { mimeType: mime, videoBitsPerSecond: 5e6 } : undefined); const chunks = [];
+    rec.ondataavailable = (e) => e.data.size && chunks.push(e.data);
+    const done = new Promise((r) => (rec.onstop = r)); rec.start(250);
+    const t0 = performance.now();
+    await new Promise((resolve) => { (function loop() { const t = (performance.now() - t0) / 1000; drawPromo(ctx, W, H, Math.min(t, 6), img, p, s); btn.textContent = `🎬 Making your video… ${Math.max(0, Math.ceil(6 - t))}s`; if (t < 6.1) requestAnimationFrame(loop); else resolve(); })(); });
+    rec.stop(); await done; if (ac) ac.close();
+    const type = (rec.mimeType || mime || "video/webm").split(";")[0], ext = type.includes("mp4") ? "mp4" : "webm";
+    const blob = new Blob(chunks, { type }); UI.promo.blob = blob; UI.promo.file = new File([blob], `${s.slug}-${slugify(p.name)}.${ext}`, { type });
+    const url = URL.createObjectURL(blob);
+    out.innerHTML = `<video src="${url}" controls playsinline style="width:100%;border-radius:14px;margin-top:6px;max-height:340px;background:#000"></video><a class="btn btn-ghost btn-block" style="margin-top:8px" href="${url}" download="${esc(UI.promo.file.name)}">Download ${ext.toUpperCase()} video</a>`;
+    btn.textContent = "✓ Video ready — make again";
+  } catch (e) { out.innerHTML = `<p class="mut" style="font-size:13px">Couldn't make the video (${esc(e.message || "photo blocked")}). Try another product photo.</p>`; btn.textContent = "⬇ Save video for TikTok / Status"; }
+  btn.disabled = false;
+}
+async function sharePromo() {
+  const { p, file } = UI.promo, s = shop(), text = `🔥 HOT DEAL — ${p.name} ${money(p.price)} ONLY in ${s.city}! Pay with EcoCash or on delivery 👇`, url = shareUrl(s);
+  try {
+    if (file && navigator.canShare?.({ files: [file] })) return await navigator.share({ files: [file], title: p.name, text: text + "\n" + url });
+    if (navigator.share) return await navigator.share({ title: p.name, text, url });
+  } catch (e) { if (e.name === "AbortError") return; }
+  $("#promoOut").insertAdjacentHTML("beforeend", `<div style="display:grid;gap:8px;margin-top:8px"><a class="btn btn-green btn-block" href="${esc(waLink(text + "\n" + url))}" target="_blank" rel="noopener">Post to WhatsApp</a><button class="btn btn-ghost btn-block" data-a="copyText" data-v="${esc(text + "\n" + url)}">Copy caption for TikTok</button></div>`);
+}
+
+/* =========================== ACTIONS =========================== */
+function go(view, hash) { UI.view = view; if (hash !== undefined && location.hash !== "#" + hash) history.pushState(null, "", hash ? "#" + hash : location.pathname + location.search); render(); scrollTo(0, 0); }
+function openStore(s) {
+  UI.store = s; UI.cart = UI.cart.filter((c) => s.products.some((p) => p.id === c.id));
+  if (!s.visitor && DB.shops[s.slug]) { const last = s.views[s.views.length - 1]; if (!last || Date.now() - last > 30000) { s.views.push(Date.now()); save(); } }
+  go("store", s.visitor ? undefined : "store");
+}
+const A = {
+  startWizard() { UI.wz = { step: 0, role: "", city: "", q: "", v: null, name: "", eco: "", err: "" }; go("wizard", "setup"); },
+  openDemo() { DB.current = DEMO_SLUG; save(); UI.tab = "home"; go("admin", "admin"); },
+  openShop(d) { DB.current = d.slug; save(); UI.tab = "home"; go("admin", "admin"); },
+  wzSet(d) { UI.wz[d.k] = d.v; render(); },
+  wzBack() { if (UI.wz.step === 0) return go("landing", ""); UI.wz.step--; render(); },
+  wzNext() {
+    const w = UI.wz;
+    if (w.step === 3) {
+      const nm = ($("#shopname")?.value || w.name).trim(), eco = ($("#eco")?.value || w.eco).replace(/\D/g, "");
+      w.name = nm; w.eco = eco;
+      if (nm.length < 2) { w.err = "Give your shop a name (at least 2 letters)."; return render(); }
+      if (!/^07\d{8}$/.test(eco)) { w.err = "Enter a 10-digit EcoCash number starting with 07."; return render(); }
+      let slug = slugify(nm + " " + w.city); while (DB.shops[slug]) slug = slugify(nm + " " + w.city) + "-" + uid().toLowerCase().slice(0, 3);
+      const first = w.v?.known && w.v.product.photo ? [{ id: "p" + uid(), name: w.v.product.name, price: w.v.product.sell, was: Math.round(w.v.product.sell * 1.4), stock: 10, img: PH(PHOTOS[w.v.product.photo]), desc: `${w.v.product.name} — delivered in ${w.city}. Pay with EcoCash or cash on delivery.` }] : [];
+      DB.shops[slug] = { slug, name: nm, city: w.city, role: w.role, ecocash: eco, color: ["#F5B700", "#12B76A", "#FF7A45", "#7C5CFF", "#00B3C7"][Math.floor(hash(slug) * 5)], createdAt: Date.now(), products: first, orders: [], views: [], withdrawals: [] };
+      DB.current = slug; save();
+    }
+    w.err = ""; w.step++; render(); scrollTo(0, 0);
+  },
+  askChip(d) { UI.wz.q = d.v; UI.wz.v = askLuna(d.v, UI.wz.city); render(); },
+  goAdmin() { UI.tab = "home"; closeSheet(); go("admin", "admin"); },
+  viewStore() { openStore(shop()); },
+  copyLink() { const s = shop(); s.shared = true; save(); copy(shareUrl(s)); },
+  markShared() { shop().shared = true; save(); setTimeout(render, 300); },
+  copyText(d) { copy(d.v, "Caption copied"); },
+  tab(d) { UI.tab = d.v; render(); scrollTo(0, 0); },
+  filter(d) { UI.filter = d.v; render(); },
+  clearSamples() { const s = shop(); s.orders = s.orders.filter((o) => !o.sample); save(); render(); toast("Samples removed"); },
+  orderStatus(d) {
+    const s = shop(), o = s.orders.find((x) => x.id === d.id); o.status = d.v; save(); render();
+    toast(d.v === "paid" ? "✓ EcoCash payment confirmed" : "✓ Marked as delivered");
+  },
+  editProduct(d) { sheetProduct(d.id); },
+  pickImg(d, el) { UI.pickImg = d.url; el.parentElement.querySelectorAll("button").forEach((b) => b.classList.toggle("on", b === el)); $("#pu").value = ""; },
+  delProduct(d) { const s = shop(); s.products = s.products.filter((p) => p.id !== d.id); save(); closeSheet(); render(); toast("Product deleted"); },
+  promo(d) { sheetPromo(d.id); },
+  playMusic: toggleMusic, makeVideo, sharePromo,
+  editEco() { openSheet(`<div class="sheet-h"><h3>EcoCash number</h3><button class="x" data-a="close" aria-label="Close">×</button></div><form data-form="eco"><div class="f"><label for="ecn">Number customers pay to</label><input id="ecn" name="eco" inputmode="tel" maxlength="13" value="${esc(shop().ecocash)}" required></div><button class="btn btn-green btn-block" type="submit">Save</button></form>`); },
+  withdraw() {
+    const m = metrics(shop());
+    openSheet(`<div class="sheet-h"><h3>Withdraw</h3><button class="x" data-a="close" aria-label="Close">×</button></div>
+      <p class="mut" style="margin-top:0">Customers pay straight into your EcoCash, so this money is already on your phone. Withdrawing here records the cash you took out, so your balance stays correct.</p>
+      <form data-form="withdraw"><div class="f"><label for="wa">Amount (USD)</label><input id="wa" name="amt" type="number" min="1" step="0.5" max="${m.balance}" value="${m.balance}" required></div>
+      <div class="f"><label>To EcoCash</label><input value="${esc(fmtPhone(shop().ecocash))}" readonly></div><button class="btn btn-gold btn-block" type="submit">Withdraw ${money(m.balance)}</button></form>`);
+  },
+  pd(d) { sheetPD(d.id); },
+  addCart(d) { const c = UI.cart.find((x) => x.id === d.id); if (c) c.qty++; else UI.cart.push({ id: d.id, qty: 1 }); if (d.close) closeSheet(); render(); toast("🛒 Added to cart"); },
+  buyNow(d) { if (!UI.cart.some((x) => x.id === d.id)) UI.cart.push({ id: d.id, qty: 1 }); render(); sheetCheckout("ecocash"); },
+  cart() { sheetCart(); },
+  qty(d) { const c = UI.cart.find((x) => x.id === d.id); c.qty += +d.v; if (c.qty <= 0) UI.cart = UI.cart.filter((x) => x !== c); render(); sheetCart(); },
+  checkout() { sheetCheckout(UI.payMethod || "ecocash"); },
+  payMethod(d, el, e) { e.preventDefault(); const f = $("[data-form=checkout]"); const keep = { name: f.name.value, phone: f.phone.value, area: f.area.value }; sheetCheckout(d.v); const g = $("[data-form=checkout]"); g.name.value = keep.name; g.phone.value = keep.phone; g.area.value = keep.area; },
+  close() { closeSheet(); },
+  scrim(d, el, e) { if (e.target === el) closeSheet(); },
+};
+
+const FORMS = {
+  ask(f) { UI.wz.q = f.q.value; UI.wz.v = askLuna(f.q.value, UI.wz.city); render(); },
+  name() { A.wzNext(); },
+  product(f) {
+    const s = shop(), id = f.dataset.id, url = f.url.value.trim();
+    if (url && !/^https:\/\/\S+$/.test(url)) return toast("Image link must start with https://");
+    const data = { name: f.name.value.trim(), price: +f.price.value, was: +f.was.value || 0, stock: Math.max(0, Math.round(+f.stock.value)), desc: f.desc.value.trim(), img: url || UI.pickImg };
+    if (id) Object.assign(s.products.find((p) => p.id === id), data); else s.products.push({ id: "p" + uid(), ...data });
+    save(); closeSheet(); render(); toast(id ? "✓ Saved" : "✓ Product added to your store");
+  },
+  eco(f) { const d = f.eco.value.replace(/\D/g, ""); if (!/^07\d{8}$/.test(d)) return toast("Enter a 10-digit number starting with 07"); shop().ecocash = d; save(); closeSheet(); render(); toast("✓ EcoCash number saved"); },
+  withdraw(f) { const s = shop(), amt = Math.min(+f.amt.value, metrics(s).balance); if (!(amt > 0)) return; s.withdrawals.push({ amt, at: Date.now() }); save(); closeSheet(); render(); toast(`✓ ${money(amt)} withdrawal recorded`); },
+  checkout(f) {
+    const s = UI.store, method = UI.payMethod || "ecocash";
+    const phone = f.phone.value.replace(/\D/g, "");
+    if (!/^0\d{9}$/.test(phone)) return toast("Enter a 10-digit phone number");
+    const items = UI.cart.map((c) => { const p = s.products.find((x) => x.id === c.id); return { pid: p.id, name: p.name, qty: c.qty, price: p.price }; });
+    const order = { id: "LN-" + uid(), customer: f.name.value.trim(), phone, area: f.area.value.trim() + ", " + s.city, items, total: cartTotal(), method, ref: method === "ecocash" ? f.ref.value.trim() : "", status: method === "ecocash" ? "awaiting" : "cod", at: Date.now() };
+    const owned = DB.shops[s.slug] && !s.visitor;
+    if (owned) { s.orders.push(order); items.forEach((i) => { const p = s.products.find((x) => x.id === i.pid); p.stock = Math.max(0, p.stock - i.qty); }); save(); }
+    UI.cart = []; render();
+    const msg = `🛍️ New order ${order.id} — ${s.name}\n${items.map((i) => `${i.qty}× ${i.name} (${money(i.price)})`).join("\n")}\nTotal: ${money(order.total)}\nPayment: ${method === "ecocash" ? "EcoCash, code " + order.ref : "Pay on Delivery"}\nName: ${order.customer}\nPhone: ${fmtPhone(phone)}\nDeliver to: ${order.area}`;
+    openSheet(`<div style="text-align:center;padding:10px 0"><div style="font-size:54px">✅</div><h3>Order placed!</h3><p class="mut">Order <b class="tnum">${esc(order.id)}</b> · ${money(order.total)}<br>${method === "ecocash" ? "The seller will check your EcoCash payment and deliver." : "Pay cash when your order arrives."}</p>
+      ${owned ? "" : `<a class="btn btn-green btn-block" href="${esc(waLink(msg, s.ecocash))}" target="_blank" rel="noopener">Send order to seller on WhatsApp</a>`}
+      <button class="btn btn-ghost btn-block" style="margin-top:8px" data-a="close">Keep shopping</button>
+      ${owned ? `<p class="mut" style="font-size:12px;margin-top:12px">This order is now in the seller's dashboard → Orders.</p>` : ""}</div>`);
+  },
+};
+
+/* =========================== RENDER & EVENTS =========================== */
+function render() {
+  $("#app").innerHTML = ({ landing: vLanding, wizard: vWizard, admin: vAdmin, store: vStore, notfound: vNotFound })[UI.view]();
+  document.title = UI.view === "store" ? `${UI.store.name} · LUNA` : UI.view === "admin" ? `${shop().name} · LUNA Admin` : "LUNA";
+}
+function vNotFound() { return `<div class="wz"><div class="wz-in"><div class="brand"><span class="moon"></span>LUNA</div><h2 style="margin-top:40px">This shop link is incomplete</h2><p class="sub">Ask the seller to send their full store link again.</p><button class="btn btn-gold" data-a="startWizard">Build your own shop</button></div></div>`; }
+
+document.addEventListener("click", (e) => {
+  const el = e.target.closest("[data-a]"); if (!el) return;
+  const fn = A[el.dataset.a]; if (!fn) return;
+  if (el.tagName === "BUTTON" && el.type !== "submit") e.preventDefault();
+  fn(el.dataset, el, e);
+});
+document.addEventListener("submit", (e) => { const f = e.target.closest("[data-form]"); if (!f) return; e.preventDefault(); FORMS[f.dataset.form](f); });
+document.addEventListener("change", (e) => {
+  if (e.target.dataset.change === "switchShop") { const v = e.target.value; if (v === "__new") return A.startWizard(); DB.current = v; save(); UI.tab = "home"; render(); }
+});
+document.addEventListener("input", (e) => {
+  if (e.target.id === "shopname") { UI.wz.name = e.target.value; const nm = e.target.value || "Your Shop"; $("#prevName").textContent = nm; $("#prevUrl").textContent = `${SITE.replace(/^https?:\/\//, "")}/shop/${slugify(e.target.value || "your-shop")}`; $("#namePrev .logo").textContent = initials(nm); const nb = $("[data-a=wzNext]"); if (nb) nb.disabled = e.target.value.trim().length < 2; }
+  if (e.target.id === "eco") UI.wz.eco = e.target.value;
+  if (e.target.id === "askq") UI.wz.q = e.target.value;
+});
+
+function route() {
+  const m = location.pathname.match(/\/shop\/([^/?#]+)/), qs = new URLSearchParams(location.search);
+  if (m) {
+    const slug = decodeURIComponent(m[1]);
+    if (DB.shops[slug]) return openStore(DB.shops[slug]);
+    if (qs.get("d")) { try { return openStore(unpackShop(slug, b64d(qs.get("d")))); } catch {} }
+    UI.view = "notfound"; return render();
+  }
+  const h = location.hash.slice(1);
+  if (h === "admin") { UI.view = "admin"; return render(); }
+  if (h === "store") return openStore(shop());
+  if (h === "setup") { UI.view = "wizard"; return render(); }
+  UI.view = "landing"; render();
+}
+window.addEventListener("popstate", () => { closeSheet(); route(); });
+route();
+</script>
+</body>
+</html>
