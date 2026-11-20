@@ -140,7 +140,7 @@ a{color:inherit}
 .adm-wrap{max-width:1180px;margin:0 auto;display:flex;gap:24px;padding:18px max(16px, env(safe-area-inset-right)) 110px max(16px, env(safe-area-inset-left))}
 .side{display:none}
 .main{flex:1;min-width:0}
-.tabs{position:fixed;left:0;right:0;bottom:0;z-index:30;background:#fff;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);padding:6px max(6px, env(safe-area-inset-right)) calc(6px + env(safe-area-inset-bottom)) max(6px, env(safe-area-inset-left))}
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:30;background:#fff;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(6,1fr);padding:6px max(6px, env(safe-area-inset-right)) calc(6px + env(safe-area-inset-bottom)) max(6px, env(safe-area-inset-left))}
 .tab{border:0;background:none;display:grid;justify-items:center;gap:2px;padding:6px 2px;font-size:11px;font-weight:600;color:var(--muted);border-radius:10px}
 .tab svg{width:22px;height:22px}
 .tab.on{color:var(--text)}
@@ -392,6 +392,147 @@ a{color:inherit}
 .cloud-off{background:#EEEEEA;color:#4c5058}
 .wait{display:grid;justify-items:center;gap:12px;text-align:center;padding:10px 0}
 .wait .spin{width:46px;height:46px;border-width:5px;border-color:#12B76A30;border-top-color:var(--green)}
+
+/* ---------- Whole-app dark theme (purple + gold); the public storefront stays light ---------- */
+body.dark{--bg:#0D0A17;--card:#161126;--line:#2C2445;--text:#EDE9FE;--muted:#A39BBF;--soft:#211a36;--shadow:0 1px 0 rgba(255,255,255,.03);background:var(--bg);color:var(--text)}
+body.dark .wz{background:radial-gradient(900px 420px at 85% -10%, rgba(139,92,246,.30), transparent 60%), radial-gradient(800px 420px at -10% 110%, rgba(245,183,0,.14), transparent 60%), #0B0814}
+body.dark .topbar{background:rgba(13,10,23,.88);border-color:var(--line)}
+body.dark .tabs{background:#110d1e;border-color:var(--line)}
+body.dark .tab.on svg{color:var(--gold)}
+body.dark .side .tab.on{background:var(--card)}
+body.dark .seg button{background:var(--card);color:var(--text);border-color:var(--line)}
+body.dark .seg button.on{background:var(--violet);border-color:var(--violet);color:#fff}
+body.dark .shop-switch,body.dark .f input,body.dark .f textarea,body.dark .f select{background:var(--bg);color:var(--text);border-color:var(--line)}
+body.dark .sheet{background:#161126;color:var(--text)}
+body.dark .x{background:var(--soft);color:var(--text)}
+body.dark .btn-dark{background:#2d2450;color:#fff}
+body.dark .stat.balance{background:linear-gradient(140deg,#2a1f4a,#161126);border-color:#3b2f63}
+body.dark .gallery button{background:var(--soft)}
+body.dark .qty button{background:var(--card);color:var(--text)}
+body.dark .pay-opt.on{background:#13261e}
+body.dark .notice{background:#29220c;border-color:#5a4a12;color:#f5d27a}
+body.dark .add-tile{border-color:#3a3156}
+body.dark .online{color:#4ADE80}
+body.dark .steps-ec{background:var(--soft)}
+.b-violet{background:#2b2147;color:#C4B5FD}
+body:not(.dark) .b-violet{background:#EDE9FE;color:#5B21B6}
+
+/* ---------- welcome / location ---------- */
+.mode-grid{display:grid;gap:12px;margin-top:26px}
+.mode{display:grid;grid-template-columns:56px 1fr;grid-template-rows:auto auto;column-gap:14px;align-items:center;text-align:left;padding:18px;border-radius:20px;border:1.5px solid #3a2f5c;background:linear-gradient(135deg,rgba(139,92,246,.18),rgba(20,15,34,.9));color:#fff}
+.mode:hover{border-color:var(--gold)}
+.mode .ic{grid-row:span 2;width:56px;height:56px;border-radius:16px;background:#1d1631;display:grid;place-items:center;font-size:28px}
+.mode b{font-family:var(--display);font-size:22px;letter-spacing:.01em}
+.mode small{color:#b9b0d6}
+.loc-hero{text-align:center;padding:30px 0 18px}
+.loc-hero .pin{font-size:64px;display:inline-block;animation:bounce .7s ease-in-out infinite alternate}
+.loc-hero h2{margin-top:10px}
+.dark-notice{background:#211a36;border-color:#3b2f63;color:#d9d0f7;margin-bottom:14px}
+.linkish{background:none;border:0;padding:0;color:var(--gold);font-weight:700;text-decoration:underline;cursor:pointer}
+
+/* ---------- 3-tap builder ---------- */
+.tap{display:flex;gap:14px;align-items:flex-start;margin-top:16px;padding:16px;border-radius:20px;background:#140f24;border:1.5px solid #2c2445}
+.tap.ok{border-color:#4b3a85}
+.tap .num{width:34px;height:34px;flex:none;border-radius:50%;display:grid;place-items:center;font-weight:800;font-family:var(--display);background:#2a2147;color:var(--gold)}
+.tap.ok .num{background:var(--gold);color:#111}
+.tap .grow{flex:1;min-width:0}
+.tap label{display:block;font-weight:700;margin-bottom:8px}
+.pick-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (min-width:560px){.pick-grid{grid-template-columns:repeat(3,1fr)}}
+.pick{padding:0;border-radius:16px;overflow:hidden;border:2px solid #2c2445;background:#0f0b1b;color:#fff;text-align:left}
+.pick.on{border-color:var(--gold);box-shadow:0 0 0 3px rgba(245,183,0,.2)}
+.pick img{width:100%;aspect-ratio:4/3;object-fit:cover}
+.pick .pb{padding:10px;display:grid;gap:6px}
+.ppp{display:flex;flex-wrap:wrap;gap:4px 8px;font-size:12px;color:#b9b0d6}
+.ppp b{color:#fff}
+.ppp .pr{color:#4ADE80;font-weight:700}
+.mk{font-size:11px;font-weight:800;letter-spacing:.04em}
+.mk.HOT{color:var(--hot)}.mk.GOOD{color:#4ADE80}.mk.SATURATED{color:#FF6B6B}
+.btn-ai{background:linear-gradient(100deg,var(--violet),#C084FC 45%,var(--gold));color:#140c26;font-weight:800;padding:16px 18px;font-size:16px;box-shadow:0 10px 30px rgba(139,92,246,.35)}
+.btn-ai[disabled]{opacity:.4}
+
+/* ---------- marketing plan ---------- */
+.day{padding:12px 16px;border-top:1px solid var(--ai-line);display:grid;gap:8px}
+.day .dh{display:flex;align-items:center;gap:10px}
+.day .dh b{flex:1;min-width:0}
+.day .dn{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);background:#2a2147;border-radius:999px;padding:3px 8px;white-space:nowrap}
+.day .dt{white-space:pre-wrap;font-size:14px;color:#E4DEF7;background:var(--ai-bg);border:1px solid var(--ai-line);border-radius:12px;padding:10px 12px;overflow-wrap:anywhere}
+.big-ai{display:block;width:100%;margin-top:14px}
+
+/* ---------- marketplace ---------- */
+.dark-pane{display:grid;gap:12px}
+.mk-head{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.loc-chip{display:inline-flex;align-items:center;gap:8px;border:1px solid #3b2f63;background:#1a1430;color:#EDE9FE;border-radius:999px;padding:8px 12px;font-weight:600;font-size:14px}
+.loc-chip span{color:var(--gold);font-size:12px}
+.dark-seg{margin:12px 0 0}
+.dark-seg button{background:#1a1430;color:#EDE9FE;border-color:#2c2445}
+.dark-seg button.on{background:var(--violet);border-color:var(--violet);color:#fff}
+.cmp{background:linear-gradient(135deg,#1d1534,#140f24);border:1px solid #3b2f63;border-radius:18px;padding:14px;display:grid;gap:8px;margin-top:12px}
+.cmp-row{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;font-size:14px}
+.cmp-row b{font-family:var(--display);font-size:18px}
+.range{margin-top:12px}
+.range label{font-size:14px}
+.range input{width:100%;accent-color:var(--gold);margin:10px 0 6px}
+.rticks{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px}
+.rticks button{flex:none;border:1px solid #2c2445;background:#1a1430;color:#cfc6ef;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:600}
+.rticks button.on{background:var(--gold);color:#111;border-color:var(--gold)}
+.warn{display:flex;gap:10px;align-items:flex-start;background:#2a1d0c;border:1px solid #6b4a12;color:#ffd98a;border-radius:14px;padding:10px 12px;font-size:13px;margin-top:12px}
+.sup-list{display:grid;gap:12px;margin-top:12px}
+@media (min-width:720px){.sup-list{grid-template-columns:1fr 1fr}}
+.sup{display:flex;gap:12px;background:#161126;border:1px solid #2c2445;border-radius:18px;padding:12px;color:#EDE9FE}
+.sup img{width:92px;height:92px;border-radius:14px;object-fit:cover;flex:none;background:#211a36}
+.sup .sb{flex:1;min-width:0;display:grid;gap:5px}
+.sup .sn{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.sup .sn b{font-size:15px}
+.sup .sm{font-size:13px;color:#b9b0d6}
+.sup .sm b{color:var(--gold)}
+.sup .sp{display:flex;align-items:baseline;gap:8px}
+.sup .sp b{font-family:var(--display);font-size:20px;color:#fff}
+.sup .sp small{color:#8f86ad}
+.sup .sa{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.mine{display:flex;gap:12px;align-items:center;background:linear-gradient(135deg,#221943,#141024);border:1px solid #4b3a85;border-radius:18px;padding:14px;margin-top:18px}
+.mine img{width:60px;height:60px;border-radius:12px;object-fit:cover}
+.mine .grow{flex:1;min-width:0}
+.ships{display:flex;flex-wrap:wrap;gap:6px}
+.shp{display:inline-flex;align-items:center;gap:4px;border:1px solid #2c2445;background:#141024;color:#ddd;border-radius:999px;padding:6px 10px;font-size:13px;cursor:pointer}
+.shp input{display:none}
+.shp.on{border-color:var(--gold);background:#2a2147;color:#fff}
+.dial{display:flex;align-items:center;gap:0}
+.dial span{background:#211a36;border:1.5px solid #2c2c33;border-right:0;border-radius:14px 0 0 14px;padding:14px 10px;color:var(--gold);font-weight:700}
+.dial .inp{border-radius:0 14px 14px 0}
+.photo-row{display:flex;gap:12px;align-items:center}
+.photo-row img{width:72px;height:72px;border-radius:14px;object-fit:cover;background:#211a36}
+.chk{display:flex;gap:10px;align-items:center;font-size:14px;margin:-4px 0 14px;color:#d9d0f7}
+.wz select.inp{appearance:auto}
+
+/* ---------- chat bubble ---------- */
+.chat-fab{position:fixed;right:max(14px, env(safe-area-inset-right));bottom:calc(84px + env(safe-area-inset-bottom));z-index:50;display:flex;align-items:center;gap:8px;border:1px solid #4b3a85;background:linear-gradient(135deg,#241a45,#120e20);color:#fff;border-radius:999px;padding:8px 14px 8px 8px;box-shadow:0 12px 30px rgba(10,5,25,.5);font-weight:700}
+@media (min-width:920px){.chat-fab{bottom:24px}}
+.chat{position:fixed;right:max(10px, env(safe-area-inset-right));left:max(10px, env(safe-area-inset-left));bottom:calc(80px + env(safe-area-inset-bottom));z-index:55;max-width:420px;margin-left:auto;height:min(70vh,560px);display:flex;flex-direction:column;background:#120e20;border:1px solid #3b2f63;border-radius:22px;box-shadow:0 20px 60px rgba(0,0,0,.55);color:#EDE9FE;overflow:hidden}
+@media (min-width:920px){.chat{bottom:20px}}
+.chat-h{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid #2c2445}
+.chat-h b{font-family:var(--display);font-size:17px}
+.chat-h small{color:var(--gold);font-size:11px;font-weight:700;margin-right:auto;border:1px solid #4b3a85;border-radius:999px;padding:2px 8px}
+.chat-h .x{background:#211a36;color:#fff}
+.chat-b{flex:1;overflow-y:auto;padding:12px;display:grid;gap:8px;align-content:start}
+.cm{max-width:88%;padding:10px 12px;border-radius:16px;white-space:pre-wrap;font-size:14px;line-height:1.45;overflow-wrap:anywhere}
+.cm.luna{background:#221a3b;border:1px solid #33285a;border-bottom-left-radius:6px}
+.cm.you{background:var(--gold);color:#140c26;margin-left:auto;border-bottom-right-radius:6px}
+.chat-f{display:flex;gap:8px;padding:10px 12px;border-top:1px solid #2c2445}
+.chat-f input{flex:1;min-width:0;background:#0b0814;border:1px solid #2c2445;color:#fff;border-radius:12px;padding:11px 12px;font-size:15px}
+.chat .chip{background:#1a1430;border-color:#33285a;color:#ddd}
+
+/* ---------- monitor ---------- */
+.mon-tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px}
+@media (min-width:640px){.mon-tiles{grid-template-columns:repeat(4,1fr)}}
+.mon-tiles div{background:#161126;border:1px solid #2c2445;border-radius:14px;padding:12px}
+.mon-tiles b{display:block;font-family:var(--display);font-size:28px;color:var(--gold)}
+.mon-tiles small{color:#b9b0d6}
+.mon-log{display:grid;border:1px solid #2c2445;border-radius:14px;overflow:hidden}
+.mon-log div{display:grid;grid-template-columns:110px 130px 1fr;gap:8px;padding:9px 12px;border-top:1px solid #221b38;font-size:13px}
+.mon-log div:first-child{border-top:0}
+.mon-log .mut2{grid-column:2/-1;color:#8f86ad;font-size:12px}
+@media (max-width:560px){.mon-log div{grid-template-columns:1fr}.mon-log .mut2{grid-column:auto}}
 </style>
 </head>
 <body>
@@ -456,7 +597,7 @@ const Cloud = {
   shopFromRow(r, products) {
     const st = r.settings || {};
     return { slug: r.slug, name: r.name, city: r.city, role: r.role, ecocash: r.ecocash, color: r.color, cloud: true, createdAt: Date.parse(r.created_at),
-      shared: !!st.shared, promos: st.promos || 0, ai: st.ai, products: (products || []).map(this.rowToProduct), orders: [], views: [], withdrawals: [] };
+      shared: !!st.shared, promos: st.promos || 0, ai: st.ai, country: st.country || "Zimbabwe", bio: st.bio, pay: st.pay, plan: st.plan, products: (products || []).map(this.rowToProduct), orders: [], views: [], withdrawals: [] };
   },
   async publicShop(slug) {
     const [s] = await this.rest(`shops?slug=eq.${encodeURIComponent(slug)}&select=*`, { auth: false });
@@ -486,7 +627,7 @@ const Cloud = {
     const [os, vs] = await Promise.all([this.rest(`orders?shop_slug=eq.${e}&select=*&order=created_at.desc&limit=200`), this.rest(`views?shop_slug=eq.${e}&select=at&order=at.desc&limit=5000`)]);
     return { orders: os.map(this.rowToOrder), views: vs.map((v) => Date.parse(v.at)) };
   },
-  settingsOf: (s) => ({ ai: s.ai, shared: !!s.shared, promos: s.promos || 0 }),
+  settingsOf: (s) => ({ ai: s.ai, shared: !!s.shared, promos: s.promos || 0, country: s.country, bio: s.bio, pay: s.pay, plan: s.plan }),
   async createShop(s) {
     await this.rest("shops", { method: "POST", body: { slug: s.slug, name: s.name, city: s.city, role: s.role, ecocash: s.ecocash, color: s.color, settings: this.settingsOf(s) }, prefer: "return=minimal" });
     if (s.products.length) await this.rest("products", { method: "POST", body: s.products.map((p, i) => this.productRow(s.slug, p, i)), prefer: "return=minimal" });
@@ -524,6 +665,7 @@ const PHOTOS = {
   watch: "1546868871-7041f2a55e12", watchBlue: "1631281956016-3cdc1b2fe5fb", watchWhite: "1523275335684-37898b6baf30",
   headphones: "1505740420928-5e560c06d30e", headphonesW: "1583394838336-acd977736f90", iphone: "1591337676887-a217a6970a8a",
   laptop: "1588872657578-7efd1f1555ed", gamepad: "1606318801954-d46d46d3360a",
+  hair: "1519699047748-de8e457a634e", clothes: "1489987707025-afc232f7ea0f", tees: "1562157873-818bc0726f68", sneakers: "1542291026-7eec264c27ff", makeup: "1516975080664-ed2fc6a32937",
 };
 const GALLERY = Object.entries(PHOTOS).map(([k, id]) => ({ k, url: PH(id) }));
 
@@ -593,7 +735,7 @@ function demoShop() {
     { id: "LN-4822", customer: "Rudo Kambarami", phone: "0783 112 909", area: "Borrowdale, Harare", items: [{ pid: "p4", name: "Smart Watch Series X", qty: 1, price: 20 }], total: 20, method: "cod", status: "cod", at: now - 95 * 60000, sample: true },
     { id: "LN-4819", customer: "Farai Chikore", phone: "0715 220 431", area: "Mbare, Harare", items: [{ pid: "p3", name: "Fast Charger 20W + Cable", qty: 2, price: 8 }], total: 16, method: "ecocash", ref: "MP241120.0915.B77812", status: "delivered", at: now - 5 * 3600000, sample: true },
   ];
-  return { slug: DEMO_SLUG, name: "LUNA Demo Store", city: "Harare", role: "Seller", ecocash: "0790007951", color: "#F5B700", demo: true, createdAt: now, products, orders, views: [], withdrawals: [] };
+  return { slug: DEMO_SLUG, name: "LUNA Demo Store", city: "Harare", country: "Zimbabwe", bio: "Quality gadgets delivered across Harare. Order online in a minute — pay with EcoCash or cash when it arrives.", role: "Seller", ecocash: "0790007951", color: "#F5B700", demo: true, createdAt: now, products, orders, views: [], withdrawals: [] };
 }
 function load() { try { return JSON.parse(localStorage.getItem(KEY)); } catch { return null; } }
 let DB = load() || { shops: {}, current: null };
@@ -617,6 +759,7 @@ const nowHM = () => { const d = new Date(); return `${String(d.getHours()).padSt
 const fmtTime = (hm) => { const [h, m] = hm.split(":").map(Number); return `${((h + 11) % 12) + 1}:${String(m).padStart(2, "0")} ${h < 12 ? "AM" : "PM"}`; };
 const fmtWhen = (p) => `${p.date === dstr() ? "Today" : p.date === addDays(1) ? "Tomorrow" : new Date(p.date + "T12:00").toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short" })} ${fmtTime(p.time)}`;
 function ensureAI(s) {
+  if (!s.country) s.country = "Zimbabwe";
   s.ai = Object.assign({ social: {}, posts: [], reminderTime: "10:00", autoMode: false, connectSeen: false }, s.ai || {});
   s.ai.posts = s.ai.posts.filter((p) => p.date >= addDays(-7));
   if (s.demo && !s.ai.seeded && s.products.length) { s.ai.seeded = true; queuePost(s, s.products[0]); }
@@ -680,7 +823,7 @@ const UI = { view: "landing", tab: "home", filter: "all", cart: [], store: null,
 function toast(msg) { const t = $("#toast"); t.innerHTML = `<div class="toast" role="status">${msg}</div>`; clearTimeout(UI.toastT); UI.toastT = setTimeout(() => (t.innerHTML = ""), 2600); }
 function copy(text, label = "Link copied") { if (navigator.clipboard?.writeText) navigator.clipboard.writeText(text).then(() => toast("✓ " + label), () => showCopy(text)); else showCopy(text); }
 function showCopy(text) { openSheet(`<div class="sheet-h"><h3>Copy this</h3><button class="x" data-a="close" aria-label="Close">×</button></div><div class="f"><input id="copyfield" readonly value="${esc(text)}"></div><p class="mut" style="font-size:13px">Press and hold the box, then tap Copy.</p>`); const f = $("#copyfield"); f.focus(); f.select(); }
-const waLink = (text, phone) => `https://wa.me/${phone ? "263" + String(phone).replace(/\D/g, "").replace(/^0/, "") : ""}?text=${encodeURIComponent(text)}`;
+const waLink = (text, phone, c) => `https://wa.me/${phone ? intl(phone, c || "Zimbabwe") : ""}?text=${encodeURIComponent(text)}`;
 const initials = (n) => String(n || "S").split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0].toUpperCase()).join("");
 const logo = (s, size = 38) => `<span class="logo" style="width:${size}px;height:${size}px;background:${esc(s.color || "#F5B700")};font-size:${Math.round(size * 0.4)}px">${esc(initials(s.name))}</span>`;
 const icon = {
@@ -689,6 +832,7 @@ const icon = {
   orders: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h12l2 5H4z"/><path d="M4 7v13a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V7"/><path d="M9 11a3 3 0 0 0 6 0"/></svg>',
   promote: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="14" height="14" rx="2"/><path d="m17 10 4-2v8l-4-2"/></svg>',
   ai: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 4.6L18.5 9l-4.7 1.4L12 15l-1.8-4.6L5.5 9l4.7-1.4z"/><path d="M19 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8zM5 16l.6 1.4 1.4.6-1.4.6L5 20l-.6-1.4L3 18l1.4-.6z"/></svg>',
+  suppliers: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>',
   wallet: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h13v4"/><path d="M3 7v11a2 2 0 0 0 2 2h15V9H5a2 2 0 0 1-2-2z"/><circle cx="16" cy="14.5" r="1.3"/></svg>',
 };
 
@@ -788,7 +932,7 @@ function vWizard() {
 
 function vAdmin() {
   const s = shop(), m = metrics(s);
-  const tabs = [["home", "Home"], ["products", "Products"], ["orders", "Orders"], ["ai", "Luna AI"], ["wallet", "Wallet"]];
+  const tabs = [["home", "Home"], ["products", "Shop"], ["orders", "Orders"], ["suppliers", "Suppliers"], ["ai", "Luna AI"], ["wallet", "Wallet"]];
   const tabBtns = tabs.map(([k, l]) => `<button class="tab ${UI.tab === k ? "on" : ""}" data-a="tab" data-v="${k}" aria-label="${l}">${icon[k]}<span>${l}${k === "orders" && m.pending ? ` (${m.pending})` : ""}</span></button>`).join("");
   const shops = Object.values(DB.shops);
   return `<div class="adm">
@@ -797,7 +941,7 @@ function vAdmin() {
       <select class="shop-switch" data-change="switchShop" aria-label="Switch shop">${shops.map((x) => `<option value="${esc(x.slug)}" ${x.slug === s.slug ? "selected" : ""}>${esc(x.name)}</option>`).join("")}<option value="__new">+ New shop</option></select>
       <button class="btn btn-green btn-sm" data-a="viewStore">View My Store</button>
     </div></header>
-    <div class="adm-wrap"><nav class="side">${tabBtns}</nav><main class="main">${({ home: tHome, products: tProducts, orders: tOrders, ai: tAI, promote: tAI, wallet: tWallet })[UI.tab](s, m)}</main></div>
+    <div class="adm-wrap"><nav class="side">${tabBtns}</nav><main class="main">${({ home: tHome, products: tProducts, orders: tOrders, ai: tAI, promote: tAI, suppliers: tSuppliers, wallet: tWallet })[UI.tab](s, m)}</main></div>
     <nav class="tabs">${tabBtns}</nav></div>`;
 }
 
@@ -807,6 +951,7 @@ function tHome(s, m) {
   const hr = new Date().getHours();
   return `<div class="mut" style="font-size:13px">${new Date().toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" })}</div>
   <div class="h1">Good ${hr < 12 ? "morning" : hr < 17 ? "afternoon" : "evening"} 👋</div>
+  <button class="btn btn-ai big-ai" data-a="marketMe">✨ LUNA AI — Market My Business For Me</button>
   ${s.cloud ? `<span class="cloud-badge cloud-on">● Live online · orders arrive from any phone</span>` : `<span class="cloud-badge cloud-off">${s.demo ? "Demo store · saved on this phone" : "Saved on this phone only"}</span>`}
   <div class="stats">
     <div class="card stat"><small>Today's sales</small><b class="tnum">${money(m.salesToday)}</b><span class="delta">paid orders today</span></div>
@@ -856,7 +1001,7 @@ function tOrders(s) {
     <div class="hd"><div><div class="who">${esc(o.customer)} ${o.sample ? `<span class="badge b-sample">Sample</span>` : ""}</div><div class="mut" style="font-size:13px">${esc(o.id)} · ${ago(o.at)} · ${esc(o.area || "")}</div></div>${payBadge(o)}</div>
     <div class="items">${o.items.map((i) => `${i.qty}× ${esc(i.name)}`).join("<br>")}${o.ref ? `<div class="mut" style="font-size:12px;margin-top:4px">EcoCash ref: <span class="tnum">${esc(o.ref)}</span></div>` : ""}</div>
     <div class="ft"><span class="total tnum">${money(o.total)}</span>
-      ${o.phone ? `<a class="btn btn-ghost btn-sm" href="${esc(waLink(`Hi ${o.customer}, this is ${s.name} about your order ${o.id} 🙂`, o.phone))}" target="_blank" rel="noopener">WhatsApp</a>` : ""}
+      ${o.phone ? `<a class="btn btn-ghost btn-sm" href="${esc(waLink(`Hi ${o.customer}, this is ${s.name} about your order ${o.id} 🙂`, o.phone, s.country))}" target="_blank" rel="noopener">WhatsApp</a>` : ""}
       ${o.status === "awaiting" ? `<button class="btn btn-gold btn-sm" data-a="orderStatus" data-id="${esc(o.id)}" data-v="paid">Confirm EcoCash</button>` : ""}
       ${o.status === "paid" || o.status === "cod" ? `<button class="btn btn-green btn-sm" data-a="orderStatus" data-id="${esc(o.id)}" data-v="delivered">Deliver ✓</button>` : ""}
       ${o.status === "delivered" ? `<span class="badge b-gray">Delivered</span>` : ""}
@@ -883,6 +1028,7 @@ function tAI(s) {
     <div class="ai-head"><span class="orb"></span><div><b>LUNA AI</b><small>Your posting assistant · ${linked.length}/4 accounts connected</small></div></div>
     <div class="bubble">${say}${next ? `<div class="acts"><button class="btn btn-gold btn-sm" data-a="postNow" data-id="${esc(next.id)}">Yes, post now</button><button class="btn btn-ai-ghost btn-sm" data-a="postLater" data-id="${esc(next.id)}">Later</button><button class="btn btn-ai-ghost btn-sm" data-a="editPost" data-id="${esc(next.id)}">Edit post</button></div>` : ""}</div>
 
+    ${planSection(s)}
     <div class="ai-sec"><h4>Your accounts</h4><p class="sub">Connect them so LUNA can prepare every post for you.</p>
       ${PLATFORMS.map((p) => { const c = ai.social[p.k]; return `<div class="acct">${pfBadge(p.k)}<div class="grow"><div class="t">${p.name}</div><div class="s">${c ? esc(c.handle) : "Not connected"}</div></div>
         ${c ? `<span class="ok-tick"><i>✓</i>Connected</span>` : `<button class="btn btn-violet btn-sm" data-a="connect" data-k="${p.k}">Connect</button>`}</div>`; }).join("")}
@@ -960,7 +1106,7 @@ function calendarFile() {
   const ics = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//LUNA//Auto Poster//EN", "BEGIN:VEVENT", `UID:luna-${s.slug}-${Date.now()}@luna`, `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, "").slice(0, 15)}Z`,
     `DTSTART:${d}T${h}${m}00`, `DTEND:${d}T${h}${String(+m + 10).padStart(2, "0").slice(0, 2)}00`, "RRULE:FREQ=DAILY", `SUMMARY:LUNA AI: approve today's post for ${s.name}`, `DESCRIPTION:Open LUNA and say YES: ${link}`, `URL:${link}`,
     "BEGIN:VALARM", "ACTION:DISPLAY", "TRIGGER:PT0M", "DESCRIPTION:LUNA AI is ready to post", "END:VALARM", "END:VEVENT", "END:VCALENDAR"].join("\r\n");
-  return URL.createObjectURL(new Blob([ics], { type: "text/calendar" }));
+  return ics;
 }
 
 /* ----- Alarm: sound + vibration + notification ----- */
@@ -1042,7 +1188,7 @@ async function sendTo(k) {
     const url = { whatsapp: `https://wa.me/?text=${encodeURIComponent(text)}`, instagram: "https://www.instagram.com/", tiktok: "https://www.tiktok.com/upload", facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(link)}&quote=${encodeURIComponent(text)}` }[k];
     const a = document.createElement("a"); a.href = url; a.target = "_blank"; a.rel = "noopener"; document.body.appendChild(a); a.click(); a.remove();
   }
-  post.done[k] = Date.now(); if (Object.keys(post.done).length === 4) { post.status = "posted"; post.postedAt = Date.now(); }
+  post.done[k] = Date.now(); log("post_shared", k); if (Object.keys(post.done).length === 4) { post.status = "posted"; post.postedAt = Date.now(); }
   save(); syncSettings(s); renderPostingFoot();
   toast(`✓ Caption copied · ${PLATFORMS.find((x) => x.k === k).short} opened`);
 }
@@ -1064,7 +1210,7 @@ function tWallet(s, m) {
   ].sort((a, b) => b.t - a.t);
   return `<div class="h1" style="margin-bottom:12px">Wallet</div>
   <div class="wallet"><small>Balance</small><div class="bal tnum">${money(m.balance)}</div>
-    <div class="ecocash"><span class="ec">Eco</span><div style="flex:1"><div style="font-size:12px;color:#B9B9C0">EcoCash number</div><b class="tnum">${esc(fmtPhone(s.ecocash) || "Not set")}</b></div><button class="btn btn-ghost-dark btn-sm" data-a="editEco">Change</button></div>
+    <div class="ecocash"><span class="ec">Eco</span><div style="flex:1"><div style="font-size:12px;color:#B9B9C0">${esc((s.pay || payOf(s.country || "Zimbabwe"))[0])} number</div><b class="tnum">${esc(fmtPhone(s.ecocash) || "Not set")}</b></div><button class="btn btn-ghost-dark btn-sm" data-a="editEco">Change</button></div>
     <button class="btn btn-gold btn-block" data-a="withdraw" ${m.balance > 0 ? "" : "disabled"}>Withdraw to EcoCash</button></div>
   <div class="sec-h"><h3>History</h3></div>
   <div class="card list">${hist.length ? hist.map((h) => `<div class="li"><div class="grow"><div class="t">${esc(h.label)} ${h.sample ? `<span class="badge b-sample">Sample</span>` : ""}</div><div class="s">${new Date(h.t).toLocaleString(undefined, { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}</div></div><b class="tnum" style="color:${h.amt < 0 ? "var(--red)" : "var(--green-d)"}">${h.amt < 0 ? "−" : "+"}${money(Math.abs(h.amt))}</b></div>`).join("") : `<div class="empty"><b>No money in yet</b>Paid orders appear here.</div>`}</div>`;
@@ -1081,21 +1227,21 @@ function vStore() {
     <div class="urlbar"><div>🔒 <b>${esc(prettyUrl(s))}</b></div></div>
     <header class="sf-head"><div class="sf-head-in">${logo(s, 36)}<div class="nm">${esc(s.name)}</div><button class="cartbtn" data-a="cart" aria-label="Cart">🛒 Cart <i>${cartN}</i></button></div></header>
     <section class="banner"><div class="banner-in">
-      <div><span class="kick">● Open now · ${esc(s.city)}</span><h1>${esc(s.name)}</h1><p>Quality gadgets delivered across ${esc(s.city)}. Order online in a minute — pay with EcoCash or cash when it arrives.</p>
-        <div class="btnrow"><a href="#products" class="btn btn-gold">Shop now ↓</a>${s.ecocash ? `<a class="btn btn-ghost-dark" href="${esc(waLink(`Hi ${s.name}, I have a question 🙂`, s.ecocash))}" target="_blank" rel="noopener">Chat with seller</a>` : ""}</div></div>
+      <div><span class="kick">● Open now · ${esc(s.city)}</span><h1>${esc(s.name)}</h1><p>${esc(s.bio || `Quality products delivered across ${s.city}. Order online in a minute — pay with ${(s.pay || payOf(s.country || "Zimbabwe"))[0]} or cash when it arrives.`)}</p>
+        <div class="btnrow"><a href="#products" class="btn btn-gold">Shop now ↓</a>${s.ecocash ? `<a class="btn btn-ghost-dark" href="${esc(waLink(`Hi ${s.name}, I have a question 🙂`, s.ecocash, s.country))}" target="_blank" rel="noopener">Chat with seller</a>` : ""}</div></div>
       ${pics.length >= 3 ? `<div class="collage">${pics.map((p) => `<img src="${esc(src(p.img))}" alt="${esc(p.name)}">`).join("")}</div>` : ""}
     </div></section>
-    <div class="trust"><div><b>🚚</b>Delivery in ${esc(s.city)}</div><div><b>💚</b>Pay with EcoCash</div><div><b>🤝</b>Pay on delivery</div></div>
+    <div class="trust"><div><b>🚚</b>Delivery in ${esc(s.city)}</div><div><b>💚</b>Pay with ${esc((s.pay || payOf(s.country || "Zimbabwe"))[0])}</div><div><b>🤝</b>Pay on delivery</div></div>
     <main class="sf-main" id="products"><div class="sec-h"><h3 style="font-family:var(--display);font-size:22px">All products</h3><span class="mut" style="font-size:13px">${s.products.length} items</span></div>
       <div class="shop-grid">${s.products.map((p) => `<article class="item">
         <button class="pic" data-a="pd" data-id="${esc(p.id)}" aria-label="View ${esc(p.name)}">${p.was > p.price ? `<span class="sale">-${Math.round(100 - (p.price / p.was) * 100)}%</span>` : ""}<img src="${esc(src(p.img))}" alt="${esc(p.name)}" loading="lazy"></button>
         <div class="body"><div class="nm">${esc(p.name)}</div><div class="pr tnum">${money(p.price)}${p.was > p.price ? `<s>${money(p.was)}</s>` : ""}</div>
           <div class="sold">${p.stock <= 0 ? "Sold out" : p.stock <= 5 ? `🔥 Only ${p.stock} left` : "In stock"}</div>
-          <div class="acts"><button class="btn btn-dark" data-a="addCart" data-id="${esc(p.id)}" ${p.stock <= 0 ? "disabled" : ""}>Add to Cart</button><button class="btn btn-green" data-a="buyNow" data-id="${esc(p.id)}" ${p.stock <= 0 ? "disabled" : ""}>Buy with EcoCash</button></div></div>
+          <div class="acts"><button class="btn btn-dark" data-a="addCart" data-id="${esc(p.id)}" ${p.stock <= 0 ? "disabled" : ""}>Add to Cart</button><button class="btn btn-green" data-a="buyNow" data-id="${esc(p.id)}" ${p.stock <= 0 ? "disabled" : ""}>Buy with ${esc((s.pay || payOf(s.country || "Zimbabwe"))[0])}</button></div></div>
       </article>`).join("")}</div>
-      <div class="paybar"><span>💚 EcoCash</span><span>🤝 Pay on Delivery</span><span>🔒 Secure checkout</span></div>
+      <div class="paybar">${(s.pay || payOf(s.country || "Zimbabwe")).map((x) => `<span>💚 ${esc(x)}</span>`).join("")}<span>🔒 Secure checkout</span></div>
     </main>
-    <footer class="sf-foot"><div class="brand"><span class="moon"></span>LUNA</div>Store powered by LUNA · ${esc(s.city)}, ${esc((CITIES.find((c) => c.name === s.city) || CITIES[0]).country)}</footer>
+    <footer class="sf-foot"><div class="brand"><span class="moon"></span>LUNA</div>Store powered by LUNA · ${esc(s.city)}, ${esc(s.country || "Zimbabwe")}</footer>
   </div>`;
 }
 
@@ -1109,8 +1255,8 @@ function sheetProduct(id) {
   openSheet(`<div class="sheet-h"><h3>${id ? "Edit product" : "Add product"}</h3><button class="x" data-a="close" aria-label="Close">×</button></div>
   <form data-form="product" data-id="${esc(id || "")}">
     <div class="f"><label for="pn">Product name</label><input id="pn" name="name" required maxlength="60" value="${esc(p.name)}" placeholder="e.g. Wireless Earphones Pro"></div>
-    <div class="row2"><div class="f"><label for="pp">Price (USD)</label><input id="pp" name="price" type="number" min="0.5" step="0.5" required value="${esc(p.price)}"></div>
-      <div class="f"><label for="pw">Was price (optional)</label><input id="pw" name="was" type="number" min="0" step="0.5" value="${esc(p.was || "")}"></div></div>
+    <div class="row2"><div class="f"><label for="pp">Price (USD)</label><input id="pp" name="price" type="number" min="0.5" step="0.01" required value="${esc(p.price)}"></div>
+      <div class="f"><label for="pw">Was price (optional)</label><input id="pw" name="was" type="number" min="0" step="0.01" value="${esc(p.was || "")}"></div></div>
     <div class="f"><label for="ps">Stock</label><input id="ps" name="stock" type="number" min="0" step="1" required value="${esc(p.stock)}"></div>
     <div class="f"><label for="pdsc">Description</label><textarea id="pdsc" name="desc" rows="3" maxlength="400">${esc(p.desc)}</textarea></div>
     <div class="f"><label>Photo</label><div class="gallery">${GALLERY.map((g) => `<button type="button" class="${g.url === p.img ? "on" : ""}" data-a="pickImg" data-url="${esc(g.url)}" aria-label="${esc(g.k)}"><img src="${esc(src(PH(PHOTOS[g.k], 240)))}" alt="" loading="lazy"></button>`).join("")}</div>
@@ -1141,7 +1287,7 @@ function sheetCart() {
 }
 
 function sheetCheckout(method) {
-  const s = UI.store, total = cartTotal(), live = CLOUD && s.cloud, paynow = live && LUNA_CONFIG.paynow;
+  const s = UI.store, total = cartTotal(), live = CLOUD && s.cloud, zw = (s.country || "Zimbabwe") === "Zimbabwe", paynow = live && LUNA_CONFIG.paynow && zw, prov = (s.pay || payOf(s.country || "Zimbabwe"))[0];
   method = method || (paynow ? "paynow" : "ecocash");
   UI.payMethod = method;
   const opt = (v, title, sub) => `<label class="pay-opt ${method === v ? "on" : ""}" data-a="payMethod" data-v="${v}"><input type="radio" name="method" value="${v}" ${method === v ? "checked" : ""}><span><b>${title}</b><br><span class="mut" style="font-size:13px">${sub}</span></span></label>`;
@@ -1151,11 +1297,11 @@ function sheetCheckout(method) {
     <div class="row2"><div class="f"><label for="cp">Phone</label><input id="cp" name="phone" required inputmode="tel" maxlength="13" placeholder="07X XXX XXXX" autocomplete="tel"></div>
       <div class="f"><label for="ca">Delivery area</label><input id="ca" name="area" required maxlength="60" placeholder="e.g. Avondale"></div></div>
     ${paynow ? opt("paynow", "EcoCash — pay instantly", "Enter your PIN on your phone · secured by Paynow") : ""}
-    ${opt("ecocash", paynow ? "EcoCash — send money yourself" : "Pay with EcoCash", "Dial *151#, then type the SMS code")}
+    ${opt("ecocash", paynow ? "EcoCash — send money yourself" : "Pay with " + prov, zw ? "Dial *151#, then type the SMS code" : `Send with ${prov}, then type the code from your SMS`)}
     ${opt("cod", "Pay on Delivery", "Pay cash when your order arrives")}
     ${method === "paynow" ? `<div class="f"><label for="cw">EcoCash number to charge</label><input id="cw" name="wallet" required inputmode="tel" maxlength="13" placeholder="077 or 078 number"><span class="hint">You'll get a pop-up on this phone asking for your EcoCash PIN.</span></div>` : ""}
-    ${method === "ecocash" ? `<div class="steps-ec"><b>Send ${money(total)} with EcoCash</b><ol><li>Dial <b>*151#</b> → Send Money</li><li>Send to <b class="tnum">${esc(fmtPhone(s.ecocash))}</b> (${esc(s.name)})</li><li>Type the confirmation code from your SMS below</li></ol></div>
-      <div class="f"><label for="cr">EcoCash confirmation code</label><input id="cr" name="ref" required maxlength="40" placeholder="e.g. MP241120.1432.A12345"></div>` : ""}
+    ${method === "ecocash" ? `<div class="steps-ec"><b>Send ${money(total)} with ${esc(prov)}</b><ol><li>${zw ? "Dial <b>*151#</b> → Send Money" : `Open <b>${esc(prov)}</b> → Send money`}</li><li>Send to <b class="tnum">${esc(fmtPhone(s.ecocash))}</b> (${esc(s.name)})</li><li>Type the confirmation code from your SMS below</li></ol></div>
+      <div class="f"><label for="cr">${esc(prov)} confirmation code</label><input id="cr" name="ref" required maxlength="40" placeholder="e.g. MP241120.1432.A12345"></div>` : ""}
     <button class="btn btn-green btn-block" type="submit" style="padding:14px" id="payBtn">${method === "paynow" ? "Pay " + money(total) + " with EcoCash" : method === "ecocash" ? "I've paid " + money(total) + " — place order" : "Place order · " + money(total)}</button>
   </form>`);
 }
@@ -1238,7 +1384,7 @@ async function makeVideo() {
     const type = (rec.mimeType || mime || "video/webm").split(";")[0], ext = type.includes("mp4") ? "mp4" : "webm";
     const blob = new Blob(chunks, { type }); UI.promo.blob = blob; UI.promo.file = new File([blob], `${s.slug}-${slugify(p.name)}.${ext}`, { type });
     const url = URL.createObjectURL(blob);
-    out.innerHTML = `<video src="${url}" controls playsinline style="width:100%;border-radius:14px;margin-top:6px;max-height:340px;background:#000"></video><a class="btn btn-ghost btn-block" style="margin-top:8px" href="${url}" download="${esc(UI.promo.file.name)}">Download ${ext.toUpperCase()} video</a>`;
+    out.innerHTML = `<video src="${url}" controls playsinline style="width:100%;border-radius:14px;margin-top:6px;max-height:340px;background:#000"></video>${Shared.downloads ? `<button class="btn btn-ghost btn-block" style="margin-top:8px" data-a="saveVideo">Save ${ext.toUpperCase()} video</button>` : `<a class="btn btn-ghost btn-block" style="margin-top:8px" href="${url}" download="${esc(UI.promo.file.name)}">Download ${ext.toUpperCase()} video</a>`}`;
     btn.textContent = "✓ Video ready — make again";
   } catch (e) { out.innerHTML = `<p class="mut" style="font-size:13px">Couldn't make the video (${esc(e.message || "photo blocked")}). Try another product photo.</p>`; btn.textContent = "⬇ Save video for TikTok / Status"; }
   btn.disabled = false;
@@ -1252,6 +1398,407 @@ async function sharePromo() {
   $("#promoOut").insertAdjacentHTML("beforeend", `<div style="display:grid;gap:8px;margin-top:8px"><a class="btn btn-green btn-block" href="${esc(waLink(text + "\n" + url))}" target="_blank" rel="noopener">Post to WhatsApp</a><button class="btn btn-ghost btn-block" data-a="copyText" data-v="${esc(text + "\n" + url)}">Copy caption for TikTok</button></div>`);
 }
 
+/* =========================== AFRICA: places & location =========================== */
+// [country, flag, dial code, payment methods, {city: [lat, lng]}]
+const AF = [
+  ["Zimbabwe", "🇿🇼", "263", ["EcoCash", "InnBucks", "OneMoney"], { Harare: [-17.8292, 31.0522], Bulawayo: [-20.1325, 28.6265], Mutare: [-18.9707, 32.6709], Gweru: [-19.45, 29.8167], Masvingo: [-20.0744, 30.8328] }],
+  ["Kenya", "🇰🇪", "254", ["M-Pesa", "Airtel Money"], { Nairobi: [-1.2921, 36.8219], Mombasa: [-4.0435, 39.6682], Kisumu: [-0.0917, 34.768], Nakuru: [-0.3031, 36.08] }],
+  ["Nigeria", "🇳🇬", "234", ["Bank transfer", "OPay", "PalmPay"], { Lagos: [6.5244, 3.3792], Abuja: [9.0765, 7.3986], Kano: [12.0022, 8.592], Ibadan: [7.3775, 3.947], "Port Harcourt": [4.8156, 7.0498] }],
+  ["South Africa", "🇿🇦", "27", ["EFT", "SnapScan", "Capitec Pay"], { Johannesburg: [-26.2041, 28.0473], "Cape Town": [-33.9249, 18.4241], Durban: [-29.8587, 31.0218], Pretoria: [-25.7479, 28.2293] }],
+  ["Zambia", "🇿🇲", "260", ["MTN MoMo", "Airtel Money"], { Lusaka: [-15.3875, 28.3228], Kitwe: [-12.8024, 28.2132], Ndola: [-12.9587, 28.6366], Livingstone: [-17.8419, 25.8543] }],
+  ["Ghana", "🇬🇭", "233", ["MTN MoMo", "Telecel Cash"], { Accra: [5.6037, -0.187], Kumasi: [6.6885, -1.6244], Tamale: [9.4008, -0.8393] }],
+  ["Uganda", "🇺🇬", "256", ["MTN MoMo", "Airtel Money"], { Kampala: [0.3476, 32.5825], Entebbe: [0.0512, 32.4637], Gulu: [2.7746, 32.299] }],
+  ["Tanzania", "🇹🇿", "255", ["M-Pesa", "Mixx by Yas", "Airtel Money"], { "Dar es Salaam": [-6.7924, 39.2083], Arusha: [-3.3869, 36.683], Dodoma: [-6.163, 35.7516], Mwanza: [-2.5164, 32.9175] }],
+  ["Ethiopia", "🇪🇹", "251", ["telebirr", "M-Pesa"], { "Addis Ababa": [9.03, 38.74], "Dire Dawa": [9.6009, 41.8501], "Bahir Dar": [11.5742, 37.3614] }],
+  ["Egypt", "🇪🇬", "20", ["Vodafone Cash", "InstaPay"], { Cairo: [30.0444, 31.2357], Alexandria: [31.2001, 29.9187], Giza: [30.0131, 31.2089] }],
+  ["Rwanda", "🇷🇼", "250", ["MTN MoMo", "Airtel Money"], { Kigali: [-1.9441, 30.0619] }],
+  ["Malawi", "🇲🇼", "265", ["Airtel Money", "TNM Mpamba"], { Lilongwe: [-13.9626, 33.7741], Blantyre: [-15.7861, 35.0058] }],
+  ["Botswana", "🇧🇼", "267", ["Orange Money", "MyZaka"], { Gaborone: [-24.6282, 25.9231], Francistown: [-21.17, 27.5079] }],
+  ["Mozambique", "🇲🇿", "258", ["M-Pesa", "e-Mola"], { Maputo: [-25.9692, 32.5732], Beira: [-19.8436, 34.8389] }],
+  ["Namibia", "🇳🇦", "264", ["Bank eWallet"], { Windhoek: [-22.5609, 17.0658] }],
+  ["Senegal", "🇸🇳", "221", ["Wave", "Orange Money"], { Dakar: [14.7167, -17.4677] }],
+  ["Côte d'Ivoire", "🇨🇮", "225", ["Orange Money", "Wave", "MTN MoMo"], { Abidjan: [5.36, -4.0083] }],
+  ["Cameroon", "🇨🇲", "237", ["MTN MoMo", "Orange Money"], { Douala: [4.0511, 9.7679], "Yaoundé": [3.848, 11.5021] }],
+  ["DR Congo", "🇨🇩", "243", ["M-Pesa", "Airtel Money", "Orange Money"], { Kinshasa: [-4.4419, 15.2663], Lubumbashi: [-11.6876, 27.5026] }],
+].map(([name, flag, dial, pay, cities]) => ({ name, flag, dial, pay, cities }));
+const country = (n) => AF.find((c) => c.name === n) || AF[0];
+const cityLL = (c, city) => country(c).cities[city] || Object.values(country(c).cities)[0];
+const payOf = (c) => [...country(c).pay, "Cash on delivery"];
+function km(a, b) { // Haversine distance in km
+  const R = 6371, r = Math.PI / 180, dLat = (b[0] - a[0]) * r, dLng = (b[1] - a[1]) * r;
+  const h = Math.sin(dLat / 2) ** 2 + Math.cos(a[0] * r) * Math.cos(b[0] * r) * Math.sin(dLng / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(h));
+}
+function nearestCity(ll) {
+  let best = null;
+  for (const c of AF) for (const [city, pos] of Object.entries(c.cities)) { const d = km(ll, pos); if (!best || d < best.d) best = { country: c.name, city, d }; }
+  return best;
+}
+const fmtKm = (d) => (d < 1 ? "<1 km" : d < 100 ? d.toFixed(1).replace(/\.0$/, "") + " km" : Math.round(d).toLocaleString() + " km");
+const intl = (phone, c) => { const d = String(phone || "").replace(/\D/g, ""), dial = country(c).dial; return d.startsWith("0") ? dial + d.slice(1) : d.startsWith(dial) ? d : dial + d; };
+const meLL = () => [DB.me.lat, DB.me.lng];
+
+/* =========================== Marketplace data =========================== */
+const CATS = [
+  { k: "earphones", name: "Wireless Earphones", sell: 15, cost: 7, profit: 7, photo: "earbuds", market: "earphones" },
+  { k: "charger", name: "Fast Charger", sell: 10, cost: 4, profit: 6, photo: "charger", market: "charger" },
+  { k: "watch", name: "Smart Watch", sell: 35, cost: 18, profit: 17, photo: "watch", market: "watch" },
+  { k: "hair", name: "Hair & Wigs", sell: 45, cost: 22, profit: 23, photo: "hair", market: "wigs" },
+  { k: "clothes", name: "Clothes", sell: 20, cost: 8, profit: 12, photo: "clothes", market: "dresses" },
+];
+const cat = (k) => CATS.find((c) => c.k === k) || CATS[0];
+const SUPPORT_WA = "263790007951"; // demo suppliers' WhatsApp goes to the LUNA team
+const DEMO_SUP = [
+  ["d1", "Gulf Gadgets Wholesale", "Zimbabwe", "Harare", -17.8317, 31.0437, "earphones", 7, ["Zimbabwe", "Zambia", "Mozambique", "Botswana"], 4.8, 1240, true],
+  ["d2", "Avondale Phone Accessories", "Zimbabwe", "Harare", -17.8, 31.039, "charger", 4, ["Zimbabwe"], 4.6, 530, true],
+  ["d3", "Harare Smart Watch Hub", "Zimbabwe", "Harare", -17.8256, 31.0492, "watch", 18, ["Zimbabwe", "Zambia"], 4.5, 380, false],
+  ["d4", "Mbare Hair & Beauty", "Zimbabwe", "Harare", -17.8606, 31.0378, "hair", 22, ["Zimbabwe"], 4.5, 310, false],
+  ["d5", "City of Kings Gadgets", "Zimbabwe", "Bulawayo", -20.153, 28.584, "earphones", 7.5, ["Zimbabwe", "Botswana", "South Africa"], 4.7, 410, true],
+  ["d6", "Luthuli Avenue Electronics", "Kenya", "Nairobi", -1.2833, 36.8285, "earphones", 6, ["Kenya", "Uganda", "Tanzania", "Rwanda", "Zimbabwe", "Zambia"], 4.7, 2100, true],
+  ["d7", "Gikomba Clothes Wholesale", "Kenya", "Nairobi", -1.2839, 36.8418, "clothes", 8, ["Kenya", "Uganda", "Tanzania"], 4.4, 880, false],
+  ["d8", "Computer Village Ikeja Hub", "Nigeria", "Lagos", 6.5965, 3.3421, "earphones", 5.5, ["Nigeria", "Ghana", "Zimbabwe", "Kenya", "South Africa", "Zambia"], 4.6, 3400, true],
+  ["d9", "Balogun Market Hair", "Nigeria", "Lagos", 6.457, 3.388, "hair", 18, ["Nigeria", "Ghana", "South Africa", "Kenya", "Zimbabwe"], 4.6, 1900, true],
+  ["d10", "Crown Mines Gadget Wholesale", "South Africa", "Johannesburg", -26.2186, 27.9806, "earphones", 6.5, ["South Africa", "Zimbabwe", "Botswana", "Namibia", "Mozambique", "Zambia"], 4.5, 1600, true],
+  ["d11", "Joburg CBD Fashion Wholesale", "South Africa", "Johannesburg", -26.2023, 28.0436, "clothes", 9, ["South Africa", "Zimbabwe", "Namibia", "Botswana"], 4.3, 700, false],
+  ["d12", "Kamwala Smart Watch Depot", "Zambia", "Lusaka", -15.429, 28.296, "watch", 16, ["Zambia", "Zimbabwe", "Malawi"], 4.4, 260, false],
+  ["d13", "Lusaka Charger Wholesale", "Zambia", "Lusaka", -15.4167, 28.2833, "charger", 3.8, ["Zambia", "Zimbabwe"], 4.2, 190, false],
+  ["d14", "Circle Electronics Wholesale", "Ghana", "Accra", 5.57, -0.216, "charger", 3.5, ["Ghana", "Nigeria", "Côte d'Ivoire"], 4.5, 900, true],
+  ["d15", "Makola Hair Wholesale", "Ghana", "Accra", 5.548, -0.2083, "hair", 19, ["Ghana", "Nigeria"], 4.4, 640, false],
+].map(([id, name, c, city, lat, lng, k, price, ships, rating, sales, verified]) => ({ id, name, country: c, city, lat, lng, cat: k, productName: cat(k).name, price, ships, rating, sales, verified, demo: true, whatsapp: SUPPORT_WA, photo: PH(PHOTOS[cat(k).photo], 500) }));
+const RANGES = [{ l: "5 km", km: 5 }, { l: "20 km", km: 20 }, { l: "50 km", km: 50 }, { l: "100 km", km: 100 }, { l: "All Country" }, { l: "All Africa" }];
+const daysTo = (s) => s.days || Math.max(2, Math.round(1 + km([s.lat, s.lng], meLL()) / 1200));
+function deliveryLabel(s) {
+  if (s.city === DB.me.city && s.country === DB.me.country) return { t: "Same day", cls: "b-green" };
+  if (s.country === DB.me.country) return { t: `${Math.max(1, Math.round(km([s.lat, s.lng], meLL()) / 400))}–${Math.max(2, Math.round(km([s.lat, s.lng], meLL()) / 400) + 1)} days`, cls: "b-blue" };
+  return { t: `Ships to ${DB.me.country} · ${daysTo(s)} days`, cls: "b-violet" };
+}
+function allSuppliers() {
+  const hidden = new Set(DB.hiddenSup || []);
+  const seen = new Set();
+  return [...Shared.suppliers, ...(DB.mySuppliers || []), ...DEMO_SUP].filter((s) => { if (hidden.has(s.id) || seen.has(s.id)) return false; seen.add(s.id); return true; });
+}
+function marketList(catK, rangeIdx) {
+  const me = DB.me, r = RANGES[rangeIdx];
+  return allSuppliers()
+    .filter((s) => !catK || s.cat === catK)
+    .filter((s) => s.country === me.country || (s.ships || []).includes(me.country) || (s.ships || []).includes("All Africa"))
+    .map((s) => ({ ...s, d: km([s.lat, s.lng], meLL()) }))
+    .filter((s) => (r.km ? s.d <= r.km : r.l === "All Country" ? s.country === me.country : true))
+    .sort((a, b) => a.d - b.d);
+}
+
+/* =========================== Shared data for testers (preview link) =========================== */
+// In the claude.ai preview, testers share suppliers, reports and activity through the artifact's
+// database, and Luna AI answers with real AI. In a plain browser these are simply absent.
+const Shared = {
+  db: null, user: null, sample: null, downloads: null, uid: null, owner: false, suppliers: [], events: null, buf: [], t: 0,
+  async init() {
+    if (!window.claude?.use) return;
+    const use = (n) => window.claude.use(n).catch(() => null);
+    [this.db, this.user, this.sample, this.downloads] = await Promise.all([use("db"), use("user"), use("sample"), use("downloads")]);
+    if (this.user) { this.uid = await this.user.id().catch(() => null); this.owner = await this.user.isOwner().catch(() => false); }
+    if (this.db) {
+      this.db.collection("suppliers").onSnapshot((snap) => {
+        this.suppliers = snap.docs.map((d) => ({ ...d.data(), id: "sh-" + d.id, docId: d.id, shared: true })).filter((s) => s.name && s.lat != null);
+        if (["market", "admin"].includes(UI.view)) render();
+      }, () => {});
+    }
+    render();
+    flushLog();
+  },
+  async saveSupplier(s) { if (!this.db || !this.uid) throw new Error("not shared"); await this.db.collection("suppliers").doc(this.uid).set(s); },
+  async report(item) {
+    if (!this.db || !this.uid) return;
+    const ref = this.db.collection("reports").doc(this.uid), snap = await ref.get().catch(() => null);
+    const items = [...((snap?.exists && snap.data().items) || []), item].slice(-50);
+    await ref.set({ items, updatedAt: Date.now() });
+  },
+  async allEvents() {
+    if (!this.db || !this.owner) return null;
+    const snap = await this.db.collection("events").get();
+    return snap.docs.map((d) => ({ tester: d.id, items: d.data().items || [] }));
+  },
+};
+function log(type, detail = "") {
+  const e = { t: Date.now(), type, detail: String(detail).slice(0, 80), mode: DB.me?.mode || "", where: DB.me ? `${DB.me.city}, ${DB.me.country}` : "" };
+  DB.events = [...(DB.events || []), e].slice(-400); save();
+  clearTimeout(Shared.t); Shared.t = setTimeout(flushLog, 2500);
+}
+let flushing = false;
+async function flushLog() {
+  if (!Shared.db || !Shared.uid || flushing) return;
+  flushing = true;
+  try { await Shared.db.collection("events").doc(Shared.uid).set({ items: (DB.events || []).slice(-150), updatedAt: Date.now() }); } catch {}
+  flushing = false;
+}
+
+/* =========================== Views: welcome, location =========================== */
+function vWelcome() {
+  return `<div class="wz"><div class="wz-in">
+    <div class="brand"><span class="moon"></span>LUNA</div>
+    <h1 class="hero-h">Africa's <em>AI</em> marketplace.</h1>
+    <p class="lead">Find suppliers near you, open a shop in 3 taps, and let LUNA AI market it for you — from Harare to Lagos, Nairobi to Cairo.</p>
+    <div class="pills"><span class="pill">🌍 <b>19 countries</b></span><span class="pill">📍 Suppliers near you</span><span class="pill">✨ AI marketing</span><span class="pill">💚 EcoCash · M-Pesa · MoMo</span></div>
+    <div class="mode-grid">
+      <button class="mode" data-a="pickMode" data-v="seller"><span class="ic">🛍️</span><b>I Want To SELL</b><small>Open a shop · find cheap stock · AI marketing</small></button>
+      <button class="mode" data-a="pickMode" data-v="supplier"><span class="ic">🏭</span><b>I AM A SUPPLIER</b><small>Get seen by sellers across Africa</small></button>
+    </div>
+    <div class="landing-cta" style="margin-top:14px">
+      <button class="btn btn-ghost-dark btn-block" data-a="openDemo">Open the demo store</button>
+      ${CLOUD && !Cloud.user ? `<button class="btn btn-ghost-dark btn-block" data-a="signin">I already have a shop — sign in</button>` : ""}
+    </div>
+    ${Shared.owner || !Shared.db ? `<button class="btn btn-ghost-dark btn-sm" style="margin-top:22px" data-a="monitor">📊 Test monitor</button>` : ""}
+  </div></div>`;
+}
+function vLocate() {
+  const L = UI.loc || (UI.loc = { state: "ask", country: DB.me?.country || "Zimbabwe", city: DB.me?.city || "Harare" });
+  const c = country(L.country);
+  let body;
+  if (L.state === "ask") body = `<div class="loc-hero"><div class="pin">📍</div><h2>Allow LUNA to find suppliers near you?</h2><p class="sub">LUNA uses your location to show the closest suppliers first and work out delivery times. It stays on your phone.</p></div>
+    <button class="btn btn-gold btn-block" style="padding:16px;font-size:17px" data-a="allowLoc">ALLOW LOCATION</button>
+    <button class="btn btn-ghost-dark btn-block" style="margin-top:10px" data-a="manualLoc">Choose my city instead</button>`;
+  else if (L.state === "busy") body = `<div class="loc-hero"><div class="pin spin-pin">📍</div><h2>Finding you…</h2><p class="sub">Tap “Allow” if your phone asks.</p></div>`;
+  else if (L.state === "found") body = `<div class="loc-hero"><div class="pin">✅</div><h2>You're near ${esc(L.city)}</h2><p class="sub">${c.flag} ${esc(L.country)} · ${esc(fmtKm(L.d || 0))} from the city centre</p></div>
+    <button class="btn btn-gold btn-block" style="padding:16px" data-a="locDone">Continue →</button><button class="btn btn-ghost-dark btn-block" style="margin-top:10px" data-a="manualLoc">Not right? Choose manually</button>`;
+  else body = `${L.denied ? `<div class="notice dark-notice">📍 Location is off, so pick your country and city.</div>` : ""}<h2>Where are you?</h2>
+    <div class="field"><label for="locC">Country</label><select class="inp" id="locC" data-change="locCountry">${AF.map((x) => `<option ${x.name === L.country ? "selected" : ""}>${esc(x.name)}</option>`).join("")}</select></div>
+    <div class="field"><label for="locT">City</label><select class="inp" id="locT" data-change="locCity">${Object.keys(c.cities).map((x) => `<option ${x === L.city ? "selected" : ""}>${esc(x)}</option>`).join("")}</select></div>
+    <button class="btn btn-gold btn-block" style="padding:16px" data-a="locDone">Continue →</button>`;
+  return `<div class="wz"><div class="wz-in"><div class="brand"><span class="moon"></span>LUNA</div><div class="eyebrow" style="margin-top:22px">${DB.me?.mode === "supplier" ? "Supplier" : "Seller"} · Location</div>${body}</div></div>`;
+}
+
+/* =========================== 3-tap store builder =========================== */
+function vBuild3() {
+  const b = UI.b3 || (UI.b3 = { name: "", cat: "" }), me = DB.me, ready = b.name.trim().length >= 2 && b.cat;
+  return `<div class="wz"><div class="wz-in">
+    <div class="brand"><span class="moon"></span>LUNA</div>
+    <h2 style="margin-top:22px">Your shop in 3 taps</h2><p class="sub">${country(me.country).flag} ${esc(me.city)}, ${esc(me.country)} · <button class="linkish" data-a="changeLoc">change</button></p>
+    <div class="tap ${b.name.trim().length >= 2 ? "ok" : ""}"><span class="num">1</span><div class="grow"><label for="b3name">Type your shop name</label><input class="inp" id="b3name" maxlength="40" placeholder="e.g. Tino Gadgets" value="${esc(b.name)}" autocomplete="off"></div></div>
+    <div class="tap ${b.cat ? "ok" : ""}"><span class="num">2</span><div class="grow"><label>Pick a product</label>
+      <div class="pick-grid">${CATS.map((c) => { const v = askLuna(c.market, me.city); return `<button class="pick ${b.cat === c.k ? "on" : ""}" data-a="b3cat" data-v="${c.k}"><img src="${esc(src(PH(PHOTOS[c.photo], 400)))}" alt=""><div class="pb"><b>${esc(c.name)}</b>
+        <div class="ppp"><span>Sell <b>${money(c.sell)}</b></span><span>Cost ${money(c.cost)}</span><span class="pr">Profit ${money(c.profit)}</span></div>
+        ${v ? `<span class="mk ${v.level}">${v.level === "HOT" ? "🔥" : v.level === "GOOD" ? "🟢" : "🔴"} ${v.level}</span>` : ""}</div></button>`; }).join("")}</div></div></div>
+    <div class="tap"><span class="num">3</span><div class="grow"><button class="btn btn-ai btn-block" data-a="build3" ${ready ? "" : "disabled"}>✨ LUNA AI — Market For Me</button>
+      <p class="sub" style="margin:8px 0 0;font-size:13px">LUNA makes your logo, bio, product page and payments (${esc(payOf(me.country).join(" · "))}).</p></div></div>
+  </div></div>`;
+}
+async function aiText(prompt, fallback) {
+  if (!Shared.sample) return fallback;
+  try { const r = await Shared.sample(prompt, { modelTier: "quick" }); return (r.text || "").trim() || fallback; } catch { return fallback; }
+}
+async function build3() {
+  const b = UI.b3, me = DB.me, c = cat(b.cat), name = b.name.trim();
+  if (CLOUD && !Cloud.user) { UI.afterSignin = build3; return A.signin(); }
+  const box = document.createElement("div"); box.id = "alarm";
+  const steps = [["logo", "Designing your logo"], ["bio", "Writing your shop bio"], ["page", "Building your product page"], ["pay", `Adding ${payOf(me.country).slice(0, 2).join(" + ")} + Cash`], ["plan", "Making your 7-day marketing plan"]];
+  box.innerHTML = `<div class="alarm"><div class="alarm-in"><div class="ai-head" style="justify-content:center"><span class="orb"></span><b>LUNA AI</b></div><h2 style="font-family:var(--display);margin:0">Building ${esc(name)}…</h2>
+    <div style="display:grid;gap:8px">${steps.map(([k, t]) => `<div class="ptask" id="b3-${k}"><div class="grow"><b>${esc(t)}</b><div style="font-size:12px;color:var(--ai-mut)" id="b3s-${k}">Working…</div></div><span class="spin"></span></div>`).join("")}</div></div></div>`;
+  document.body.appendChild(box);
+  const tick = (k, note) => { const row = $("#b3-" + k); row.querySelector(".spin").outerHTML = `<span class="done-tick">✓</span>`; $("#b3s-" + k).textContent = note; };
+  let slug = slugify(name + " " + me.city); while (DB.shops[slug]) slug = slugify(name + " " + me.city) + "-" + uid().toLowerCase().slice(0, 3);
+  const color = ["#F5B700", "#8B5CF6", "#12B76A", "#FF7A45", "#00B3C7"][Math.floor(hash(slug) * 5)];
+  await new Promise((r) => setTimeout(r, 500)); tick("logo", "Monogram logo in your brand colour");
+  const fb = `${name} brings you quality ${c.name.toLowerCase()} in ${me.city} at fair prices. Order online in a minute, pay with ${payOf(me.country)[0]} or cash on delivery, and get fast delivery.`;
+  const bio = await aiText(`Write a warm, simple 2-sentence shop bio (max 40 words, no hashtags, no quotes) for a small online shop called "${name}" in ${me.city}, ${me.country} selling ${c.name}. Mention fast delivery and paying with ${payOf(me.country)[0]} or cash on delivery.`, fb);
+  tick("bio", bio.slice(0, 60) + (bio.length > 60 ? "…" : ""));
+  const product = { id: "p" + uid() + uid(), name: c.name === "Clothes" ? "Ladies' Fashion Wear" : c.name === "Hair & Wigs" ? "Human Hair Wig" : c.name, price: c.sell, was: Math.round(c.sell * 1.35), stock: 10, cost: c.cost, img: PH(PHOTOS[c.photo]), desc: `${c.name} — delivered in ${me.city}. Pay with ${payOf(me.country).join(", ")}.` };
+  await new Promise((r) => setTimeout(r, 300)); tick("page", `${product.name} · ${money(product.price)}`);
+  await new Promise((r) => setTimeout(r, 300)); tick("pay", payOf(me.country).join(" · "));
+  const ns = { slug, name, city: me.city, country: me.country, role: "Seller", ecocash: "", color, bio, pay: payOf(me.country), createdAt: Date.now(), products: [product], orders: [], views: [], withdrawals: [] };
+  ensureAI(ns);
+  ns.plan = await makePlan(ns);
+  tick("plan", "7 days ready to copy");
+  if (CLOUD) { ns.cloud = true; try { await Cloud.createShop(ns); } catch (e) { toast("⚠️ Not saved online: " + esc(e.message)); ns.cloud = false; } }
+  DB.shops[slug] = ns; DB.current = slug; save(); log("shop_created", name + " · " + c.name);
+  await new Promise((r) => setTimeout(r, 500));
+  closeAlarm(); UI.tab = "ai"; UI.b3 = null; go("admin", "admin");
+  setTimeout(() => toast(`🎉 ${esc(name)} is live! Add your ${esc(payOf(me.country)[0])} number in Wallet.`), 300);
+}
+
+/* =========================== 7-day marketing plan =========================== */
+const PLAN_DAYS = [
+  ["WhatsApp Status", "📱"], ["TikTok Script", "🎬"], ["Facebook Post", "👍"], ["Promo Video Text", "🎥"], ["Tell 3 Friends", "🤝"], ["Customer Review", "⭐"], ["Restock", "📦"],
+];
+function planTemplate(s) {
+  const p = s.products[0] || { name: "our products", price: 0 }, link = shareUrl(s), pay = (s.pay || payOf(s.country || "Zimbabwe"))[0], city = s.city;
+  return [
+    `🔥 NEW at ${s.name}: ${p.name} — only ${money(p.price)}!\n🚚 Delivery in ${city} · 💚 ${pay} or cash on delivery\n👉 Order: ${link}`,
+    `0–2s: Unbox the ${p.name.toLowerCase()} close-up. Text: “${city}, you need this 👀”\n2–4s: Show it working. Text: “Only ${money(p.price)}”\n4–6s: Phone showing your shop link. Text: “Order now · ${pay}”\nCaption: ${p.name} in ${city} for ${money(p.price)} 🔥 Link in bio #${city.replace(/\s/g, "")} #LUNA`,
+    `Hello ${city}! 👋 ${s.name} is now open online.\n${p.name} for just ${money(p.price)} — delivered to your door.\n✔️ Pay with ${pay} or cash when it arrives\n✔️ Order in 1 minute: ${link}\nShare this with someone who needs it 🙏`,
+    `HOT DEAL 🔥\n${p.name}\n${money(p.price)} ONLY IN ${city.toUpperCase()}\nPay with ${pay} · Fast delivery\n🎵 Use a trending Amapiano sound`,
+    `Hi! I just opened my online shop ${s.name} 🙌 Can you please share my link on your WhatsApp Status today? It would really help me: ${link}`,
+    `Hi! Thank you for buying from ${s.name} 🙏 Could you send me a short voice note or photo saying how you like your ${p.name.toLowerCase()}? I'll share it (with your OK) so others can trust my shop.`,
+    `Hi, I sell ${p.name.toLowerCase()} in ${city}. What's your price for 10 pieces, and how fast can you deliver to ${city}? I found you on LUNA.`,
+  ];
+}
+async function makePlan(s) {
+  const base = planTemplate(s);
+  if (Shared.sample) {
+    try {
+      const p = s.products[0];
+      const out = await Shared.sample.json(`You are LUNA AI, a marketing coach for small African online sellers. Write a 7-day marketing plan for "${s.name}" in ${s.city}, ${s.country || "Zimbabwe"}, selling ${p?.name} at ${money(p?.price || 0)}. Payments: ${(s.pay || payOf(s.country || "Zimbabwe")).join(", ")}. Store link: ${shareUrl(s)}.
+Return a JSON array of exactly 7 strings, ready to copy and paste, simple English with a few emojis, each under 80 words:
+1 WhatsApp Status caption with the link; 2 TikTok script with 0-2s/2-4s/4-6s scenes and a caption; 3 Facebook post with the link; 4 short on-screen text for a 6-second promo video; 5 a WhatsApp message asking 3 friends to share the shop link; 6 a message asking a happy customer for a review; 7 a WhatsApp message to a supplier asking for a 10-piece restock price and delivery time to ${s.city}.`, { modelTier: "quick" });
+      if (Array.isArray(out) && out.length === 7 && out.every((x) => typeof x === "string" && x.trim())) { log("plan", "AI"); return { at: Date.now(), ai: true, items: out }; }
+    } catch {}
+  }
+  log("plan", "template");
+  return { at: Date.now(), ai: false, items: base };
+}
+function planSection(s) {
+  const plan = s.plan;
+  return `<div class="ai-sec"><h4>7-day marketing plan</h4>
+    ${plan ? `<p class="sub">${plan.ai ? "Written by LUNA AI" : "Written by LUNA"} · tap COPY, paste in the app</p>${plan.items.map((t, i) => `<div class="day"><div class="dh"><span class="dn">Day ${i + 1}</span><b>${PLAN_DAYS[i][1]} ${PLAN_DAYS[i][0]}</b><button class="btn btn-gold btn-sm" data-a="copyPlan" data-i="${i}">COPY</button></div><div class="dt">${esc(t)}</div>
+      ${i === 3 && s.products[0] ? `<button class="btn btn-ai-ghost btn-sm" data-a="promo" data-id="${esc(s.products[0].id)}">🎬 Make the video</button>` : ""}${i === 6 ? `<button class="btn btn-ai-ghost btn-sm" data-a="tab" data-v="suppliers">📦 Find suppliers near me</button>` : ""}</div>`).join("")}`
+    : `<p class="sub">LUNA writes a full week of posts and messages for your shop.</p>`}
+    <div class="ai-row"><button class="btn btn-ai btn-block" data-a="marketMe">✨ LUNA AI — Market My Business For Me</button></div></div>`;
+}
+
+/* =========================== Supplier marketplace =========================== */
+function marketBody() {
+  const me = DB.me, mk = UI.mk || (UI.mk = { cat: "earphones", range: 5 });
+  const list = marketList(mk.cat, mk.range);
+  const compare = marketList(mk.cat, 5).reduce((acc, s) => { const k = s.city + s.country; if (!acc[k] || acc[k].price > s.price) acc[k] = s; return acc; }, {});
+  const cmp = Object.values(compare).sort((a, b) => a.d - b.d).slice(0, 5);
+  return `<div class="mk-head"><button class="loc-chip" data-a="changeLoc">📍 ${esc(me.city)}, ${esc(me.country)} ${me.how === "gps" ? "· GPS" : ""}<span>Change</span></button><button class="btn btn-gold btn-sm" data-a="addSupplier">+ Add Supplier</button></div>
+    <div class="seg dark-seg">${CATS.map((c) => `<button class="${mk.cat === c.k ? "on" : ""}" data-a="mkCat" data-v="${c.k}">${esc(c.name)}</button>`).join("")}</div>
+    ${cmp.length ? `<div class="cmp"><b>Best ${esc(cat(mk.cat).name.toLowerCase())} prices to ${esc(me.city)}</b>${cmp.map((s) => { const dl = deliveryLabel(s); return `<div class="cmp-row"><span>${esc(s.city)}</span><b class="tnum">${money(s.price)}</b><span class="badge ${dl.cls}">${esc(dl.t)}</span></div>`; }).join("")}</div>` : ""}
+    <div class="range"><label for="rng">Show suppliers within: <b>${RANGES[mk.range].l}</b></label><input type="range" id="rng" min="0" max="5" step="1" value="${mk.range}" data-change="mkRange" list="rngticks">
+      <div class="rticks">${RANGES.map((r, i) => `<button class="${i === mk.range ? "on" : ""}" data-a="mkRangeBtn" data-v="${i}">${r.l}</button>`).join("")}</div></div>
+    <div class="warn">⚠️ <span><b>Stay safe:</b> Chat on WhatsApp first. Pay 50% now, 50% after tracking for your first order.</span></div>
+    <div class="sup-list">${list.length ? list.map(supCard).join("") : `<div class="empty card"><b>No ${esc(cat(mk.cat).name.toLowerCase())} suppliers within ${RANGES[mk.range].l}</b>Try a bigger range, or <button class="linkish" data-a="mkRangeBtn" data-v="5">show all Africa</button>.</div>`}</div>`;
+}
+function supCard(s) {
+  const dl = deliveryLabel(s), me = DB.me;
+  const msg = `Hi ${s.name}, I found you on LUNA 🌙 I'm in ${me.city}, ${me.country}. What's your best price for ${s.productName}, and how fast can you deliver?`;
+  return `<article class="sup">
+    <img src="${esc(src(s.photo || PH(PHOTOS[cat(s.cat).photo], 500)))}" alt="" loading="lazy">
+    <div class="sb"><div class="sn"><b>${esc(s.name)}</b>${s.verified ? `<span class="badge b-green">✓ Verified</span>` : ""}${s.demo ? `<span class="badge b-sample">Demo</span>` : s.shared ? `<span class="badge b-violet">New</span>` : ""}</div>
+      <div class="sm">📍 <b>${fmtKm(s.d)}</b> · ${esc(s.city)}, ${country(s.country).flag} ${esc(s.country)}</div>
+      <div class="sp"><span>${esc(s.productName)}</span><b class="tnum">${money(s.price)}</b><small>wholesale</small></div>
+      <div class="sm">${s.rating ? `★ ${s.rating.toFixed(1)} · ${s.sales.toLocaleString()} sales` : "New supplier · no ratings yet"}</div>
+      <div><span class="badge ${dl.cls}">${s.country === me.country ? "🚚 " : "✈️ "}${esc(dl.t)}</span></div>
+      <div class="sa"><a class="btn btn-green btn-sm" href="${esc(`https://wa.me/${s.whatsapp}?text=${encodeURIComponent(msg)}`)}" target="_blank" rel="noopener" data-a="logWa" data-v="${esc(s.id)}">WhatsApp Supplier</a>
+        <a class="btn btn-ai-ghost btn-sm" href="${esc(`https://www.google.com/maps/dir/?api=1&origin=${me.lat},${me.lng}&destination=${s.lat},${s.lng}`)}" target="_blank" rel="noopener">Get Directions</a>
+        <button class="btn btn-ai-ghost btn-sm" data-a="report" data-id="${esc(s.id)}">Report</button></div></div></article>`;
+}
+function tSuppliers() { return `<div class="dark-pane"><div class="h1" style="margin-bottom:10px">Suppliers near you</div>${marketBody()}</div>`; }
+function vMarket() {
+  const mine = Shared.suppliers.find((s) => s.docId === Shared.uid) || (DB.mySuppliers || [])[0];
+  return `<div class="wz" style="padding-bottom:110px"><div class="wz-in" style="max-width:760px">
+    <div style="display:flex;justify-content:space-between;align-items:center"><div class="brand"><span class="moon"></span>LUNA</div><button class="btn btn-ghost-dark btn-sm" data-a="switchMode">Switch to selling</button></div>
+    ${mine ? `<div class="mine"><img src="${esc(src(mine.photo || PH(PHOTOS[cat(mine.cat).photo], 300)))}" alt=""><div class="grow"><div class="eyebrow">Your supplier profile · live</div><b style="font-size:18px">${esc(mine.name)}</b><div style="color:var(--ai-mut);font-size:13px">${esc(mine.productName)} · ${money(mine.price)} · ships to ${esc((mine.ships || []).join(", "))}</div></div><button class="btn btn-ai-ghost btn-sm" data-a="addSupplier">Edit</button></div>`
+      : `<div class="mine"><div class="grow"><b>You're not listed yet</b><div style="color:var(--ai-mut);font-size:13px">Register so sellers across Africa can find you.</div></div><button class="btn btn-gold btn-sm" data-a="addSupplier">Register</button></div>`}
+    <h2 style="margin:22px 0 10px">Marketplace</h2>${marketBody()}</div></div>`;
+}
+
+/* ----- supplier registration ----- */
+function vSupReg() {
+  const me = DB.me, r = UI.sr || (UI.sr = (() => { const m = Shared.suppliers.find((s) => s.docId === Shared.uid) || (DB.mySuppliers || [])[0]; return m ? { ...m } : { name: "", country: me.country, city: me.city, cat: "earphones", productName: "", price: "", ships: [me.country], whatsapp: "", photo: "", days: "" }; })());
+  const c = country(r.country);
+  return `<div class="wz"><div class="wz-in"><div class="brand"><span class="moon"></span>LUNA</div>
+    <div class="eyebrow" style="margin-top:22px">Supplier registration</div><h2>Get seen across Africa</h2><p class="sub">Sellers who need your product see you instantly, sorted by distance.</p>
+    <form data-form="supreg">
+      <div class="field"><label for="srn">Business name</label><input class="inp" id="srn" name="name" required maxlength="50" value="${esc(r.name)}" placeholder="e.g. Gulf Gadgets Wholesale"></div>
+      <div class="row2"><div class="field"><label for="src">Country</label><select class="inp" id="src" name="country" data-change="srCountry">${AF.map((x) => `<option ${x.name === r.country ? "selected" : ""}>${esc(x.name)}</option>`).join("")}</select></div>
+        <div class="field"><label for="srt">City</label><select class="inp" id="srt" name="city">${Object.keys(c.cities).map((x) => `<option ${x === r.city ? "selected" : ""}>${esc(x)}</option>`).join("")}</select></div></div>
+      ${me.how === "gps" && r.country === me.country ? `<label class="chk"><input type="checkbox" name="gps" ${r.useGps !== false ? "checked" : ""}> Use my exact GPS spot so buyers get directions to my shop</label>` : ""}
+      <div class="row2"><div class="field"><label for="srk">Product</label><select class="inp" id="srk" name="cat">${CATS.map((x) => `<option value="${x.k}" ${x.k === r.cat ? "selected" : ""}>${esc(x.name)}</option>`).join("")}</select></div>
+        <div class="field"><label for="srp">Wholesale price (USD)</label><input class="inp" id="srp" name="price" type="number" min="0.5" step="0.01" required value="${esc(r.price)}"></div></div>
+      <div class="field"><label for="srpn">Product name</label><input class="inp" id="srpn" name="productName" maxlength="60" value="${esc(r.productName)}" placeholder="e.g. TWS Bluetooth earbuds, box of 10"></div>
+      <div class="field"><label>Ships to which countries?</label><div class="ships">${["All Africa", ...AF.map((x) => x.name)].map((n) => `<label class="shp ${r.ships.includes(n) ? "on" : ""}"><input type="checkbox" name="ships" value="${esc(n)}" ${r.ships.includes(n) ? "checked" : ""}>${n === "All Africa" ? "🌍" : country(n).flag} ${esc(n)}</label>`).join("")}</div></div>
+      <div class="row2"><div class="field"><label for="srw">WhatsApp number</label><div class="dial"><span>+${esc(c.dial)}</span><input class="inp" id="srw" name="whatsapp" inputmode="tel" required maxlength="15" value="${esc(r.whatsapp ? r.whatsapp.replace(new RegExp("^" + c.dial), "0") : "")}" placeholder="07X XXX XXXX"></div></div>
+        <div class="field"><label for="srd">Days to deliver abroad</label><input class="inp" id="srd" name="days" type="number" min="1" max="30" value="${esc(r.days || "")}" placeholder="e.g. 3"></div></div>
+      <div class="field"><label>Photo</label><div class="photo-row"><img id="srImg" src="${esc(src(r.photo || PH(PHOTOS[cat(r.cat).photo], 300)))}" alt=""><label class="btn btn-ghost-dark btn-sm">📷 Upload photo<input type="file" accept="image/*" id="srFile" hidden></label></div><span style="font-size:12px;color:#9d9da6">No photo? LUNA uses a product photo.</span></div>
+      ${!Shared.db && !CLOUD ? `<div class="notice dark-notice">This copy of LUNA saves on this phone only. In the shared test link, your listing shows to every tester.</div>` : ""}
+      <button class="btn btn-gold btn-block" type="submit" style="padding:16px;font-size:17px">Go live to buyers →</button>
+    </form>
+    <button class="btn btn-ghost-dark btn-block" style="margin-top:10px" data-a="supBack">← Back</button></div></div>`;
+}
+function shrinkPhoto(file) {
+  return new Promise((res, rej) => {
+    const img = new Image(), url = URL.createObjectURL(file);
+    img.onload = () => { const s = Math.min(1, 480 / Math.max(img.width, img.height)), c = document.createElement("canvas"); c.width = Math.round(img.width * s); c.height = Math.round(img.height * s); c.getContext("2d").drawImage(img, 0, 0, c.width, c.height); URL.revokeObjectURL(url); res(c.toDataURL("image/jpeg", 0.72)); };
+    img.onerror = rej; img.src = url;
+  });
+}
+
+/* =========================== Luna AI chat bubble =========================== */
+function chatFab() {
+  if (!["admin", "market"].includes(UI.view)) return "";
+  const open = UI.chatOpen, msgs = UI.chat || (UI.chat = [{ from: "luna", text: "Hi I'm Luna AI 🌙 I will market your shop for you. What do you want to sell today?" }]);
+  return open ? `<div class="chat" role="dialog" aria-label="Luna AI chat"><div class="chat-h"><span class="orb" style="width:30px;height:30px"></span><b>Luna AI</b><small>${Shared.sample ? "AI" : "Assistant"}</small><button class="x" data-a="chatToggle" aria-label="Close chat">×</button></div>
+    <div class="chat-b" id="chatB">${msgs.map((m) => `<div class="cm ${m.from}">${esc(m.text)}</div>`).join("")}</div>
+    <div class="chips" style="margin:6px 12px">${["What should I sell?", `Suppliers near ${DB.me?.city || "me"}`, "Write my WhatsApp post"].map((q) => `<button class="chip" data-a="chatAsk" data-v="${esc(q)}">${esc(q)}</button>`).join("")}</div>
+    <form class="chat-f" data-form="chat"><input name="q" placeholder="Ask Luna AI…" autocomplete="off" aria-label="Message Luna AI" maxlength="500"><button class="btn btn-gold btn-sm" type="submit">Send</button></form></div>`
+    : `<button class="chat-fab" data-a="chatToggle" aria-label="Open Luna AI chat"><span class="orb" style="width:26px;height:26px"></span><span class="cf-t">Hi, I'm Luna AI</span></button>`;
+}
+function chatOffline(q) {
+  const me = DB.me || { city: "Harare", country: "Zimbabwe" }, low = q.toLowerCase();
+  const near = (k) => marketList(k, 5).slice(0, 3).map((s) => `• ${s.name} (${s.city}) ${money(s.price)} — ${fmtKm(s.d)}`).join("\n");
+  const c = CATS.find((x) => low.includes(x.k) || low.includes(x.name.toLowerCase().split(" ")[0].toLowerCase()) || (x.k === "hair" && /wig|weave/.test(low)) || (x.k === "watch" && /watch/.test(low)));
+  if (/supplier|stock|wholesale|buy from/.test(low)) { const k = c?.k || UI.mk?.cat || "earphones"; return `Closest ${cat(k).name.toLowerCase()} suppliers that deliver to ${me.city}:\n${near(k) || "None yet — try All Africa in Suppliers."}\nAlways chat on WhatsApp first and pay 50% now, 50% after tracking.`; }
+  if (/post|caption|status|tiktok|facebook|market/.test(low)) { const s = shop(); return s ? `Here's a WhatsApp Status for today:\n\n${planTemplate(s)[0]}\n\nTap “Market My Business For Me” in Luna AI for a full 7-day plan.` : "Open your shop first, then I'll write your posts."; }
+  if (c) { const v = askLuna(c.market, me.city); return `${c.name} in ${me.city}: ${v ? `${v.level} — about ${v.sellers} sellers.` : ""}\nCost about ${money(c.cost)}, sell ${money(c.sell)}, keep ~${money(c.profit)} per sale.\nCheapest suppliers near you:\n${near(c.k) || "none listed yet"}`; }
+  const ranked = CATS.map((x) => ({ x, v: askLuna(x.market, me.city) })).sort((a, b) => (a.v?.sellers || 99) - (b.v?.sellers || 99));
+  return `In ${me.city} right now I'd sell:\n${ranked.slice(0, 3).map(({ x, v }) => `• ${x.name} — ${v?.level || ""}, profit ~${money(x.profit)}`).join("\n")}\nTell me a product or your budget (e.g. “I have $50”).`;
+}
+async function chatSend(q) {
+  q = q.trim(); if (!q || UI.chatBusy) return;
+  UI.chat.push({ from: "you", text: q }); UI.chat.push({ from: "luna", text: "…" }); UI.chatBusy = true; render(); log("chat", q.slice(0, 40));
+  const last = UI.chat[UI.chat.length - 1], me = DB.me || {}, s = shop();
+  const paint = () => { const b = $("#chatB"); if (b) { b.lastElementChild.textContent = last.text; b.scrollTop = b.scrollHeight; } };
+  if (Shared.sample) {
+    const near = CATS.map((c) => { const l = marketList(c.k, 5).slice(0, 2); return `${c.name}: ${l.map((x) => `${x.name} in ${x.city} ${money(x.price)} (${fmtKm(x.d)})`).join("; ") || "none listed"}`; }).join("\n");
+    const prompt = `You are Luna AI 🌙, a friendly business coach inside the LUNA marketplace app for small sellers and suppliers across Africa. Reply in 2-6 short lines, simple English (or the user's language), a few emojis, practical and local. Never promise income; market numbers are estimates.
+User: ${me.mode || "seller"} in ${me.city}, ${me.country}. Payments there: ${payOf(me.country || "Zimbabwe").join(", ")}.${s ? ` Their shop: ${s.name}, selling ${s.products.map((p) => `${p.name} at ${money(p.price)}`).join(", ")}. Store link: ${shareUrl(s)}` : ""}
+Product ideas (sell / cost / profit): ${CATS.map((c) => `${c.name} ${money(c.sell)}/${money(c.cost)}/${money(c.profit)}`).join("; ")}.
+Nearest suppliers that deliver to them:\n${near}
+Safety rule to repeat when suppliers come up: chat on WhatsApp first, pay 50% now and 50% after tracking on a first order.
+
+Conversation:
+${UI.chat.slice(-9, -1).map((m) => `${m.from === "you" ? "User" : "Luna"}: ${m.text}`).join("\n")}
+Luna:`;
+    try { await Shared.sample(prompt, { cache: false, modelTier: "quick", onText: ({ text }) => { last.text = text; paint(); } }); }
+    catch { last.text = chatOffline(q); }
+  } else { await new Promise((r) => setTimeout(r, 500)); last.text = chatOffline(q); }
+  UI.chatBusy = false; render(); setTimeout(() => { const b = $("#chatB"); if (b) b.scrollTop = b.scrollHeight; }, 30);
+}
+
+/* =========================== Test monitor =========================== */
+function vMonitor() {
+  const M = UI.mon || { loading: true };
+  const rows = M.rows || [{ tester: "this phone", items: DB.events || [] }];
+  const all = rows.flatMap((r) => r.items.map((e) => ({ ...e, tester: r.tester }))).sort((a, b) => b.t - a.t);
+  const count = (t) => all.filter((e) => e.type === t).length;
+  const tiles = [["Testers", rows.length], ["Shops created", count("shop_created")], ["Suppliers listed", count("supplier_registered")], ["Orders", count("order")], ["AI chats", count("chat")], ["Plans made", count("plan")], ["Posts shared", count("post_shared")], ["Reports", count("report")]];
+  return `<div class="wz"><div class="wz-in" style="max-width:820px"><div style="display:flex;justify-content:space-between;align-items:center"><div class="brand"><span class="moon"></span>LUNA</div><button class="btn btn-ghost-dark btn-sm" data-a="monBack">← Back</button></div>
+    <h2 style="margin-top:20px">Test monitor</h2><p class="sub">${M.shared ? `Everyone testing the shared link · ${allSuppliers().filter((s) => s.shared).length} live suppliers` : "Activity on this phone. In the shared test link you see every tester."}</p>
+    <div class="mon-tiles">${tiles.map(([l, n]) => `<div><b class="tnum">${n}</b><small>${l}</small></div>`).join("")}</div>
+    <div class="btnrow" style="margin:14px 0"><button class="btn btn-gold btn-sm" data-a="monCsv">Copy as spreadsheet (CSV)</button><button class="btn btn-ghost-dark btn-sm" data-a="monitor">Refresh</button></div>
+    <div class="mon-log">${all.slice(0, 150).map((e) => `<div><span class="tnum">${new Date(e.t).toLocaleString(undefined, { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}</span><b>${esc(e.type.replace(/_/g, " "))}</b><span>${esc(e.detail)}</span><span class="mut2">${esc(e.where)} · ${esc(e.mode)}${M.shared ? " · tester " + esc(String(e.tester).slice(0, 6)) : ""}</span></div>`).join("") || `<div><span>No activity yet.</span></div>`}</div>
+  </div></div>`;
+}
+async function openMonitor() {
+  UI.mon = { loading: true }; go("monitor", "monitor");
+  const rows = await Shared.allEvents().catch(() => null);
+  UI.mon = rows ? { rows: rows.length ? rows : [{ tester: "none yet", items: [] }], shared: true } : { rows: null };
+  render();
+}
+
+function ensureMe() { if (!DB.me) { DB.me = { mode: "seller", country: "Zimbabwe", city: "Harare", lat: -17.8292, lng: 31.0522, how: "default" }; save(); } return DB.me; }
+function homeView() {
+  if (!DB.me) return "welcome";
+  if (DB.me.mode === "supplier") return "market";
+  const own = Object.values(DB.shops).filter((x) => !x.demo);
+  if (own.length) { if (shop()?.demo) DB.current = own[own.length - 1].slug; return "admin"; }
+  return "build3";
+}
+function readSupForm() {
+  const f = $("[data-form=supreg]"); if (!f) return UI.sr;
+  return { ...UI.sr, name: f.name.value, country: f.country.value, city: f.city.value, cat: f.cat.value, productName: f.productName.value, price: f.price.value, ships: [...f.querySelectorAll("input[name=ships]:checked")].map((x) => x.value), whatsapp: f.whatsapp.value, days: f.days.value };
+}
+
 /* =========================== ACTIONS =========================== */
 function go(view, hash) { UI.view = view; if (hash !== undefined && location.hash !== "#" + hash) history.pushState(null, "", hash ? "#" + hash : location.pathname + location.search); render(); scrollTo(0, 0); }
 function openStore(s) {
@@ -1261,8 +1808,8 @@ function openStore(s) {
   go("store", s.visitor ? undefined : "store");
 }
 const A = {
-  startWizard() { UI.wz = { step: 0, role: "", city: "", q: "", v: null, name: "", eco: "", err: "" }; go("wizard", "setup"); },
-  openDemo() { DB.current = DEMO_SLUG; save(); UI.tab = "home"; go("admin", "admin"); },
+  startWizard() { ensureMe(); UI.b3 = null; return go("build3", "build3"); UI.wz = { step: 0, role: "", city: "", q: "", v: null, name: "", eco: "", err: "" }; go("wizard", "setup"); },
+  openDemo() { ensureMe(); DB.current = DEMO_SLUG; save(); UI.tab = "home"; go("admin", "admin"); },
   openShop(d) { DB.current = d.slug; save(); UI.tab = "home"; go("admin", "admin"); },
   wzSet(d) { UI.wz[d.k] = d.v; render(); },
   wzBack() { if (UI.wz.verify) { UI.wz.verify = false; UI.wz.err = ""; return render(); } if (UI.wz.step === 0) return go("landing", ""); UI.wz.step--; render(); },
@@ -1321,7 +1868,7 @@ const A = {
     const m = metrics(shop());
     openSheet(`<div class="sheet-h"><h3>Withdraw</h3><button class="x" data-a="close" aria-label="Close">×</button></div>
       <p class="mut" style="margin-top:0">Customers pay straight into your EcoCash, so this money is already on your phone. Withdrawing here records the cash you took out, so your balance stays correct.</p>
-      <form data-form="withdraw"><div class="f"><label for="wa">Amount (USD)</label><input id="wa" name="amt" type="number" min="1" step="0.5" max="${m.balance}" value="${m.balance}" required></div>
+      <form data-form="withdraw"><div class="f"><label for="wa">Amount (USD)</label><input id="wa" name="amt" type="number" min="1" step="0.01" max="${m.balance}" value="${m.balance}" required></div>
       <div class="f"><label>To EcoCash</label><input value="${esc(fmtPhone(shop().ecocash))}" readonly></div><button class="btn btn-gold btn-block" type="submit">Withdraw ${money(m.balance)}</button></form>`);
   },
   pd(d) { sheetPD(d.id); },
@@ -1332,6 +1879,56 @@ const A = {
   checkout() { sheetCheckout(UI.payMethod); },
   payMethod(d, el, e) { e.preventDefault(); const f = $("[data-form=checkout]"); const keep = { name: f.name.value, phone: f.phone.value, area: f.area.value }; sheetCheckout(d.v); const g = $("[data-form=checkout]"); g.name.value = keep.name; g.phone.value = keep.phone; g.area.value = keep.area; },
   close() { closeSheet(); },
+  pickMode(d) { DB.me = { ...(DB.me || {}), mode: d.v }; save(); log("mode", d.v); UI.loc = null; UI.locReturn = null; go("locate", "locate"); },
+  allowLoc() {
+    const fail = () => { UI.loc = { ...UI.loc, state: "manual", denied: true }; log("location", "denied"); render(); };
+    if (!navigator.geolocation) return fail();
+    UI.loc.state = "busy"; render();
+    navigator.geolocation.getCurrentPosition((pos) => { const ll = [pos.coords.latitude, pos.coords.longitude], n = nearestCity(ll); UI.loc = { state: "found", country: n.country, city: n.city, d: n.d, lat: ll[0], lng: ll[1] }; log("location", "gps · " + n.city); render(); }, fail, { timeout: 12000, maximumAge: 600000 });
+  },
+  manualLoc() { UI.loc.state = "manual"; render(); },
+  locDone() {
+    const L = UI.loc, found = L.state === "found";
+    const c = found ? L.country : $("#locC")?.value || L.country, city = found ? L.city : $("#locT")?.value || L.city;
+    const ll = found ? [L.lat, L.lng] : cityLL(c, city);
+    DB.me = { ...ensureMe(), country: c, city, lat: ll[0], lng: ll[1], how: found ? "gps" : "manual" }; save();
+    if (!found) log("location", "manual · " + city);
+    const back = UI.locReturn; UI.locReturn = null;
+    if (back === "admin") return go("admin", "admin");
+    if (back === "market" || back === "build3") return go(back, back);
+    if (DB.me.mode === "supplier") return go(allSuppliers().some((x) => x.docId === Shared.uid || String(x.id).startsWith("my-")) ? "market" : "supreg", "supreg");
+    go(homeView(), "");
+  },
+  changeLoc() { UI.locReturn = UI.view; UI.loc = { state: "ask", country: DB.me.country, city: DB.me.city }; go("locate", "locate"); },
+  b3cat(d) { UI.b3.name = $("#b3name")?.value ?? UI.b3.name; UI.b3.cat = d.v; render(); },
+  build3() { build3(); },
+  async marketMe() {
+    const s = shop(); UI.tab = "ai"; render(); toast("✨ LUNA AI is writing your 7-day plan…");
+    s.plan = await makePlan(s); save(); syncSettings(s); render(); setTimeout(() => $(".day")?.scrollIntoView({ behavior: "smooth", block: "center" }), 50);
+  },
+  copyPlan(d) { copy(shop().plan.items[+d.i], `Day ${+d.i + 1} copied — paste it in the app`); },
+  mkCat(d) { UI.mk.cat = d.v; render(); },
+  mkRangeBtn(d) { UI.mk.range = +d.v; render(); },
+  addSupplier() { UI.sr = null; UI.srBack = UI.view; go("supreg", "supreg"); },
+  supBack() { const b = UI.srBack || (DB.me.mode === "supplier" ? "market" : "admin"); if (b === "admin") UI.tab = "suppliers"; go(b, b); },
+  report(d) {
+    const sp = allSuppliers().find((x) => x.id === d.id);
+    openSheet(`<div class="sheet-h"><h3>Report ${esc(sp?.name || "supplier")}</h3><button class="x" data-a="close" aria-label="Close">×</button></div>
+      <form data-form="report" data-id="${esc(d.id)}">${["Scam / asked for full payment upfront", "Fake or wrong product", "Price is not true", "Not responding"].map((r, i) => `<label class="pay-opt"><input type="radio" name="reason" value="${esc(r)}" ${i ? "" : "checked"}><span>${esc(r)}</span></label>`).join("")}
+      <div class="f"><label for="rpn">What happened? (optional)</label><textarea id="rpn" name="note" rows="3" maxlength="300"></textarea></div><button class="btn btn-gold btn-block" type="submit">Send report</button></form>`);
+  },
+  logWa(d) { log("supplier_contact", d.v); },
+  chatToggle() { UI.chatOpen = !UI.chatOpen; render(); if (UI.chatOpen) setTimeout(() => { const b = $("#chatB"); if (b) b.scrollTop = b.scrollHeight; $(".chat-f input")?.focus(); }, 30); },
+  chatAsk(d) { chatSend(d.v); },
+  monitor() { openMonitor(); },
+  monBack() { go(homeView(), ""); },
+  monCsv() {
+    const rows = UI.mon?.rows || [{ tester: "this phone", items: DB.events || [] }];
+    const q = (v) => `"${String(v ?? "").replace(/"/g, '""')}"`;
+    const csv = ["time,tester,type,detail,where,mode", ...rows.flatMap((r) => r.items.map((e) => [new Date(e.t).toISOString(), r.tester, e.type, e.detail, e.where, e.mode].map(q).join(",")))].join("\n");
+    copy(csv, "Copied — paste into Google Sheets or Excel");
+  },
+  switchMode() { DB.me.mode = "seller"; save(); go(homeView(), ""); },
   signin() { UI.signinEmail = null; sheetSignin(); },
   signout() { Cloud.signOut(); Object.keys(DB.shops).forEach((k) => DB.shops[k].cloud && delete DB.shops[k]); DB.current = DEMO_SLUG; save(); go("landing", ""); toast("Signed out"); },
   connect(d) { sheetConsent(d.k); },
@@ -1348,8 +1945,12 @@ const A = {
   autoMode() { const s = shop(); s.ai.autoMode = !s.ai.autoMode; if (s.ai.autoMode) autoPrepare(s); save(); syncSettings(s); render(); toast(s.ai.autoMode ? `🤖 Auto Mode ON — I'll have a post ready every day at ${fmtTime(s.ai.reminderTime)}` : "Auto Mode OFF"); },
   testAlarm() { const s = shop(), post = s.ai.posts.find((x) => x.status === "scheduled" && x.date >= dstr()); if (!post) return; const was = post.alarmed; showAlarm(post); post.alarmed = was; save(); },
   askNotify() { Notification.requestPermission().then(() => sheetReminder()); },
-  calendar() { const a = document.createElement("a"); a.href = calendarFile(); a.download = "luna-daily-reminder.ics"; document.body.appendChild(a); a.click(); a.remove(); toast("📅 Open the file to add the daily alarm"); },
+  calendar() {
+    const ics = calendarFile();
+    if (Shared.downloads) return Shared.downloads.save({ filename: "luna-daily-reminder.ics", data: ics }).then(() => toast("📅 Open the file to add the daily alarm"), () => {});
+    const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([ics], { type: "text/calendar" })); a.download = "luna-daily-reminder.ics"; document.body.appendChild(a); a.click(); a.remove(); toast("📅 Open the file to add the daily alarm"); },
   sendTo(d) { sendTo(d.k); },
+  saveVideo() { const f = UI.promo?.file; if (f) Shared.downloads.save({ filename: f.name, data: f }).catch(() => {}); },
   finishPosting() { const n = Object.keys(UI.posting?.post.done || {}).length; closeAlarm(); UI.posting = null; render(); if (n === 4) toast("🎉 All 4 posts shared"); },
   scrim(d, el, e) { if (e.target === el) closeSheet(); },
 };
@@ -1358,7 +1959,7 @@ function orderDone(order, inDashboard) {
   const s = UI.store;
   const msg = `🛍️ New order ${order.id} — ${s.name}\n${order.items.map((i) => `${i.qty}× ${i.name} (${money(i.price)})`).join("\n")}\nTotal: ${money(order.total)}\nPayment: ${order.method === "paynow" ? "EcoCash (paid via Paynow)" : order.method === "ecocash" ? "EcoCash, code " + order.ref : "Pay on Delivery"}\nName: ${order.customer}\nPhone: ${fmtPhone(order.phone)}\nDeliver to: ${order.area}`;
   openSheet(`<div style="text-align:center;padding:10px 0"><div style="font-size:54px">✅</div><h3>${order.method === "paynow" ? "Paid! Order confirmed" : "Order placed!"}</h3><p class="mut">Order <b class="tnum">${esc(order.id)}</b> · ${money(order.total)}<br>${order.method === "paynow" ? "Your EcoCash payment went through. The seller will deliver soon." : order.method === "ecocash" ? "The seller will check your EcoCash payment and deliver." : "Pay cash when your order arrives."}</p>
-    ${inDashboard ? `<p class="mut" style="font-size:13px">✓ The seller has your order.</p>` : `<a class="btn btn-green btn-block" href="${esc(waLink(msg, s.ecocash))}" target="_blank" rel="noopener">Send order to seller on WhatsApp</a>`}
+    ${inDashboard ? `<p class="mut" style="font-size:13px">✓ The seller has your order.</p>` : `<a class="btn btn-green btn-block" href="${esc(waLink(msg, s.ecocash, s.country))}" target="_blank" rel="noopener">Send order to seller on WhatsApp</a>`}
     <button class="btn btn-ghost btn-block" style="margin-top:8px" data-a="close">Keep shopping</button></div>`);
 }
 async function payWithPaynow(order, wallet) {
@@ -1381,6 +1982,31 @@ async function payWithPaynow(order, wallet) {
 }
 
 const FORMS = {
+  async supreg(f) {
+    const me = DB.me, c = f.country.value, city = f.city.value, k = f.cat.value, price = +f.price.value;
+    const ships = [...f.querySelectorAll("input[name=ships]:checked")].map((x) => x.value);
+    const wa = intl(f.whatsapp.value, c);
+    if (f.name.value.trim().length < 2) return toast("Enter your business name");
+    if (!(price > 0)) return toast("Enter your wholesale price");
+    if (!/^\d{9,15}$/.test(wa)) return toast("Enter your WhatsApp number");
+    const ll = f.gps?.checked && me.how === "gps" && c === me.country ? meLL() : cityLL(c, city);
+    const sup = { name: f.name.value.trim(), country: c, city, lat: ll[0], lng: ll[1], cat: k, productName: f.productName.value.trim() || cat(k).name, price, ships: ships.length ? ships : [c], days: +f.days.value || 0, whatsapp: wa, photo: UI.sr?.photo || "", rating: 0, sales: 0, verified: false, createdAt: Date.now() };
+    const btn = f.querySelector("button[type=submit]"); btn.disabled = true; btn.textContent = "Going live…";
+    let sharedOk = false;
+    if (Shared.db && Shared.uid) { try { await Shared.saveSupplier(sup); sharedOk = true; } catch (e) { toast("⚠️ Couldn't share: " + esc(e.message || e.code || "")); } }
+    if (!sharedOk) DB.mySuppliers = [{ ...sup, id: "my-" + uid() }];
+    save(); log("supplier_registered", `${sup.name} · ${cat(k).name} · ${city}`);
+    UI.sr = null; UI.mk = { cat: k, range: 5 };
+    toast(sharedOk ? "✅ You're live — every LUNA tester can see you now" : "✅ You're live on this phone");
+    const b = UI.srBack || (me.mode === "supplier" ? "market" : "admin"); if (b === "admin") UI.tab = "suppliers"; go(b, b);
+  },
+  report(f) {
+    const id = f.dataset.id, reason = f.reason.value, note = f.note.value.trim();
+    DB.hiddenSup = [...(DB.hiddenSup || []), id]; save();
+    Shared.report({ id, reason, note, at: Date.now() }).catch(() => {});
+    log("report", `${reason} · ${id}`); closeSheet(); render(); toast("Thanks — LUNA will review this supplier. Hidden for you.");
+  },
+  chat(f) { chatSend(f.q.value); },
   ask(f) { UI.wz.q = f.q.value; UI.wz.v = askLuna(f.q.value, UI.wz.city); render(); },
   name() { A.wzNext(); },
   product(f) {
@@ -1414,18 +2040,19 @@ const FORMS = {
       if (!UI.signinEmail) { await Cloud.sendCode(email); UI.signinEmail = email; return sheetSignin(); }
       await Cloud.verify(UI.signinEmail, f.code.value.trim()); UI.signinEmail = null;
       await loadCloudShops(); closeSheet();
+      if (UI.afterSignin) { const next = UI.afterSignin; UI.afterSignin = null; return next(); }
       const mine = Object.values(DB.shops).filter((x) => x.cloud);
       if (!mine.length) { toast("No shop yet — let's build one"); return A.startWizard(); }
       DB.current = mine[0].slug; save(); UI.tab = "home"; go("admin", "admin");
     } catch (e) { btn.disabled = false; toast("⚠️ " + esc(e.message)); }
   },
   async code(f) { UI.wz.code = f.code.value.trim(); await A.wzNext(); },
-  eco(f) { const d = f.eco.value.replace(/\D/g, ""); if (!/^07\d{8}$/.test(d)) return toast("Enter a 10-digit number starting with 07"); shop().ecocash = d; save(); syncSettings(); closeSheet(); render(); toast("✓ EcoCash number saved"); },
+  eco(f) { const d = f.eco.value.replace(/\D/g, ""); if (!/^\d{9,13}$/.test(d)) return toast("Enter your mobile money number"); shop().ecocash = d; save(); syncSettings(); closeSheet(); render(); toast("✓ EcoCash number saved"); },
   withdraw(f) { const s = shop(), amt = Math.min(+f.amt.value, metrics(s).balance); if (!(amt > 0)) return; s.withdrawals.push({ amt, at: Date.now() }); save(); sync(() => Cloud.addWithdrawal(s, amt)); closeSheet(); render(); toast(`✓ ${money(amt)} withdrawal recorded`); },
   async checkout(f) {
     const s = UI.store, method = UI.payMethod || "ecocash", btn = $("#payBtn");
     const phone = f.phone.value.replace(/\D/g, "");
-    if (!/^0\d{9}$/.test(phone)) return toast("Enter a 10-digit phone number");
+    if (!/^\d{9,13}$/.test(phone)) return toast("Enter your phone number");
     const wallet = method === "paynow" ? f.wallet.value.replace(/\D/g, "") : "";
     if (method === "paynow" && !/^07[78]\d{7}$/.test(wallet)) return toast("Enter an EcoCash number starting 077 or 078");
     const items = UI.cart.map((c) => { const p = s.products.find((x) => x.id === c.id); return { pid: p.id, name: p.name, qty: c.qty, price: p.price }; });
@@ -1438,7 +2065,7 @@ const FORMS = {
       items.forEach((i) => { const p = s.products.find((x) => x.id === i.pid); p.stock = Math.max(0, p.stock - i.qty); });
       if (owned) { owned.orders.unshift(order); save(); }
     } else if (owned) { s.orders.push(order); items.forEach((i) => { const p = s.products.find((x) => x.id === i.pid); p.stock = Math.max(0, p.stock - i.qty); }); save(); }
-    UI.cart = []; render();
+    UI.cart = []; render(); log("order", `${money(order.total)} · ${method} · ${s.name}`);
     if (method === "paynow") return payWithPaynow(order, wallet);
     orderDone(order, live || owned);
   },
@@ -1446,7 +2073,9 @@ const FORMS = {
 
 /* =========================== RENDER & EVENTS =========================== */
 function render() {
-  $("#app").innerHTML = ({ landing: vLanding, wizard: vWizard, admin: vAdmin, store: vStore, notfound: vNotFound, loading: () => `<div class="wz"><div class="wz-in" style="padding-top:30vh;text-align:center"><div class="brand" style="justify-content:center"><span class="moon"></span>LUNA</div><p class="sub" style="margin-top:14px">Opening store…</p></div></div>` })[UI.view]();
+  $("#app").innerHTML = ({ landing: vWelcome, welcome: vWelcome, locate: vLocate, build3: vBuild3, supreg: vSupReg, market: vMarket, monitor: vMonitor, wizard: vWizard, admin: vAdmin, store: vStore, notfound: vNotFound, loading: () => `<div class="wz"><div class="wz-in" style="padding-top:30vh;text-align:center"><div class="brand" style="justify-content:center"><span class="moon"></span>LUNA</div><p class="sub" style="margin-top:14px">Opening store…</p></div></div>` })[UI.view]();
+  $("#app").insertAdjacentHTML("beforeend", chatFab());
+  document.body.classList.toggle("dark", UI.view !== "store");
   if (UI.view === "admin" && !ensureAI(shop()).connectSeen) setTimeout(() => { if (UI.view === "admin" && !shop().ai.connectSeen && !$("#sheet .scrim") && !$("#alarm")) sheetConnectAll(); }, 500);
   document.title = UI.view === "store" ? `${UI.store.name} · LUNA` : UI.view === "admin" ? `${shop().name} · LUNA Admin` : "LUNA";
 }
@@ -1460,11 +2089,19 @@ document.addEventListener("click", (e) => {
 });
 document.addEventListener("submit", (e) => { const f = e.target.closest("[data-form]"); if (!f) return; e.preventDefault(); FORMS[f.dataset.form](f); });
 document.addEventListener("change", (e) => {
+  const ch = e.target.dataset.change;
+  if (ch === "locCountry") { UI.loc.country = e.target.value; UI.loc.city = Object.keys(country(e.target.value).cities)[0]; return render(); }
+  if (ch === "locCity") { UI.loc.city = e.target.value; return; }
+  if (ch === "mkRange") { UI.mk.range = +e.target.value; return render(); }
+  if (ch === "srCountry") { UI.sr = readSupForm(); UI.sr.city = Object.keys(country(UI.sr.country).cities)[0]; return render(); }
+  if (e.target.id === "srFile" && e.target.files[0]) { shrinkPhoto(e.target.files[0]).then((d) => { UI.sr = { ...readSupForm(), photo: d }; $("#srImg").src = d; }).catch(() => toast("Couldn't read that photo")); return; }
+  if (e.target.name === "ships") { e.target.closest(".shp")?.classList.toggle("on", e.target.checked); return; }
   if (e.target.dataset.change === "switchShop") { const v = e.target.value; if (v === "__new") return A.startWizard(); DB.current = v; save(); UI.tab = "home"; render(); }
 });
 document.addEventListener("input", (e) => {
   if (e.target.id === "shopname") { UI.wz.name = e.target.value; const nm = e.target.value || "Your Shop"; $("#prevName").textContent = nm; $("#prevUrl").textContent = `${SITE.replace(/^https?:\/\//, "")}/shop/${slugify(e.target.value || "your-shop")}`; $("#namePrev .logo").textContent = initials(nm); const nb = $("[data-a=wzNext]"); if (nb) nb.disabled = e.target.value.trim().length < 2; }
   if (e.target.id === "eco") UI.wz.eco = e.target.value;
+  if (e.target.id === "b3name") { UI.b3.name = e.target.value; const ok = e.target.value.trim().length >= 2; e.target.closest(".tap").classList.toggle("ok", ok); const b = $("[data-a=build3]"); if (b) b.disabled = !(ok && UI.b3.cat); }
   if (e.target.id === "askq") UI.wz.q = e.target.value;
 });
 
@@ -1484,7 +2121,9 @@ async function route() {
   if (h === "admin") { UI.view = "admin"; return render(); }
   if (h === "store") return openStore(shop());
   if (h === "setup") { UI.view = "wizard"; return render(); }
-  UI.view = "landing"; render();
+  if (h === "monitor") return openMonitor();
+  if (["market", "build3", "supreg", "locate"].includes(h) && DB.me) { UI.view = h; return render(); }
+  UI.view = homeView(); render();
 }
 async function loadCloudShops() {
   const list = await Cloud.myShops();
@@ -1515,6 +2154,7 @@ function sheetSignin() {
     <button class="btn btn-green btn-block" type="submit">${e ? "Sign in" : "Email me a code"}</button></form>`);
 }
 async function boot() {
+  Shared.init(); log("open");
   await route();
   if (CLOUD && Cloud.user) { try { await loadCloudShops(); if (UI.view === "admin") render(); } catch {} }
   setInterval(tick, 15000); setInterval(pollOrders, 20000); setTimeout(tick, 1500);

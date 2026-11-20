@@ -1,11 +1,17 @@
-# LUNA AI — one-file store builder + auto-poster (Zimbabwe)
+# LUNA — Africa's AI marketplace (one file)
 
 `index.html` is the whole app. Open it in a browser, or deploy this folder to Vercel.
 
 ## What works right away (no setup)
-Setup wizard, seller dashboard, products, orders, wallet, promo videos, storefront,
-demo store, and LUNA AI (connect accounts, 4-app post queue, alarm, Auto Mode).
-Everything is saved on that phone only.
+Seller / Supplier modes, location (GPS or pick from 19 countries), suppliers sorted by distance
+with range filter and price comparison, supplier registration, 3-tap shop builder, 7-day marketing
+plan, Luna AI chat, seller dashboard, orders, wallet, promo videos, storefront, demo store,
+auto-poster with approval alarm, and a test monitor. Everything is saved on that phone only.
+
+## Testing with others (the shared claude.ai link)
+In the claude.ai preview link, testers share one database: suppliers they register appear for
+everyone, reports and activity reach the owner's Test monitor, and Luna AI chat / plans are written
+by real AI. Share it from the page's Share menu and give testers "can use" (Contributor) access.
 
 ## Make orders real (from any phone) — Supabase, free
 1. Create a project at supabase.com.
