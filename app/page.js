@@ -5,7 +5,9 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { COUNTRIES, findCountry, SUPPORT_PHONE_DISPLAY, SUPPORT_PHONE_WA } from "../lib/africa";
-import { lunaReply, rankedMarket } from "../lib/luna";
+import { lunaReply, rankedMarket, PRODUCTS } from "../lib/luna";
+
+const BUILD_MARKER = /\[\[BUILD:([a-z]+)\]\]/;
 
 const STEPS = [
   { id: 1, title: "Who are you?", desc: "Are you here to SELL or SUPPLY?", video: "https://www.youtube.com/embed/VIDEO_ID_1", videoTitle: "Confused? Watch: Seller vs Supplier in 30 sec" },
@@ -34,6 +36,7 @@ export default function LunaApp() {
   const [msg, setMsg] = useState("");
   const [typing, setTyping] = useState(false);
   const [lastProduct, setLastProduct] = useState(null);
+  const [aiOff, setAiOff] = useState(false);
   const chatEnd = useRef(null);
 
   const country = findCountry(countryName);
@@ -49,22 +52,74 @@ export default function LunaApp() {
   const pickCountry = (name) => { setCountryName(name); setCity(findCountry(name).cities[0]); setCustomCity(""); resetChat(); };
   const pickCity = (c) => { setCity(c); resetChat(); };
 
-  const send = (text) => {
-    const userMsg = (text ?? msg).trim();
-    if (!userMsg || typing) return;
-    setChat([...messages, { from: "you", text: userMsg }]);
-    setMsg("");
-    setTyping(true);
+  const buildShop = (p) => {
+    setProduct(p);
+    setLastProduct(p);
+    setTimeout(() => setStep(3), 1400);
+  };
+
+  // Offline Luna: the built-in reply engine (used when the AI isn't configured or is unreachable).
+  const replyOffline = (userMsg) => {
     const reply = lunaReply(userMsg, { city, country, role, lastProduct });
     setTimeout(() => {
       setTyping(false);
       setChat((prev) => [...prev, { from: "luna", text: reply.text }]);
       if (reply.suggest) setLastProduct(reply.suggest);
-      if (reply.action?.type === "build") {
-        setProduct(reply.action.product);
-        setTimeout(() => setStep(3), 1400);
-      }
+      if (reply.action?.type === "build") buildShop(reply.action.product);
     }, 600 + Math.min(900, reply.text.length * 4));
+  };
+
+  // Real AI Luna: streams Claude's reply from /api/luna.
+  const replyAI = async (history) => {
+    const res = await fetch("/api/luna", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ messages: history, context: { city, country: country.name, role } }),
+    });
+    if (res.status === 503) { setAiOff(true); throw new Error("ai_not_configured"); }
+    if (!res.ok || !res.body) throw new Error(`luna_api_${res.status}`);
+
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
+    let full = "";
+    let started = false;
+    const show = (t) => t.replace(BUILD_MARKER, "").replace(/\[\[[^\]]*$/, "").trim();
+    try {
+      for (;;) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        full += decoder.decode(value, { stream: true });
+        if (!show(full)) continue;
+        if (!started) { started = true; setTyping(false); setChat((prev) => [...prev, { from: "luna", text: show(full) }]); }
+        else setChat((prev) => [...prev.slice(0, -1), { from: "luna", text: show(full) }]);
+      }
+    } catch (e) {
+      if (!started) throw e; // nothing shown yet: let the offline Luna answer instead
+    }
+    if (!started) throw new Error("empty_reply");
+
+    const built = full.match(BUILD_MARKER);
+    const builtProduct = built && PRODUCTS.find((p) => p.id === built[1]);
+    if (builtProduct) return buildShop(builtProduct);
+    // Remember the last catalog product Luna talked about, for the "Yes, build it!" button.
+    const text = full.toLowerCase();
+    const mentioned = PRODUCTS.map((p) => ({ p, at: text.lastIndexOf(p.name.toLowerCase()) })).filter((x) => x.at >= 0).sort((a, b) => b.at - a.at)[0];
+    if (mentioned) setLastProduct(mentioned.p);
+  };
+
+  const send = async (text) => {
+    const userMsg = (text ?? msg).trim();
+    if (!userMsg || typing) return;
+    const next = [...messages, { from: "you", text: userMsg }];
+    setChat(next);
+    setMsg("");
+    setTyping(true);
+    if (aiOff) return replyOffline(userMsg);
+    try {
+      await replyAI(next.map((m) => ({ role: m.from === "you" ? "user" : "assistant", content: m.text })));
+    } catch {
+      replyOffline(userMsg);
+    }
   };
 
   const shopLink = `luna.app/${slugify(shopName)}`;
