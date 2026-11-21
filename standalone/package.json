@@ -1,0 +1,8 @@
+{
+  "name": "luna-standalone",
+  "private": true,
+  "description": "LUNA one-file app + Vercel functions (api/paynow.js, api/luna.js)",
+  "dependencies": {
+    "@anthropic-ai/sdk": "1.12.0"
+  }
+}
