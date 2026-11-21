@@ -1,29 +1,17 @@
-# Luna
-LUNA AI STORE BUILDER FOR AFRICA
+# LUNA — Africa's AI marketplace
 
-## Run locally
+The LUNA app is one file: **`standalone/index.html`**.
 
-```bash
-npm install
-npm run dev
-```
+## Put LUNA online (free, ~10 minutes)
+1. Merge this branch into `main` on GitHub.
+2. Go to **vercel.com** → sign up with GitHub → **Add New → Project** → pick this repository.
+3. **Root Directory: `standalone`** · Framework: **Other** → **Deploy**.
+4. Open your new address (e.g. `https://luna-xxx.vercel.app`) in Chrome on your phone → ⋮ → **Add to Home screen**.
+5. Optional: put that address in `siteUrl` at the top of the script in `standalone/index.html` so store links always use it.
 
-Then open http://localhost:3000.
+## Later (when you're ready)
+- **Supabase (free):** orders land in LUNA automatically, your own photos show to customers, sign in from any phone. Steps in `standalone/README.md`.
+- **Paynow:** instant EcoCash payments (`standalone/api/paynow.js`).
+- **Claude API key:** real AI for Luna's chat and writing on your own website (needs a small server function like the Paynow one).
 
-The app lives in `app/page.js` (Next.js App Router). Replace the `VIDEO_ID_*`
-placeholders before launch.
-
-- `lib/africa.js` — all 54 African countries, their main cities and local payment methods, plus the support WhatsApp number.
-- `lib/luna.js` — Luna's chat engine (products, budgets, payments, delivery, pricing, marketing). Market numbers are per-city estimates until live seller data is connected.
-
-## Real AI (Claude)
-
-Luna's chat uses Claude when an API key is set, and falls back to the built-in offline Luna when it isn't.
-
-1. Get an API key at https://platform.claude.com
-2. `cp .env.example .env.local` and paste the key after `ANTHROPIC_API_KEY=`
-3. `npm run dev` (on Vercel/Render/etc., add `ANTHROPIC_API_KEY` in the host's environment variables)
-
-- `app/api/luna/route.js` — server route that streams Claude's reply (the key never reaches the phone).
-- `lib/lunaPrompt.js` — Luna's personality, rules, and the user's city / country / market data.
-- Default model: `claude-opus-5-5`. Set `LUNA_MODEL` to change it (e.g. `claude-haiku-5-5` is much cheaper).
+`app/` and `lib/` hold the first Next.js prototype; the live app is `standalone/`.
