@@ -860,6 +860,11 @@ details summary{cursor:pointer;color:#2563EB;font-weight:600;font-size:14px}
 .tb-brand .moon{width:30px;height:30px}
 .tb-brand .star{font-size:12px;color:#93C5FD}
 @media (max-width:560px){.topbar .shopid .logo,.tb-brand b,.tb-brand .star{display:none}.topbar-in{gap:10px}.topbar .btn-sm{padding:9px 12px;font-size:13px}.topbar .bell{width:38px;height:38px}}
+.payto{font-size:13px;opacity:.95;margin:-4px 0 12px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.payto button{border:1px solid rgba(255,255,255,.5);background:transparent;color:#fff;border-radius:999px;padding:3px 10px;font-weight:700;font-size:12px}
+.setnum{display:grid;gap:6px;padding:14px;margin-top:12px;border-left:4px solid #FF6B00}
+.setnum span{font-size:13px;color:#4A5568}
+.setnum .btn{justify-self:start}
 </style>
 </head>
 <body>
@@ -884,6 +889,7 @@ const LUNA_CONFIG = Object.assign({
   supabaseUrl: "",
   supabaseAnonKey: "",
   paynow: false,
+  siteUrl: "",   // your LUNA website, e.g. "https://luna-shop.vercel.app" — store links use it
 }, window.LUNA_CONFIG_OVERRIDE || {});
 const CLOUD = !!(LUNA_CONFIG.supabaseUrl && LUNA_CONFIG.supabaseAnonKey);
 
@@ -982,7 +988,8 @@ const today = (t) => new Date(t).toDateString() === new Date().toDateString();
 const ago = (t) => { const m = Math.round((Date.now() - t) / 60000); if (m < 1) return "just now"; if (m < 60) return m + " min ago"; const h = Math.round(m / 60); if (h < 24) return h + "h ago"; return Math.round(h / 24) + "d ago"; };
 const hash = (s) => { let h = 2166136261; for (let i = 0; i < s.length; i++) h = Math.imul(h ^ s.charCodeAt(i), 16777619); return ((h >>> 0) % 1000) / 1000; };
 const EMBED = window.LUNA_EMBED || {}; // optional inlined images (used only for offline previews)
-const src = (u) => { const m = /photo-([\w-]+)\?/.exec(u); return (m && EMBED[m[1]]) || EMBED[u] || u; };
+const NOPHOTO = "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><rect width="400" height="400" fill="#EEF3FA"/><circle cx="200" cy="185" r="62" fill="#fff"/><ellipse cx="174" cy="185" rx="40" ry="66" fill="#2563EB" opacity=".85"/><text x="200" y="300" text-anchor="middle" font-family="Inter,Arial" font-size="26" fill="#4A5568">Photo from seller</text></svg>');
+const src = (u) => { if (!u) return NOPHOTO; const m = /photo-([\w-]+)\?/.exec(u); return (m && EMBED[m[1]]) || EMBED[u] || u; };
 
 /* ---------- real product photos (Unsplash, every link checked) ---------- */
 const PH = (id, w = 900) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=80`;
@@ -1103,8 +1110,8 @@ function writePosts(s, p, seed) {
   const first = (p.desc || "").split(/(?<=\.)\s/)[0] || `Quality ${p.name.toLowerCase()} delivered fast.`;
   const tags = [city, "Zimbabwe", "Zim", city + "Deals", "EcoCash", "ShopLocal", ...p.name.split(" ").slice(0, 2)].map(tagify).join(" ");
   return {
-    whatsapp: `🔥 ${p.name} — only ${money(p.price)}${save}!\n${first}\n🚚 Delivery in ${city} · 💚 EcoCash or pay on delivery\n👉 Order here: ${link}`,
-    instagram: `${hook}\n\n✅ ${first}\n💵 ${money(p.price)}${save}\n🚚 Fast delivery in ${city}\n💚 Pay with EcoCash or cash on delivery\n\nTap the link in our bio or DM “ORDER” 📩\n\n${tags}`,
+    whatsapp: `🔥 ${p.name} — only ${money(p.price)}${save}!\n${first}\n🚚 Delivery in ${city} · 💙 EcoCash or pay on delivery\n👉 Order here: ${link}`,
+    instagram: `${hook}\n\n✅ ${first}\n💵 ${money(p.price)}${save}\n🚚 Fast delivery in ${city}\n💙 Pay with EcoCash or cash on delivery\n\nTap the link in our bio or DM “ORDER” 📩\n\n${tags}`,
     tiktok: `🎬 6-second video\n0–2s: Close-up of the ${p.name.toLowerCase()} · text: “${hook}”\n2–4s: Show it in use · text: “Only ${money(p.price)} in ${city}”\n4–6s: Your store link on screen · text: “Order now · EcoCash”\n🎵 Sound: trending Amapiano beat\n\nCaption: ${hook} ${money(p.price)} only 🔥 Link in bio · ${tags}`,
     facebook: `${hook}\n\n${p.name} now available at ${s.name} for just ${money(p.price)}${save}.\n${first}\n\n✔️ Delivery anywhere in ${city}\n✔️ Pay with EcoCash or cash when it arrives\n\nOrder online in 1 minute 👉 ${link}`,
   };
@@ -1133,13 +1140,13 @@ function autoPrepare(s) {
 }
 
 /* Share link: luna.vercel.app/shop/<slug>?d=<shop data> so the store opens on any phone. */
-const SITE = /^https?:$/.test(location.protocol) && !/claude\.ai|claudeusercontent|localhost|127\.0\.0\.1/.test(location.host) ? location.origin : "https://luna.vercel.app";
+const SITE = (LUNA_CONFIG.siteUrl || "").replace(/\/+$/, "") || (/^https?:$/.test(location.protocol) && !/claude\.ai|claudeusercontent|localhost|127\.0\.0\.1/.test(location.host) ? location.origin : "https://luna.vercel.app");
 const prettyUrl = (s) => `${SITE.replace(/^https?:\/\//, "")}/shop/${s.slug}`;
 const b64e = (o) => btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 const b64d = (s) => JSON.parse(decodeURIComponent(escape(atob(s.replace(/-/g, "+").replace(/_/g, "/")))));
 function packShop(s) {
   const ids = Object.fromEntries(Object.entries(PHOTOS).map(([k, id]) => [PH(id), k]));
-  return { n: s.name, c: s.city, e: s.ecocash, k: s.color, p: s.products.filter((p) => !/^data:/.test(p.img)).map((p) => [p.id, p.name, p.price, p.was || 0, p.stock, ids[p.img] || p.img, p.desc || ""]) };
+  return { n: s.name, c: s.city, e: s.ecocash, k: s.color, p: s.products.map((p) => [p.id, p.name, p.price, p.was || 0, p.stock, /^data:/.test(p.img) ? "" : ids[p.img] || p.img, p.desc || ""]) };
 }
 function unpackShop(slug, d) {
   return { slug, name: d.n, city: d.c, ecocash: d.e, color: d.k || "#2563EB", visitor: true, orders: [], views: [], withdrawals: [],
@@ -1188,7 +1195,7 @@ function vLanding() {
     <div class="brand"><span class="moon"></span>LUNA</div>
     <h1 class="hero-h">Your shop is <em>online</em> in 2 minutes.</h1>
     <p class="lead">Luna checks what sells in your city, builds your store, and gets you paid with EcoCash or cash on delivery. No bank card. No website skills.</p>
-    <div class="pills"><span class="pill">🇿🇼 <b>Built for Zimbabwe</b></span><span class="pill">💚 EcoCash</span><span class="pill">🚚 Pay on Delivery</span><span class="pill">🎬 Promo videos</span></div>
+    <div class="pills"><span class="pill">🇿🇼 <b>Built for Zimbabwe</b></span><span class="pill">💙 EcoCash</span><span class="pill">🚚 Pay on Delivery</span><span class="pill">🎬 Promo videos</span></div>
     <div class="landing-cta">
       <button class="btn btn-gold btn-block" style="padding:16px;font-size:17px" data-a="startWizard">Build my shop — free →</button>
       <button class="btn btn-ghost-dark btn-block" data-a="openDemo">Open the demo store</button>
@@ -1282,6 +1289,7 @@ function tHome(s, m) {
   ${searchBar()}
   <div class="h1">Good ${hr < 12 ? "morning" : hr < 17 ? "afternoon" : "evening"} 👋</div>
   ${(() => { const r = shopRating(s); return r ? `<span class="cloud-badge cloud-on">★ ${r.avg.toFixed(1)} from ${r.n} customer review${r.n > 1 ? "s" : ""}</span> ` : ""; })()}
+  ${!s.ecocash ? `<div class="card setnum"><b>📱 Add your ${esc((s.pay || payOf(s.country || "Zimbabwe"))[0])} number</b><span>So customers can pay you. Until then, your shop only offers Pay on Delivery.</span><button class="btn btn-gold btn-sm" data-a="editEco">Add number</button></div>` : ""}
   <button class="btn btn-ai big-ai" data-a="marketMe">✨ LUNA AI — Market My Business For Me</button>
   ${s.cloud ? `<span class="cloud-badge cloud-on">● Live online · orders arrive from any phone</span>` : `<span class="cloud-badge cloud-off">${s.demo ? "Demo store · saved on this phone" : "Saved on this phone only"}</span>`}
   <div class="stats">
@@ -1564,7 +1572,7 @@ function vStore() {
         <div class="btnrow"><a href="#products" class="btn btn-gold">Shop now ↓</a>${s.ecocash ? `<a class="btn btn-ghost-dark" href="${esc(waLink(`Hi ${s.name}, I have a question 🙂`, s.ecocash, s.country))}" target="_blank" rel="noopener">Chat with seller</a>` : ""}</div></div>
       ${pics.length >= 3 ? `<div class="collage">${pics.map((p) => `<img src="${esc(src(p.img))}" alt="${esc(p.name)}">`).join("")}</div>` : ""}
     </div></section>
-    <div class="trust"><div><b>🚚</b>Delivery in ${esc(s.city)}</div><div><b>💚</b>Pay with ${esc((s.pay || payOf(s.country || "Zimbabwe"))[0])}</div><div><b>🤝</b>Pay on delivery</div></div>
+    <div class="trust"><div><b>🚚</b>Delivery in ${esc(s.city)}</div><div><b>💙</b>Pay with ${esc((s.pay || payOf(s.country || "Zimbabwe"))[0])}</div><div><b>🤝</b>Pay on delivery</div></div>
     <main class="sf-main" id="products"><div class="sec-h"><h3 style="font-family:var(--display);font-size:22px">All products</h3><span class="mut" style="font-size:13px">${s.products.length} items</span></div>
       <div class="shop-grid">${s.products.map((p) => `<article class="item">
         <button class="pic" data-a="pd" data-id="${esc(p.id)}" aria-label="View ${esc(p.name)}">${p.was > p.price ? `<span class="sale">-${Math.round(100 - (p.price / p.was) * 100)}%</span>` : ""}<img src="${esc(src(p.img))}" alt="${esc(p.name)}" loading="lazy"></button>
@@ -1572,7 +1580,7 @@ function vStore() {
           <div class="sold">${p.stock <= 0 ? "Sold out" : p.stock <= 5 ? `🔥 Only ${p.stock} left` : `<span class="instock">In stock</span>`}</div>
           <div class="acts"><button class="btn btn-dark" data-a="addCart" data-id="${esc(p.id)}" ${p.stock <= 0 ? "disabled" : ""}>Add to Cart</button><button class="btn btn-buy" data-a="buyNow" data-id="${esc(p.id)}" ${p.stock <= 0 ? "disabled" : ""}>Buy with ${esc((s.pay || payOf(s.country || "Zimbabwe"))[0])}</button></div></div>
       </article>`).join("")}</div>
-      <div class="paybar">${(s.pay || payOf(s.country || "Zimbabwe")).map((x) => `<span>💚 ${esc(x)}</span>`).join("")}<span>🔒 Secure checkout</span></div>
+      <div class="paybar">${(s.pay || payOf(s.country || "Zimbabwe")).map((x) => `<span>💙 ${esc(x)}</span>`).join("")}<span>🔒 Secure checkout</span></div>
     </main>
     ${reviewsSection(s)}
     <footer class="sf-foot"><div class="brand"><span class="moon"></span>LUNA</div>Store powered by LUNA · ${esc(s.city)}, ${esc(s.country || "Zimbabwe")}</footer>
@@ -1597,6 +1605,7 @@ function sheetProduct(id) {
     <div class="f"><label for="ps">Stock</label><input id="ps" name="stock" type="number" min="0" step="1" required value="${esc(p.stock)}"></div>
     <div class="f"><label for="pdsc">Description</label><textarea id="pdsc" name="desc" rows="3" maxlength="400">${esc(p.desc)}</textarea></div>
     <div class="f"><label>Photo</label><div class="gallery">${GALLERY.map((g) => `<button type="button" class="${g.url === p.img ? "on" : ""}" data-a="pickImg" data-url="${esc(g.url)}" aria-label="${esc(g.k)}"><img src="${esc(src(PH(PHOTOS[g.k], 240)))}" alt="" loading="lazy"></button>`).join("")}</div>
+      <div class="photo-row" style="margin:4px 0"><img id="pPrev" src="${esc(src(p.img))}" alt="" style="width:64px;height:64px;border-radius:12px;object-fit:cover"><label class="btn btn-ghost btn-sm">📷 Upload my photo<input type="file" accept="image/*" id="pFile" hidden></label></div>
       <input id="pu" name="url" placeholder="…or paste an image link (https://…)" value="${GALLERY.some((g) => g.url === p.img) ? "" : esc(p.img)}"><span class="hint">Use a clear photo on a plain background.</span></div>
     <button class="btn btn-green btn-block" type="submit" style="padding:14px">${id ? "Save changes" : "Add to my store"}</button>
     ${id ? `<button class="btn btn-ghost btn-block" type="button" style="margin-top:8px;color:var(--red)" data-a="delProduct" data-id="${esc(id)}">Delete product</button>` : ""}
@@ -1625,7 +1634,9 @@ function sheetCart() {
 
 function sheetCheckout(method) {
   const s = UI.store, total = cartTotal(), live = CLOUD && s.cloud, zw = (s.country || "Zimbabwe") === "Zimbabwe", paynow = live && LUNA_CONFIG.paynow && zw, prov = (s.pay || payOf(s.country || "Zimbabwe"))[0];
-  method = method || (paynow ? "paynow" : "ecocash");
+  const hasNum = !!String(s.ecocash || "").replace(/\D/g, "");
+  if (!hasNum && method === "ecocash") method = "cod";
+  method = method || (paynow ? "paynow" : hasNum ? "ecocash" : "cod");
   UI.payMethod = method;
   const opt = (v, title, sub) => `<label class="pay-opt ${method === v ? "on" : ""}" data-a="payMethod" data-v="${v}"><input type="radio" name="method" value="${v}" ${method === v ? "checked" : ""}><span><b>${title}</b><br><span class="mut" style="font-size:13px">${sub}</span></span></label>`;
   openSheet(`<div class="sheet-h"><h3>Checkout</h3><button class="x" data-a="close" aria-label="Close">×</button></div>
@@ -1634,7 +1645,7 @@ function sheetCheckout(method) {
     <div class="row2"><div class="f"><label for="cp">Phone</label><input id="cp" name="phone" required inputmode="tel" maxlength="13" placeholder="07X XXX XXXX" autocomplete="tel"></div>
       <div class="f"><label for="ca">Delivery area</label><input id="ca" name="area" required maxlength="60" placeholder="e.g. Avondale"></div></div>
     ${paynow ? opt("paynow", "EcoCash — pay instantly", "Enter your PIN on your phone · secured by Paynow") : ""}
-    ${opt("ecocash", paynow ? "EcoCash — send money yourself" : "Pay with " + prov, zw ? "Dial *151#, then type the SMS code" : `Send with ${prov}, then type the code from your SMS`)}
+    ${!hasNum ? "" : opt("ecocash", paynow ? "EcoCash — send money yourself" : "Pay with " + prov, zw ? "Dial *151#, then type the SMS code" : `Send with ${prov}, then type the code from your SMS`)}
     ${opt("cod", "Pay on Delivery", "Pay cash when your order arrives")}
     ${method === "paynow" ? `<div class="f"><label for="cw">EcoCash number to charge</label><input id="cw" name="wallet" required inputmode="tel" maxlength="13" placeholder="077 or 078 number"><span class="hint">You'll get a pop-up on this phone asking for your EcoCash PIN.</span></div>` : ""}
     ${method === "ecocash" ? `<div class="steps-ec"><b>Send ${money(total)} with ${esc(prov)}</b><ol><li>${zw ? "Dial <b>*151#</b> → Send Money" : `Open <b>${esc(prov)}</b> → Send money`}</li><li>Send to <b class="tnum">${esc(fmtPhone(s.ecocash))}</b> (${esc(s.name)})</li><li>Type the confirmation code from your SMS below</li></ol></div>
@@ -1883,7 +1894,7 @@ function vWelcome() {
     <div class="brand"><span class="moon"></span>LUNA</div>
     <h1 class="hero-h">Africa's <em>AI</em> marketplace.</h1>
     <p class="lead">Find suppliers near you, open a shop in 3 taps, and let LUNA AI market it for you — from Harare to Lagos, Nairobi to Cairo.</p>
-    <div class="pills"><span class="pill">🌍 <b>19 countries</b></span><span class="pill">📍 Suppliers near you</span><span class="pill">✨ AI marketing</span><span class="pill">💚 EcoCash · M-Pesa · MoMo</span></div>
+    <div class="pills"><span class="pill">🌍 <b>19 countries</b></span><span class="pill">📍 Suppliers near you</span><span class="pill">✨ AI marketing</span><span class="pill">💙 EcoCash · M-Pesa · MoMo</span></div>
     <div class="mode-grid">
       <button class="mode" data-a="pickMode" data-v="seller"><span class="ic">🛍️</span><b>I Want To SELL</b><small>Open a shop · find cheap stock · AI marketing</small></button>
       <button class="mode" data-a="pickMode" data-v="supplier"><span class="ic">🏭</span><b>I AM A SUPPLIER</b><small>Get seen by sellers across Africa</small></button>
@@ -1967,7 +1978,7 @@ const PLAN_DAYS = [
 function planTemplate(s) {
   const p = s.products[0] || { name: "our products", price: 0 }, link = shareUrl(s), pay = (s.pay || payOf(s.country || "Zimbabwe"))[0], city = s.city;
   return [
-    `🔥 NEW at ${s.name}: ${p.name} — only ${money(p.price)}!\n🚚 Delivery in ${city} · 💚 ${pay} or cash on delivery\n👉 Order: ${link}`,
+    `🔥 NEW at ${s.name}: ${p.name} — only ${money(p.price)}!\n🚚 Delivery in ${city} · 💙 ${pay} or cash on delivery\n👉 Order: ${link}`,
     `0–2s: Unbox the ${p.name.toLowerCase()} close-up. Text: “${city}, you need this 👀”\n2–4s: Show it working. Text: “Only ${money(p.price)}”\n4–6s: Phone showing your shop link. Text: “Order now · ${pay}”\nCaption: ${p.name} in ${city} for ${money(p.price)} 🔥 Link in bio #${city.replace(/\s/g, "")} #LUNA`,
     `Hello ${city}! 👋 ${s.name} is now open online.\n${p.name} for just ${money(p.price)} — delivered to your door.\n✔️ Pay with ${pay} or cash when it arrives\n✔️ Order in 1 minute: ${link}\nShare this with someone who needs it 🙏`,
     `HOT DEAL 🔥\n${p.name}\n${money(p.price)} ONLY IN ${city.toUpperCase()}\nPay with ${pay} · Fast delivery\n🎵 Use a trending Amapiano sound`,
@@ -2389,6 +2400,7 @@ function tWalletPay(s, m) {
   return `<div class="h1" style="margin-bottom:12px">Wallet</div>
   <div class="pay-card"><div class="lbrand light"><span class="moon"></span>LUNA <small>Pay</small></div><small>Your Balance</small><div class="pbal tnum">${money(m.balance)}</div>
     <div class="wd-methods">${WD_METHODS.map((x) => `<button class="${x.k === meth.k ? "on" : ""}" data-a="wdMethod" data-v="${x.k}">${esc(x.name)}</button>`).join("")}</div>
+    <div class="payto">Customers pay you on ${esc((s.pay || payOf(s.country || "Zimbabwe"))[0])}: <b class="tnum">${s.ecocash ? esc(fmtPhone(s.ecocash)) : "not set"}</b> <button data-a="editEco">${s.ecocash ? "Change" : "Add number"}</button></div>
     <button class="btn btn-white btn-block" data-a="wdStart" ${m.balance >= 1 ? "" : "disabled"}>WITHDRAW TO ${esc(meth.name.toUpperCase())}</button></div>
   <div class="wd-warn" style="margin-top:12px">🔒 LUNA will NEVER ask for your EcoCash PIN on WhatsApp. Only enter your LUNA PIN inside the LUNA app.<br>⚠️ Double-check your number. Wrong number = money lost.</div>
   <div class="sec-h"><h3>Transaction History</h3></div>
@@ -2564,6 +2576,7 @@ function tToday(s) {
     <div class="tp-head"><small>${new Date().toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" })}</small>
       <h2>${hr < 12 ? "GOOD MORNING" : hr < 17 ? "GOOD AFTERNOON" : "GOOD EVENING"} ${esc(name.toUpperCase())} 👋</h2><b>TODAY'S PLAN:</b>
       ${!DB.me?.name ? `<form class="namef" data-form="myName"><input name="n" maxlength="20" placeholder="What should LUNA call you?" aria-label="Your name"><button class="btn btn-gold btn-sm" type="submit">Save</button></form>` : ""}</div>
+    ${!s.ecocash ? `<div class="card setnum" style="margin:0"><b>📱 Add your ${esc((s.pay || payOf(s.country || "Zimbabwe"))[0])} number</b><span>So customers can pay you. Until then, your shop only offers Pay on Delivery.</span><button class="btn btn-gold btn-sm" data-a="editEco">Add number</button></div>` : ""}
     <div class="boss"><div class="jv-logo sm">${LOGO_SVG}</div><p><b>LUNA:</b> Tomorrow at ${fmtTime(cfg.post.time)} we publish videos for Facebook. At 11 AM I will create a new video for you — a <b>${esc(plan.tomorrow.name)}</b>. Your job: just post it. I do the hard marketing, you do the selling.</p></div>
     <div class="streak ${sk >= 7 ? "gold" : ""}">${sk >= 7 ? `🏅 <b>TRUSTED SELLER</b> · You posted ${sk} days in a row` : sk ? `🔥 You posted <b>${sk} day${sk > 1 ? "s" : ""} in a row</b>! Keep going! ${7 - sk} more day${7 - sk > 1 ? "s" : ""} to get TRUSTED SELLER badge` : `🔥 Post today to start your streak. 7 days in a row = TRUSTED SELLER badge`}</div>
 
@@ -2819,7 +2832,7 @@ const A = {
     toast(d.v === "paid" ? "✓ EcoCash payment confirmed" : "✓ Marked as delivered");
   },
   editProduct(d) { sheetProduct(d.id); },
-  pickImg(d, el) { UI.pickImg = d.url; el.parentElement.querySelectorAll("button").forEach((b) => b.classList.toggle("on", b === el)); $("#pu").value = ""; },
+  pickImg(d, el) { UI.pickImg = d.url; const pv = $("#pPrev"); if (pv) pv.src = src(d.url); el.parentElement.querySelectorAll("button").forEach((b) => b.classList.toggle("on", b === el)); $("#pu").value = ""; },
   delProduct(d) { const s = shop(); s.products = s.products.filter((p) => p.id !== d.id); save(); sync(() => Cloud.deleteProduct(d.id)); closeSheet(); render(); toast("Product deleted"); },
   promo(d) { sheetPromo(d.id); },
   playMusic: toggleMusic, makeVideo, sharePromo,
@@ -3151,6 +3164,7 @@ document.addEventListener("change", (e) => {
   if (ch === "locCity") { UI.loc.city = e.target.value; return; }
   if (ch === "mkRange") { UI.mk.range = +e.target.value; return render(); }
   if (ch === "srCountry") { UI.sr = readSupForm(); UI.sr.city = Object.keys(country(UI.sr.country).cities)[0]; return render(); }
+  if (e.target.id === "pFile" && e.target.files[0]) { shrinkPhoto(e.target.files[0]).then((d) => { UI.pickImg = d; $("#pPrev").src = d; $("#pu").value = ""; document.querySelectorAll(".gallery button").forEach((b) => b.classList.remove("on")); }).catch(() => toast("Couldn't read that photo")); return; }
   if (e.target.id === "srFile" && e.target.files[0]) { shrinkPhoto(e.target.files[0]).then((d) => { UI.sr = { ...readSupForm(), photo: d }; $("#srImg").src = d; }).catch(() => toast("Couldn't read that photo")); return; }
   if (e.target.name === "ships") { e.target.closest(".shp")?.classList.toggle("on", e.target.checked); return; }
   if (e.target.dataset.change === "switchShop") { const v = e.target.value; if (v === "__new") return A.startWizard(); DB.current = v; save(); UI.tab = "home"; render(); }
@@ -3167,7 +3181,7 @@ async function route() {
   const m = location.pathname.match(/\/shop\/([^/?#]+)/), qs = new URLSearchParams(location.search);
   if (m) {
     const slug = decodeURIComponent(m[1]);
-    if (DB.shops[slug]) return openStore(DB.shops[slug]);
+    if (DB.shops[slug] && !(DB.shops[slug].demo && qs.get("d"))) return openStore(DB.shops[slug]); // the demo store exists on every phone — a link's own products win
     if (CLOUD) {
       UI.view = "loading"; render();
       try { const ps = await Cloud.publicShop(slug); if (ps) return openStore(ps); } catch {}
