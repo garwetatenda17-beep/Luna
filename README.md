@@ -12,6 +12,6 @@ The LUNA app is one file: **`standalone/index.html`**.
 ## Later (when you're ready)
 - **Supabase (free):** orders land in LUNA automatically, your own photos show to customers, sign in from any phone. Steps in `standalone/README.md`.
 - **Paynow:** instant EcoCash payments (`standalone/api/paynow.js`).
-- **Claude API key:** real AI for Luna's chat and writing on your own website (needs a small server function like the Paynow one).
+- **Claude API key (real AI for the LUNA assistant):** Vercel → your project → Settings → Environment Variables → add `ANTHROPIC_API_KEY` = your key → Redeploy. LUNA then answers anything using the seller's real shop, money, orders and setup progress (`standalone/api/luna.js`). Without a key it uses built-in help.
 
 `app/` and `lib/` hold the first Next.js prototype; the live app is `standalone/`.

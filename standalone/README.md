@@ -35,3 +35,6 @@ LUNA writes the posts and, when you say YES, opens each app with the photo and c
 You tap Send/Post in each app. Fully automatic posting needs approved developer apps from
 Meta (Instagram/Facebook) and TikTok, plus a server. WhatsApp Status has no posting API.
 Reminders ring while LUNA is open; the calendar alarm (Set Reminder) rings even when it's closed.
+
+## Real AI for the LUNA assistant
+Add `ANTHROPIC_API_KEY` in Vercel → Settings → Environment Variables, then redeploy. `api/luna.js` sends the seller's situation and the chat to Claude and returns the answer. Optional `LUNA_MODEL` picks another Claude model. Without a key the app uses its built-in help.
