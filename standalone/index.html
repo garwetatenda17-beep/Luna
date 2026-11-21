@@ -2147,7 +2147,7 @@ function supCard(s) {
       <div class="sp"><span>${esc(s.productName)}</span><b class="tnum">${money(s.price)}</b><small>wholesale</small></div>
       <div class="sm">${st.rating != null ? `★ ${st.rating.toFixed(1)} · ${st.sales.toLocaleString()} sales · ${st.returns == null ? "no returns data" : Math.round(st.returns) + "% returns"}` : "New supplier · no ratings yet"}</div>
       <div><span class="badge ${dl.cls}">${s.country === me.country ? "🚚 " : "✈️ "}${esc(dl.t)}</span></div>
-      <div class="sa"><button class="btn btn-buy btn-sm" data-a="msgSup" data-id="${esc(s.id)}">WhatsApp Supplier</button><button class="btn btn-ai-ghost btn-sm" data-a="supInfo" data-id="${esc(s.id)}">Quality check</button>
+      <div class="sa"><button class="btn ${s.demo ? "btn-ghost" : "btn-buy"} btn-sm" data-a="msgSup" data-id="${esc(s.id)}">${s.demo ? "See message (demo)" : "WhatsApp Supplier"}</button><button class="btn btn-ai-ghost btn-sm" data-a="supInfo" data-id="${esc(s.id)}">Quality check</button>
         <a class="btn btn-ai-ghost btn-sm" href="${esc(`https://www.google.com/maps/dir/?api=1&origin=${me.lat},${me.lng}&destination=${s.lat},${s.lng}`)}" target="_blank" rel="noopener">Get Directions</a>
         <button class="btn btn-ai-ghost btn-sm" data-a="report" data-id="${esc(s.id)}">Report</button></div></div></article>`;
 }
@@ -2390,6 +2390,7 @@ function sheetMsg(id, type) {
   const wa = `https://wa.me/${s.whatsapp}?text=${encodeURIComponent(text)}`;
   openSheet(`<div class="msg-top"><div class="lbrand"><span class="moon"></span>LUNA <small>Auto message</small></div><button class="x" data-a="close" aria-label="Close">×</button></div>
     ${late && M.type !== "followup" ? `<div class="notice" style="margin:0 0 10px">⏰ You messaged ${esc(s.name)} ${ago(ct.first)}. No reply? <button class="linkish" data-a="msgType" data-v="followup">Send the follow-up</button></div>` : ""}
+    ${s.demo ? `<div class="notice" style="margin:0 0 10px">This is a <b>demo supplier</b> to show how LUNA works — it isn't a real business and can't receive messages. Real suppliers appear here as they register on LUNA, and you can message them directly.</div>` : ""}
     <div class="seg msg-seg">${MSG_TYPES.map(([k, l]) => `<button class="${M.type === k ? "on" : ""}" data-a="msgType" data-v="${k}">${l}</button>`).join("")}</div>
     <div class="lang"><span>Language</span><button class="${M.lang === "en" ? "on" : ""}" data-a="msgLang" data-v="en">English</button><button class="${M.lang === "sn" ? "on" : ""}" data-a="msgLang" data-v="sn">Shona</button></div>
     <div class="wa-prev"><div class="wa-bar"><span class="wa-av">${esc(initials(s.name))}</span><div><b>${esc(s.name)}</b><small>+${esc(s.whatsapp)}</small></div></div>
@@ -2397,7 +2398,7 @@ function sheetMsg(id, type) {
       <div class="wa-tag">✨ Written by LUNA · your name, product, price and city filled in</div></div></div>
     <div class="msg-acts">
       <button class="btn btn-ghost" data-a="msgEdit">${M.edit ? "✓ DONE EDITING" : "✏️ EDIT MESSAGE"}</button>
-      <a class="btn btn-wa" id="waSend" href="${esc(wa)}" target="_blank" rel="noopener" data-a="msgSent" data-id="${esc(id)}">SEND ON WHATSAPP</a>
+      ${s.demo ? `<button class="btn btn-ghost" disabled title="Demo supplier">Demo — can't send</button>` : `<a class="btn btn-wa" id="waSend" href="${esc(wa)}" target="_blank" rel="noopener" data-a="msgSent" data-id="${esc(id)}">SEND ON WHATSAPP</a>`}
       <button class="btn btn-ghost btn-block" data-a="msgCopy" style="grid-column:1/-1">📋 Copy Message (Facebook / SMS)</button>
     </div>`);
 }
@@ -2646,7 +2647,7 @@ function alarmTick() {
   }
   // supplier follow-up nudge after 1 day without reply
   for (const [id, c] of Object.entries(DB.contacts || {})) {
-    if (c.nudged || c.replied || Date.now() - c.last < 864e5) continue;
+    if (c.nudged || c.replied || Date.now() - c.last < 864e5 || allSuppliers().find((x) => x.id === id)?.demo) continue;
     c.nudged = true; save();
     notify("supplier", `No reply from ${c.name || "your supplier"} yet`, "It's been a day. Tap to send the follow-up message.", { supplier: id, msg: "followup" });
   }
@@ -2877,8 +2878,9 @@ async function jvHandle(q) {
   if (/message (my )?supplier|text (my )?supplier|contact supplier|whatsapp supplier/.test(low)) {
     const last = Object.entries(DB.contacts || {}).sort((a, b) => b[1].last - a[1].last)[0]?.[0];
     const k = s?.products[0] ? (CATS.find((c) => s.products[0].name.toLowerCase().includes(c.name.split(" ")[0].toLowerCase()))?.k || "earphones") : "earphones";
-    const best = last ? allSuppliers().find((x) => x.id === last) : marketList(k, 5).filter((x) => supStats(x).trusted)[0] || marketList(k, 5)[0];
-    if (!best) return jvSay("I couldn't find a supplier yet, Boss. Let's search.", [{ label: "Find suppliers", run: () => go2("suppliers") }]);
+    const real = marketList(k, 5).filter((x) => !x.demo);
+    const best = (last && allSuppliers().find((x) => x.id === last && !x.demo)) || real.filter((x) => supStats(x).trusted)[0] || real[0];
+    if (!best) return jvSay("There are no real suppliers for your product near you yet — the ones on LUNA now are demo examples. As real suppliers register, I'll message them for you. Want to ask suppliers to list this product?", [{ label: "Find suppliers", run: () => go2("suppliers") }]);
     J.pending = { run: () => { jvClose(); UI.msg = null; sheetMsg(best.id); } };
     return jvSay(`${best.name} in ${best.city} — ${money(best.price)}. I wrote the message for you. Say “okay” and I'll open it — you tap Send in WhatsApp.`, [{ label: "Open message", buy: true, run: J.pending.run }]);
   }
