@@ -1,5 +1,7 @@
 # LUNA — Africa's AI marketplace
 
+**Live:** https://luna-eta-eight.vercel.app (Vercel project `luna`, deployed from `standalone/`)
+
 The LUNA app is one file: **`standalone/index.html`**.
 
 ## Put LUNA online (free, ~10 minutes)
