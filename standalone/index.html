@@ -1148,7 +1148,7 @@ function unpackShop(slug, d) {
 const shareUrl = (s) => `${SITE}/shop/${s.slug}?d=${b64e(packShop(s))}`;
 
 /* ---------- UI state ---------- */
-const UI = { search: { q: "", sort: "cheap", filter: "all" }, view: "landing", tab: "home", filter: "all", cart: [], store: null, wz: { step: 0, role: "", city: "", q: "", v: null, name: "", eco: "", err: "" }, toastT: 0 };
+const UI = { search: { q: "", sort: "best", filter: "all" }, view: "landing", tab: "home", filter: "all", cart: [], store: null, wz: { step: 0, role: "", city: "", q: "", v: null, name: "", eco: "", err: "" }, toastT: 0 };
 function toast(msg) { const t = $("#toast"); t.innerHTML = `<div class="toast" role="status">${msg}</div>`; clearTimeout(UI.toastT); UI.toastT = setTimeout(() => (t.innerHTML = ""), 2600); }
 function copy(text, label = "Link copied") { if (navigator.clipboard?.writeText) navigator.clipboard.writeText(text).then(() => toast("✓ " + label), () => showCopy(text)); else showCopy(text); }
 function showCopy(text) { openSheet(`<div class="sheet-h"><h3>Copy this</h3><button class="x" data-a="close" aria-label="Close">×</button></div><div class="f"><input id="copyfield" readonly value="${esc(text)}"></div><p class="mut" style="font-size:13px">Press and hold the box, then tap Copy.</p>`); const f = $("#copyfield"); f.focus(); f.select(); }
@@ -2282,7 +2282,10 @@ function runSearch() {
   if (f === "o20") items = items.filter((x) => x.price > 20);
   if (f === "near") items = items.filter((x) => x.sup.country === me.country);
   if (f === "top") items = items.filter((x) => (x.rating || 0) >= 4.5);
-  const sorter = f === "top" ? (a, b) => (b.rating || 0) - (a.rating || 0) : f === "near" || S.sort === "near" ? (a, b) => a.d - b.d : (a, b) => a.price - b.price || a.d - b.d;
+  // "Best first": your city first (most popular there on top), then everyone else by distance, ties broken by popularity
+  const local = (x) => x.sup.city === me.city && x.sup.country === me.country;
+  const best = (a, b) => (local(b) - local(a)) || (local(a) ? (b.sup.sales || 0) - (a.sup.sales || 0) : a.d - b.d) || (b.sup.sales || 0) - (a.sup.sales || 0) || a.price - b.price;
+  const sorter = f === "top" ? (a, b) => (b.rating || 0) - (a.rating || 0) : f === "near" || S.sort === "near" ? (a, b) => a.d - b.d : S.sort === "cheap" ? (a, b) => a.price - b.price || a.d - b.d : best;
   items.sort((a, b) => (a.bad - b.bad) || (b.ships - a.ships) || sorter(a, b));
   return { items, cats };
 }
@@ -2297,7 +2300,7 @@ function searchResults() {
   const askC = Object.entries(counts).sort((a, b) => b[1] - a[1])[0]?.[0] || "Kenya";
   const asked = (DB.requests || []).some((r) => r.q === label && r.to === askC);
   return `<div class="sres-h"><b>${items.length} result${items.length === 1 ? "" : "s"} for “${esc(S.q.trim())}”</b>${cats.length && !cats.some((c) => S.q.toLowerCase().includes(c)) ? `<span class="mut2">Showing ${esc(label)}</span>` : ""}</div>
-    <div class="sort"><button class="${S.sort !== "near" ? "on" : ""}" data-a="searchSort" data-v="cheap">💵 Cheapest first</button><button class="${S.sort === "near" ? "on" : ""}" data-a="searchSort" data-v="near">📍 Nearest first</button></div>
+    <div class="sort"><button class="${S.sort === "best" ? "on" : ""}" data-a="searchSort" data-v="best">⭐ Best first</button><button class="${S.sort === "cheap" ? "on" : ""}" data-a="searchSort" data-v="cheap">💵 Cheapest</button><button class="${S.sort === "near" ? "on" : ""}" data-a="searchSort" data-v="near">📍 Nearest</button></div>
     <div class="rticks">${[["all", "All"], ["u10", "Under $10"], ["10to20", "$10–$20"], ["o20", "Over $20"], ["near", "Nearest To Me"], ["top", "Highest Rated"]].map(([k, l]) => `<button class="${S.filter === k ? "on" : ""}" data-a="searchFilter" data-v="${k}">${l}</button>`).join("")}</div>
     ${local === 0 ? `<button class="ask-box" data-a="askAdd" data-q="${esc(label)}" data-to="${esc(askC)}" ${asked ? "disabled" : ""}><b>${asked ? "✓ Request sent" : `No ${esc(label)} in ${esc(me.city)}?`}</b><span>${asked ? `Suppliers in ${esc(askC)} can see buyers want ${esc(label)}.` : `Tap to ask suppliers in ${esc(askC)} to add ${esc(label)}`}</span></button>` : ""}
     <div class="sup-list">${items.map((it) => `<button class="res" data-a="supInfo" data-id="${esc(it.sup.id)}">
