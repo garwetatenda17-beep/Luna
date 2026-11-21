@@ -876,6 +876,44 @@ details summary{cursor:pointer;color:#2563EB;font-weight:600;font-size:14px}
 .vrow{display:flex;gap:8px;align-items:center}
 .vrow select{flex:1;min-width:0;background:#061A30;color:#fff;border:1px solid #2A5A8F;border-radius:12px;padding:8px 10px;font-size:13px}
 .vnote{color:#A9C1E0;font-size:12px}
+/* ---- clean Today / Home ---- */
+.tp-head p{margin:6px 0 0;color:#DCE8F8;font-size:15px}
+.tp-head h2{text-transform:none;font-size:26px}
+.namef .btn-ghost{background:rgba(255,255,255,.15);color:#fff;border-color:rgba(255,255,255,.3)}
+.sg,.tasks{padding:6px 0}
+.sg-h{display:flex;justify-content:space-between;align-items:center;padding:12px 16px 8px}
+.sg-h b{font-size:16px}.sg-h span{font-size:13px;color:#4A5568}
+.sg-bar{height:6px;background:#EEF2F7;border-radius:9px;margin:0 16px 8px;overflow:hidden}
+.sg-bar i{display:block;height:100%;background:#2563EB;border-radius:9px}
+.sg-row,.tk-row{border-top:1px solid #EEF2F7}
+.sg-t,.tk-t{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:0;background:none;padding:12px 16px;color:#0A2540;font-size:15px;font-weight:600}
+.sg-c{width:22px;height:22px;border-radius:50%;border:2px dashed #94A3B8;flex:none;display:grid;place-items:center;font-size:12px;color:#fff}
+.sg-row.done .sg-c{border:0;background:#2563EB}
+.sg-row.done .sg-t{color:#64748B;font-weight:500;text-decoration:line-through}
+.sg-row.open .sg-c{border-style:solid;border-color:#2563EB}
+.sg-d{padding:0 16px 14px 50px;display:grid;gap:10px;justify-items:start}
+.sg-d p{margin:0;font-size:14px;color:#4A5568}
+.tk-ic{width:36px;height:36px;border-radius:12px;background:#EEF4FF;display:grid;place-items:center;font-size:17px;flex:none}
+.tk-row.done .tk-ic{background:#2563EB;color:#fff;font-size:15px}
+.tk-row.done .tk-m b{color:#64748B;text-decoration:line-through}
+.tk-m{flex:1;min-width:0;display:grid}
+.tk-m small{color:#4A5568;font-weight:500;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tk-row.open{background:#F8FBFF}
+.tk-b{padding:0 16px 14px;display:grid;gap:10px}
+.help{display:flex;align-items:center;gap:12px;text-align:left;width:100%;padding:14px 16px;color:#0A2540}
+.help span:nth-child(2){flex:1;display:grid}.help small{color:#4A5568}
+.chev{font-size:24px;color:#94A3B8;margin-left:auto}
+.mini-row{display:flex;flex-wrap:wrap;gap:8px}
+.linkrow{width:100%;border:0;background:none;text-align:left;color:inherit}
+.nores{padding:22px 18px;text-align:center;display:grid;gap:8px;justify-items:center}
+.nores .nr-ic{font-size:34px}
+.nores p{margin:0;color:#4A5568;font-size:14px;max-width:36ch}
+.nr-acts{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:4px}
+.adm-wrap{padding-bottom:170px}
+@media (min-width:920px){.adm-wrap{padding-bottom:110px}}
+.jv-fab{padding:0;width:60px;height:60px;border-radius:50%;justify-content:center;background:#0A2540;border:2px solid #60A5FA}
+.jv-fab-logo svg{width:52px;height:52px}
+.jv-mic-badge{position:absolute;right:-4px;top:-4px;width:24px;height:24px;border-radius:50%;background:#2563EB;display:grid;place-items:center;font-size:12px;border:2px solid #fff}
 </style>
 </head>
 <body>
@@ -1300,8 +1338,7 @@ function tHome(s, m) {
   ${searchBar()}
   <div class="h1">Good ${hr < 12 ? "morning" : hr < 17 ? "afternoon" : "evening"} 👋</div>
   ${(() => { const r = shopRating(s); return r ? `<span class="cloud-badge cloud-on">★ ${r.avg.toFixed(1)} from ${r.n} customer review${r.n > 1 ? "s" : ""}</span> ` : ""; })()}
-  ${!s.ecocash ? `<div class="card setnum"><b>📱 Add your ${esc((s.pay || payOf(s.country || "Zimbabwe"))[0])} number</b><span>So customers can pay you. Until then, your shop only offers Pay on Delivery.</span><button class="btn btn-gold btn-sm" data-a="editEco">Add number</button></div>` : ""}
-  <button class="btn btn-ai big-ai" data-a="marketMe">✨ LUNA AI — Market My Business For Me</button>
+  ${setupGuide(s)}
   ${s.cloud ? `<span class="cloud-badge cloud-on">● Live online · orders arrive from any phone</span>` : `<span class="cloud-badge cloud-off">${s.demo ? "Demo store · saved on this phone" : "Saved on this phone only"}</span>`}
   <div class="stats">
     <div class="card stat"><small>Today's sales</small><b class="tnum">${money(m.salesToday)}</b><span class="delta">paid orders today</span></div>
@@ -1316,10 +1353,10 @@ function tHome(s, m) {
   <div class="grid2">
     <div><div class="sec-h"><h3>Recent orders</h3><button class="btn btn-ghost btn-sm" data-a="tab" data-v="orders">See all</button></div>
       <div class="card list">${recent.length ? recent.map((o) => `<div class="li"><div class="grow"><div class="t">${esc(o.customer)}</div><div class="s">${esc(o.items.map((i) => i.qty + "× " + i.name).join(", "))} · ${ago(o.at)}</div></div><div style="text-align:right"><b class="tnum">${money(o.total)}</b><div>${payBadge(o)}</div></div></div>`).join("") : `<div class="empty"><b>No orders yet</b>Share your store link to get your first order.</div>`}</div></div>
-    <div><div class="sec-h"><h3>Get your first sale</h3></div>
-      <div class="card checklist">
-        ${[[s.products.length > 0, "Add your products"], [!!s.ecocash, "Add your EcoCash number"], [shared, "Share your store link"], [(s.promos || 0) > 0, "Make a promo video"], [hasSale, "Get your first real order"]].map(([ok, t]) => `<div class="check ${ok ? "ok" : ""}"><i>${ok ? "✓" : ""}</i><span>${t}</span></div>`).join("")}
-      </div></div>
+    <div><div class="sec-h"><h3>Grow</h3></div>
+      <div class="card list"><button class="li linkrow" data-a="tab" data-v="ai"><span class="tk-ic">📅</span><div class="grow"><div class="t">Today's tasks</div><div class="s">Your video, Status and follow-ups</div></div><span class="chev">›</span></button>
+        <button class="li linkrow" data-a="tab" data-v="suppliers"><span class="tk-ic">📍</span><div class="grow"><div class="t">Find cheaper stock</div><div class="s">${allSuppliers().length} suppliers on LUNA</div></div><span class="chev">›</span></button>
+        <button class="li linkrow" data-a="jvOpen"><span class="tk-ic">🎙️</span><div class="grow"><div class="t">Ask LUNA</div><div class="s">Help, ideas and messages</div></div><span class="chev">›</span></button>      </div></div>
   </div>
   <div class="card switch-row"><span class="mut" style="font-size:13px">Your shops</span><select class="shop-switch" data-change="switchShop" aria-label="Switch shop">${Object.values(DB.shops).map((x) => `<option value="${esc(x.slug)}" ${x.slug === s.slug ? "selected" : ""}>${esc(x.name)}</option>`).join("")}<option value="__new">+ New shop</option></select></div>
   ${CLOUD && Cloud.user ? `<p class="mut" style="font-size:13px;text-align:center">Signed in as ${esc(Cloud.user.email || "")} · <button class="btn btn-ghost btn-sm" data-a="signout">Sign out</button></p>` : ""}`;
@@ -1375,7 +1412,7 @@ function tAI(s) {
   const say = !s.products.length ? "Add a product first, then I'll write your posts."
     : next ? `I have your <b>${esc(nextP?.name || "product")}</b> post ready for <b>${fmtWhen(next)}</b>. Should I post it?`
     : `Pick a product below and I'll write today's posts for WhatsApp, Instagram, TikTok and Facebook.`;
-  return `${tToday(s)}<div class="ai">
+  return `${tToday(s)}<div class="ai" ${UI.showTools ? "" : "hidden"}>
     <div class="ai-head"><span class="orb"></span><div><b>LUNA AI</b><small>Your posting assistant · ${linked.length}/4 accounts connected</small></div></div>
     <div class="bubble">${say}${next ? `<div class="acts"><button class="btn btn-gold btn-sm" data-a="postNow" data-id="${esc(next.id)}">Yes, post now</button><button class="btn btn-ai-ghost btn-sm" data-a="postLater" data-id="${esc(next.id)}">Later</button><button class="btn btn-ai-ghost btn-sm" data-a="editPost" data-id="${esc(next.id)}">Edit post</button></div>` : ""}</div>
 
@@ -1403,7 +1440,7 @@ function tAI(s) {
       <p class="ai-note">LUNA can ring while it's open on your phone. To be woken even when it's closed, use “Add to phone calendar” in Set Reminder.</p>
     </div>
   </div>
-  <div class="sec-h"><h3>Promo videos</h3></div>${tPromote(s)}`;
+  ${UI.showTools ? `<div class="sec-h"><h3>Promo videos</h3></div>${tPromote(s)}` : ""}`;
 }
 
 /* ----- Connect accounts ----- */
@@ -1991,7 +2028,7 @@ async function build3() {
   DB.shops[slug] = ns; DB.current = slug; save(); log("shop_created", name + " · " + c.name);
   await new Promise((r) => setTimeout(r, 500));
   closeAlarm(); UI.tab = "ai"; UI.b3 = null; go("admin", "admin");
-  setTimeout(() => toast(`🎉 ${esc(name)} is live! Add your ${esc(payOf(me.country)[0])} number in Wallet.`), 300);
+  setTimeout(() => toast(`🎉 ${esc(name)} is live!`), 300);
 }
 
 /* =========================== 7-day marketing plan =========================== */
@@ -2315,13 +2352,13 @@ function currentMsg() { const M = UI.msg, s = allSuppliers().find((x) => x.id ==
 
 /* =========================== Smart search =========================== */
 const SEARCH_WORDS = {
-  watch: ["watch", "watches", "smartwatch", "wristwatch", "clock", "chronograph"],
-  earphones: ["earphone", "earphones", "earbud", "earbuds", "headphone", "headphones", "airpods", "buds", "headset"],
-  charger: ["charger", "chargers", "cable", "charging", "adapter", "plug"],
-  hair: ["hair", "wig", "wigs", "weave", "braids", "extensions", "bundles"],
-  clothes: ["clothes", "clothing", "dress", "dresses", "shirt", "shirts", "tshirt", "jeans", "fashion"],
-  bottle: ["bottle", "bottles", "flask", "tumbler"],
-  shoes: ["shoe", "shoes", "sneaker", "sneakers", "trainers", "takkies", "tekkies"],
+  watch: ["watch", "watches", "smartwatch", "wristwatch", "clock", "chronograph", "fitbit", "strap"],
+  earphones: ["earphone", "earphones", "earbud", "earbuds", "headphone", "headphones", "airpods", "buds", "headset", "speaker", "speakers"],
+  charger: ["charger", "chargers", "cable", "cables", "charging", "adapter", "plug", "powerbank", "usb"],
+  hair: ["hair", "wig", "wigs", "weave", "weaves", "braids", "extensions", "bundles", "frontal", "closure", "lace"],
+  clothes: ["clothes", "clothing", "dress", "dresses", "shirt", "shirts", "tshirt", "jeans", "fashion", "pajama", "pajamas", "pyjama", "pyjamas", "sleepwear", "nightwear", "nightdress", "hoodie", "hoodies", "jacket", "jackets", "trousers", "pants", "skirt", "skirts", "tops", "blouse", "socks", "underwear", "lingerie", "suit", "uniform", "tracksuit", "leggings", "shorts", "sweater", "jersey"],
+  bottle: ["bottle", "bottles", "flask", "flasks", "tumbler", "mug", "mugs", "cup", "cups", "thermos", "lunchbox"],
+  shoes: ["shoe", "shoes", "sneaker", "sneakers", "trainers", "takkies", "tekkies", "slippers", "sandals", "heels", "boots", "crocs", "flipflops", "loafers"],
 };
 const CAT_LABEL = { watch: "watches", earphones: "earphones", charger: "chargers", hair: "hair", clothes: "clothes", bottle: "bottles", shoes: "shoes" };
 function lev(a, b) { const m = a.length, n = b.length, d = Array.from({ length: m + 1 }, (_, i) => [i, ...Array(n).fill(0)]); for (let j = 1; j <= n; j++) d[0][j] = j; for (let i = 1; i <= m; i++) for (let j = 1; j <= n; j++) d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1), i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1] ? d[i - 2][j - 2] + 1 : 99); return d[m][n]; }
@@ -2364,18 +2401,25 @@ function searchResults() {
   const local = items.filter((x) => x.sup.city === me.city && x.sup.country === me.country).length;
   const counts = {}; allSuppliers().forEach((s) => { if (s.country !== me.country && (!cats.length || cats.includes(s.cat))) counts[s.country] = (counts[s.country] || 0) + 1; });
   const askC = Object.entries(counts).sort((a, b) => b[1] - a[1])[0]?.[0] || "Kenya";
-  const asked = (DB.requests || []).some((r) => r.q === label && r.to === askC);
+  const asked = (DB.requests || []).some((r) => r.q === label && (r.to === askC || (!items.length && r.to === "All")));
   return `<div class="sres-h"><b>${items.length} result${items.length === 1 ? "" : "s"} for “${esc(S.q.trim())}”</b>${cats.length && !cats.some((c) => S.q.toLowerCase().includes(c)) ? `<span class="mut2">Showing ${esc(label)}</span>` : ""}</div>
-    <div class="sort"><button class="${S.sort === "best" ? "on" : ""}" data-a="searchSort" data-v="best">⭐ Best first</button><button class="${S.sort === "cheap" ? "on" : ""}" data-a="searchSort" data-v="cheap">💵 Cheapest</button><button class="${S.sort === "near" ? "on" : ""}" data-a="searchSort" data-v="near">📍 Nearest</button></div>
-    <div class="rticks">${[["all", "All"], ["u10", "Under $10"], ["10to20", "$10–$20"], ["o20", "Over $20"], ["near", "Nearest To Me"], ["top", "Highest Rated"]].map(([k, l]) => `<button class="${S.filter === k ? "on" : ""}" data-a="searchFilter" data-v="${k}">${l}</button>`).join("")}</div>
-    ${local === 0 ? `<button class="ask-box" data-a="askAdd" data-q="${esc(label)}" data-to="${esc(askC)}" ${asked ? "disabled" : ""}><b>${asked ? "✓ Request sent" : `No ${esc(label)} in ${esc(me.city)}?`}</b><span>${asked ? `Suppliers in ${esc(askC)} can see buyers want ${esc(label)}.` : `Tap to ask suppliers in ${esc(askC)} to add ${esc(label)}`}</span></button>` : ""}
+    ${items.length ? `<div class="sort"><button class="${S.sort === "best" ? "on" : ""}" data-a="searchSort" data-v="best">⭐ Best first</button><button class="${S.sort === "cheap" ? "on" : ""}" data-a="searchSort" data-v="cheap">💵 Cheapest</button><button class="${S.sort === "near" ? "on" : ""}" data-a="searchSort" data-v="near">📍 Nearest</button></div>
+    <div class="rticks">${[["all", "All"], ["u10", "Under $10"], ["10to20", "$10–$20"], ["o20", "Over $20"], ["near", "Nearest To Me"], ["top", "Highest Rated"]].map(([k, l]) => `<button class="${S.filter === k ? "on" : ""}" data-a="searchFilter" data-v="${k}">${l}</button>`).join("")}</div>` : ""}
+    ${local === 0 && items.length ? `<button class="ask-box" data-a="askAdd" data-q="${esc(label)}" data-to="${esc(askC)}" ${asked ? "disabled" : ""}><b>${asked ? "✓ Request sent" : `No ${esc(label)} in ${esc(me.city)}?`}</b><span>${asked ? `Suppliers in ${esc(askC)} can see buyers want ${esc(label)}.` : `Tap to ask suppliers in ${esc(askC)} to add ${esc(label)}`}</span></button>` : ""}
     <div class="sup-list">${items.map((it) => `<button class="res" data-a="supInfo" data-id="${esc(it.sup.id)}">
       <img src="${esc(src(it.photo || PH(PHOTOS[catAny(it.cat).photo], 400)))}" alt="" loading="lazy">
       <div class="rb"><b class="rn">${esc(it.name)}</b><span class="rp tnum">${money(it.price)}</span>
         <span class="rs">${esc(it.sup.name)} · ${esc(it.sup.city)}</span>
         <span class="rs">📍 ${fmtKm(it.d)} · ${it.rating ? `★ ${it.rating.toFixed(1)}` : "New"} ${it.trusted ? "· 🛡️ Trusted" : ""}${it.bad ? " · ⚠️ Low rating" : ""}</span>
         <span>${it.sup.country === me.country ? `<span class="badge b-green">🚚 In ${esc(me.country)}</span>` : it.ships ? `<span class="badge b-violet">✈️ Ships to ${esc(me.country)}</span>` : `<span class="badge b-gray">Doesn't ship to ${esc(me.country)}</span>`}</span></div></button>`).join("")}</div>
-    ${!items.length ? `<div class="empty card"><b>No results for “${esc(S.q)}”</b>Try “watches”, “earphones”, “hair”, “bottles” or “shoes”.</div>` : ""}`;
+    ${!items.length ? noResults(S.q.trim(), askC, asked) : ""}`;
+}
+function noResults(q, askC, asked) {
+  const pop = searchIndex().filter((it) => !supStats(it.sup).bad).sort((a, b) => (b.sup.sales || 0) - (a.sup.sales || 0)).slice(0, 4);
+  return `<div class="card nores"><div class="nr-ic">🔎</div><b>No one sells “${esc(q)}” on LUNA yet</b><p>LUNA shows what suppliers list. Ask them to add it, or list it yourself if you supply it.</p>
+    <div class="nr-acts"><button class="btn btn-gold btn-sm" data-a="askAdd" data-q="${esc(q)}" data-to="All" ${asked ? "disabled" : ""}>${asked ? "✓ Request sent" : "📣 Ask suppliers to add it"}</button><button class="btn btn-ghost btn-sm" data-a="addSupplier">🏭 I supply this — list it</button></div></div>
+    <div class="sec-h"><h3>Popular on LUNA</h3></div>
+    <div class="sup-list">${pop.map((it) => `<button class="res" data-a="supInfo" data-id="${esc(it.sup.id)}"><img src="${esc(src(it.photo || PH(PHOTOS[catAny(it.cat).photo], 400)))}" alt="" loading="lazy"><div class="rb"><b class="rn">${esc(it.name)}</b><span class="rp tnum">${money(it.price)}</span><span class="rs">${esc(it.sup.name)} · ${esc(it.sup.city)}</span></div></button>`).join("")}</div>`;
 }
 function supRequestsPanel() {
   const reqs = [...Shared.requests, ...(DB.requests || [])].filter((r) => r.to === DB.me.country || r.to === "All");
@@ -2621,54 +2665,71 @@ function streak() {
 }
 const tidy = (t, s) => String(t).split(shareUrl(s)).join("https://" + prettyUrl(s)); // short link on screen, full link when copied
 const TASKS = [["learn", "09:00", "LEARN"], ["post10", "10:00", "POST"], ["create", "11:00", "CREATE"], ["follow", "14:00", "FOLLOW UP"], ["post17", "17:00", "POST"]];
+function bestProductFor(city) {
+  return CATS.map((c) => ({ c, v: askLuna(c.market, city) })).filter((x) => x.v).sort((a, b) => a.v.sellers - b.v.sellers || b.c.profit - a.c.profit)[0];
+}
+function setupSteps(s) {
+  const prov = (s.pay || payOf(s.country || "Zimbabwe"))[0], best = bestProductFor(s.city);
+  return [
+    { k: "number", t: `Add your ${prov} number`, d: "So customers can pay you straight to your phone.", done: !!s.ecocash, btn: `<button class="btn btn-gold btn-sm" data-a="editEco">Add number</button>` },
+    { k: "product", t: "Add a product with your own photo", d: best ? `🔥 Best for ${s.city} right now: <b>${esc(best.c.name)}</b> — few sellers, about ${money(best.c.profit)} profit each.` : "Real photos sell better than internet photos.", done: s.products.some((p) => /^data:/.test(p.img)) || s.products.length > 1, btn: `<button class="btn btn-gold btn-sm" data-a="editProduct">Add product</button>` },
+    { k: "share", t: "Share your store on WhatsApp", d: "Post your store link on your Status so people can order.", done: !!s.shared, btn: `<a class="btn btn-gold btn-sm" href="${esc(waLink(`🛍️ Shop at ${s.name} — ${s.city}. Order here 👇\n${shareUrl(s)}`))}" target="_blank" rel="noopener" data-a="markShared">Share now</a>` },
+    { k: "post", t: "Post your first video", d: "LUNA has today's video ready — copy it and post.", done: (DB.postedDays || []).length > 0, btn: `<button class="btn btn-gold btn-sm" data-a="openTask" data-k="post10">See today's video</button>` },
+    { k: "sale", t: "Get your first order", d: "Orders show up in the Orders tab. Tap Confirm when you get paid.", done: s.orders.some((o) => !o.sample), btn: "" },
+  ];
+}
+function setupGuide(s) {
+  const st = setupSteps(s), done = st.filter((x) => x.done).length;
+  if (done === st.length) return "";
+  const open = UI.setupOpen && st.find((x) => x.k === UI.setupOpen && !x.done) ? UI.setupOpen : st.find((x) => !x.done).k;
+  return `<div class="card sg"><div class="sg-h"><b>Setup guide</b><span>${done} of ${st.length} done</span></div><div class="sg-bar"><i style="width:${(done / st.length) * 100}%"></i></div>
+    ${st.map((x) => `<div class="sg-row ${x.done ? "done" : ""} ${x.k === open ? "open" : ""}"><button class="sg-t" data-a="setupOpen" data-k="${x.k}"><span class="sg-c">${x.done ? "✓" : ""}</span>${esc(x.t)}</button>${x.k === open ? `<div class="sg-d"><p>${x.d}</p>${x.btn}</div>` : ""}</div>`).join("")}</div>`;
+}
 function tToday(s) {
-  const st = todayState(), plan = dailyPlan(s), now = nowHM(), name = DB.me?.name || "Boss", hr = new Date().getHours(), sk = streak(), cfg = alarmsCfg();
+  const st = todayState(), plan = dailyPlan(s), now = nowHM(), name = DB.me?.name, hr = new Date().getHours(), sk = streak(), cfg = alarmsCfg();
   const lang = UI.coachLang || "en";
   const recent = s.orders.filter((o) => Date.now() - o.at < 2 * 864e5 && o.phone).slice(0, 3);
-  const state = (k, t) => st.done[k] ? "done" : now >= addMin(t, 59) ? "late" : now >= t ? "now" : "next";
-  const badge = (k, t) => { const x = state(k, t); return x === "done" ? `<span class="tbadge done">✓ Done</span>` : x === "late" ? `<span class="tbadge late">Missed</span>` : x === "now" ? `<span class="tbadge now">Now</span>` : `<span class="tbadge">${fmtTime(t)}</span>`; };
+  const tasks = [
+    { k: "post10", ic: "🎬", t: "Post today's video", time: cfg.post.time, sub: `${plan.style.name} · ${plan.product.name}`,
+      body: `<div class="vcard"><img src="${esc(src(plan.product.img || ""))}" alt=""><div><span class="vs">🎬 ${esc(plan.style.name)}</span><small>${esc(plan.product.name)} · ${money(plan.product.price)}</small></div></div>
+        <p class="say">${esc(tidy(plan.caption, s))}</p>
+        <div class="tacts">${plan.product.id ? `<button class="btn btn-gold btn-sm" data-a="promo" data-id="${esc(plan.product.id)}">🎬 Make it</button>` : ""}<button class="btn btn-ghost btn-sm" data-a="copyPlanText" data-k="caption">COPY CAPTION</button><button class="btn btn-ghost btn-sm" data-a="copyPlanText" data-k="videoPrompt">COPY VIDEO PROMPT</button><button class="btn btn-ghost btn-sm" data-a="taskDone" data-k="post10">MARK AS POSTED ✅</button></div>` },
+    { k: "follow", ic: "💬", t: "Follow up 3 customers", time: "14:00", sub: recent.length ? `${recent.length} recent customer${recent.length > 1 ? "s" : ""}` : "Ask people who viewed your Status",
+      body: `${recent.length ? `<div class="flw">${recent.map((o) => `<a class="btn btn-buy btn-sm" href="${esc(waLink(`Hi ${o.customer} 👋 it's ${s.name}. Thank you for your order! Do you need anything else today? We have new stock 💙`, o.phone, s.country))}" target="_blank" rel="noopener">💬 ${esc(o.customer.split(" ")[0])}</a>`).join("")}</div>` : ""}
+        <p class="say">Hi! 👋 You asked about the ${esc(plan.product.name.toLowerCase())}. I kept one for you — ${money(plan.product.price)} with delivery in ${esc(s.city)}. Want it today?</p>
+        <div class="tacts"><button class="btn btn-ghost btn-sm" data-a="copyFollow">COPY MESSAGE</button><button class="btn btn-ghost btn-sm" data-a="taskDone" data-k="follow">Done ✅</button></div>` },
+    { k: "post17", ic: "📲", t: "Post a WhatsApp Status", time: cfg.status.time, sub: "Photo + short text",
+      body: `<p class="say">${esc(tidy(plan.statusText, s))}</p><div class="tacts"><button class="btn btn-ghost btn-sm" data-a="copyPlanText" data-k="statusText">COPY TEXT</button><button class="btn btn-ghost btn-sm" data-a="copyPlanText" data-k="imagePrompt">COPY IMAGE PROMPT</button><button class="btn btn-ghost btn-sm" data-a="taskDone" data-k="post17">MARK AS POSTED ✅</button></div>` },
+    { k: "learn", ic: "💡", t: "Today's selling tip", time: "", sub: plan.lesson.t,
+      body: `<div class="lang sm"><button class="${lang === "en" ? "on" : ""}" data-a="coachLang" data-v="en">English</button><button class="${lang === "sn" ? "on" : ""}" data-a="coachLang" data-v="sn">Shona</button></div><p class="say">${esc(plan.lesson[lang])}</p>
+        <div class="tacts"><button class="btn btn-ghost btn-sm" data-a="speakText" data-v="${esc(plan.lesson.en)}">🔊 Listen</button><button class="btn btn-ghost btn-sm" data-a="taskDone" data-k="learn">Got it ✅</button></div>` },
+  ];
+  const next = tasks.find((x) => !st.done[x.k]);
+  const open = UI.taskOpen === undefined ? next?.k : UI.taskOpen;
+  const doneN = tasks.filter((x) => st.done[x.k]).length;
+  const late = (x) => !st.done[x.k] && x.time && now >= addMin(x.time, 59) && (s.createdAt || 0) < new Date(dstr() + "T" + x.time).getTime();
   return `<div class="today">
     <div class="tp-head"><small>${new Date().toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" })}</small>
-      <h2>${hr < 12 ? "GOOD MORNING" : hr < 17 ? "GOOD AFTERNOON" : "GOOD EVENING"} ${esc(name.toUpperCase())} 👋</h2><b>TODAY'S PLAN:</b>
-      ${!DB.me?.name ? `<form class="namef" data-form="myName"><input name="n" maxlength="20" placeholder="What should LUNA call you?" aria-label="Your name"><button class="btn btn-gold btn-sm" type="submit">Save</button></form>` : ""}</div>
-    ${!s.ecocash ? `<div class="card setnum" style="margin:0"><b>📱 Add your ${esc((s.pay || payOf(s.country || "Zimbabwe"))[0])} number</b><span>So customers can pay you. Until then, your shop only offers Pay on Delivery.</span><button class="btn btn-gold btn-sm" data-a="editEco">Add number</button></div>` : ""}
-    <div class="boss"><div class="jv-logo sm">${LOGO_SVG}</div><p><b>LUNA:</b> Tomorrow at ${fmtTime(cfg.post.time)} we publish videos for Facebook. At 11 AM I will create a new video for you — a <b>${esc(plan.tomorrow.name)}</b>. Your job: just post it. I do the hard marketing, you do the selling.</p></div>
-    <div class="streak ${sk >= 7 ? "gold" : ""}">${sk >= 7 ? `🏅 <b>TRUSTED SELLER</b> · You posted ${sk} days in a row` : sk ? `🔥 You posted <b>${sk} day${sk > 1 ? "s" : ""} in a row</b>! Keep going! ${7 - sk} more day${7 - sk > 1 ? "s" : ""} to get TRUSTED SELLER badge` : `🔥 Post today to start your streak. 7 days in a row = TRUSTED SELLER badge`}</div>
-
-    <div class="tl">
-      <div class="ti ${state("learn", "09:00")}" id="t-learn"><div class="tt"><span class="tk">9:00 AM · LEARN</span>${badge("learn", "09:00")}</div><b>Today's Selling Tip: ${esc(plan.lesson.t)}</b>
-        <div class="lang sm"><button class="${lang === "en" ? "on" : ""}" data-a="coachLang" data-v="en">English</button><button class="${lang === "sn" ? "on" : ""}" data-a="coachLang" data-v="sn">Shona</button></div>
-        <p class="say">${esc(plan.lesson[lang])}</p><div class="tacts"><button class="btn btn-ghost btn-sm" data-a="speakText" data-v="${esc(plan.lesson.en)}">🔊 Listen</button><button class="btn btn-gold btn-sm" data-a="taskDone" data-k="learn">Got it ✅</button></div></div>
-
-      <div class="ti ${state("post10", cfg.post.time)}" id="t-post10"><div class="tt"><span class="tk">${fmtTime(cfg.post.time)} · POST</span>${badge("post10", cfg.post.time)}</div><b>Post this video on Facebook + TikTok NOW</b>
-        <div class="vcard"><img src="${esc(src(plan.product.img || ""))}" alt=""><div><span class="vs">🎬 Today: ${esc(plan.style.name)}</span><small>${esc(plan.product.name)} · ${money(plan.product.price)}</small></div></div>
-        <details><summary>See video prompt & caption</summary><p class="say mono">${esc(plan.videoPrompt)}</p><p class="say">${esc(tidy(plan.caption, s))}</p></details>
-        <div class="tacts"><button class="btn btn-ghost btn-sm" data-a="copyPlanText" data-k="videoPrompt">COPY VIDEO PROMPT</button><button class="btn btn-ghost btn-sm" data-a="copyPlanText" data-k="caption">COPY CAPTION</button>${plan.product.id ? `<button class="btn btn-ghost btn-sm" data-a="promo" data-id="${esc(plan.product.id)}">🎬 Make it</button>` : ""}<button class="btn btn-gold btn-sm" data-a="taskDone" data-k="post10">MARK AS POSTED ✅</button></div></div>
-
-      <div class="ti ${state("create", "11:00")}" id="t-create"><div class="tt"><span class="tk">11:00 AM · CREATE</span>${badge("create", "11:00")}</div><b>New video ready for you — different from yesterday</b>
-        <p class="say">Tomorrow's style: <b>${esc(plan.tomorrow.name)}</b>. Today's image: <span class="mono">${esc(plan.imagePrompt)}</span></p>
-        <div class="tacts"><button class="btn btn-ghost btn-sm" data-a="copyPlanText" data-k="imagePrompt">COPY IMAGE PROMPT</button><button class="btn btn-gold btn-sm" data-a="taskDone" data-k="create">Done ✅</button></div></div>
-
-      <div class="ti ${state("follow", "14:00")}" id="t-follow"><div class="tt"><span class="tk">2:00 PM · FOLLOW UP</span>${badge("follow", "14:00")}</div><b>Message 3 customers who asked yesterday</b>
-        ${recent.length ? `<div class="flw">${recent.map((o) => `<a class="btn btn-buy btn-sm" href="${esc(waLink(`Hi ${o.customer} 👋 it's ${s.name}. Thank you for your order! Do you need anything else today? We have new stock 💙`, o.phone, s.country))}" target="_blank" rel="noopener">💬 ${esc(o.customer.split(" ")[0])}</a>`).join("")}</div>` : `<p class="say">No orders in the last 2 days. Send this to 3 people who viewed your Status:</p>`}
-        <p class="say">Hi! 👋 Yesterday you asked about the ${esc(plan.product.name.toLowerCase())}. I kept one for you — still ${money(plan.product.price)} with delivery in ${esc(s.city)}. Want it today?</p>
-        <div class="tacts"><button class="btn btn-ghost btn-sm" data-a="copyFollow">COPY MESSAGE</button><button class="btn btn-gold btn-sm" data-a="taskDone" data-k="follow">Done ✅</button></div></div>
-
-      <div class="ti ${state("post17", cfg.status.time)}" id="t-post17"><div class="tt"><span class="tk">${fmtTime(cfg.status.time)} · POST</span>${badge("post17", cfg.status.time)}</div><b>Post this photo on WhatsApp Status</b>
-        <p class="say">${esc(tidy(plan.statusText, s))}</p><p class="say mono">📷 Image prompt: ${esc(plan.imagePrompt)}</p>
-        <div class="tacts"><button class="btn btn-ghost btn-sm" data-a="copyPlanText" data-k="statusText">COPY STATUS TEXT</button><button class="btn btn-ghost btn-sm" data-a="copyPlanText" data-k="imagePrompt">COPY IMAGE PROMPT</button><button class="btn btn-gold btn-sm" data-a="taskDone" data-k="post17">MARK AS POSTED ✅</button></div></div>
-    </div>
-
-    <div class="coach"><h3>💡 How to sell — answers that close</h3>${OBJECTIONS.map((o, i) => `<details ${i ? "" : "open"}><summary>${esc(o.t)}</summary><p>${esc(o[lang])}</p></details>`).join("")}</div>
-
-    <div class="alarms"><h3>⏰ LUNA alarms</h3>
-      ${[["brief", "Daily Briefing"], ["post", "Post video"], ["status", "WhatsApp Status"]].map(([k, l]) => `<div class="arow"><input type="time" value="${cfg[k].time}" data-change="alarmTime" data-k="${k}" aria-label="${l} time"><span>${l}</span><button class="switch ${cfg[k].on ? "on" : ""}" data-a="alarmToggle" data-k="${k}" role="switch" aria-checked="${cfg[k].on}" aria-label="${l}"></button></div>`).join("")}
+      <h2>${hr < 12 ? "Good morning" : hr < 17 ? "Good afternoon" : "Good evening"}${name ? ", " + esc(name) : ""} 👋</h2>
+      <p>${doneN === tasks.length ? "All done for today. Great work! 🎉" : `${tasks.length - doneN} thing${tasks.length - doneN > 1 ? "s" : ""} to do today${sk ? ` · 🔥 ${sk}-day streak` : ""}`}</p>
+      ${!name ? `<form class="namef" data-form="myName"><input name="n" maxlength="20" placeholder="Your name (optional)" aria-label="Your name"><button class="btn btn-ghost btn-sm" type="submit">Save</button></form>` : ""}</div>
+    ${setupGuide(s)}
+    <div class="card tasks"><div class="sg-h"><b>Today</b><span>${doneN} of ${tasks.length} done</span></div>
+      ${tasks.map((x) => `<div class="tk-row ${st.done[x.k] ? "done" : ""} ${x.k === open ? "open" : ""}" id="t-${x.k}">
+        <button class="tk-t" data-a="openTask" data-k="${x.k}"><span class="tk-ic">${st.done[x.k] ? "✓" : x.ic}</span><span class="tk-m"><b>${esc(x.t)}</b><small>${esc(x.sub)}</small></span>${late(x) ? `<span class="tbadge late">Late</span>` : x.time ? `<span class="tbadge">${fmtTime(x.time)}</span>` : ""}</button>
+        ${x.k === open ? `<div class="tk-b">${x.body}</div>` : ""}</div>`).join("")}</div>
+    <button class="card help" data-a="jvOpen"><span class="jv-logo sm">${LOGO_SVG}</span><span><b>Stuck? Ask LUNA</b><small>Type or speak — “What should I sell?”, “Write my post”</small></span><span class="chev">›</span></button>
+    <div class="mini-row"><button class="btn btn-ghost btn-sm" data-a="remindersSheet">⏰ Reminders & voice</button><button class="btn btn-ghost btn-sm" data-a="toggleTools">${UI.showTools ? "Hide" : "More"} marketing tools ${UI.showTools ? "▴" : "▾"}</button></div>
+  </div>`;
+}
+function sheetReminders() {
+  const cfg = alarmsCfg();
+  openSheet(`<div class="sheet-h"><h3>Reminders & voice</h3><button class="x" data-a="close" aria-label="Close">×</button></div>
+    <div class="alarms" style="box-shadow:none;border:0;padding:0">
+      ${[["brief", "Morning briefing"], ["post", "Post video"], ["status", "WhatsApp Status"]].map(([k, l]) => `<div class="arow"><input type="time" value="${cfg[k].time}" data-change="alarmTime" data-k="${k}" aria-label="${l} time"><span>${l}</span><button class="switch ${cfg[k].on ? "on" : ""}" data-a="alarmToggle" data-k="${k}" role="switch" aria-checked="${cfg[k].on}" aria-label="${l}"></button></div>`).join("")}
       ${cfg.custom.filter((c) => !c.done && c.date >= dstr()).map((c) => `<div class="arow"><span class="tnum">${fmtTime(c.time)}</span><span>${esc(c.text)}</span><button class="x" data-a="delReminder" data-id="${c.id}" aria-label="Delete reminder">×</button></div>`).join("")}
       <div class="arow"><span>LUNA voice</span><div class="lang sm" style="margin:0"><button class="${cfg.voice === "woman" ? "on" : ""}" data-a="setVoice" data-v="woman">👩🏾 Woman</button><button class="${cfg.voice === "man" ? "on" : ""}" data-a="setVoice" data-v="man">👨🏾 Man</button><button data-a="testVoice">▶ Test</button></div></div>
-      <p class="mut" style="font-size:12px;margin:8px 0 0">Alarms ring while LUNA is open. For a phone alarm when LUNA is closed, use Set Reminder → Add to phone calendar below.</p>
-    </div>
-    <h3 class="sub-h">Auto-poster & 7-day plan</h3>
-  </div>`;
+      <p class="mut" style="font-size:12px;margin:8px 0 0">Reminders ring while LUNA is open. Tip: say “Remind me at 2 PM” to LUNA.</p></div>`);
 }
 
 /* =========================== Voice =========================== */
@@ -2709,7 +2770,7 @@ function voicePanel() {
 window.speechSynthesis?.addEventListener?.("voiceschanged", () => { if (UI.jv?.open) jvRender(); });
 
 /* =========================== Jarvis board =========================== */
-function jarvisFab() { return ["admin", "market"].includes(UI.view) ? `<button class="jv-fab" data-a="jvOpen" aria-label="Talk to LUNA"><span class="jv-fab-logo">${LOGO_SVG}</span><span>🎙️ TALK TO LUNA</span></button>` : ""; }
+function jarvisFab() { return ["admin", "market"].includes(UI.view) ? `<button class="jv-fab" data-a="jvOpen" aria-label="Talk to LUNA" title="Talk to LUNA"><span class="jv-fab-logo">${LOGO_SVG}</span><span class="jv-mic-badge">🎙️</span></button>` : ""; }
 function briefing() {
   const s = shop(), m = s ? metrics(s) : null, name = DB.me?.name || "Boss", hr = new Date().getHours();
   const day = new Date().toLocaleDateString("en", { weekday: "long" }), cfg = alarmsCfg();
@@ -2924,13 +2985,17 @@ const A = {
   checkout() { sheetCheckout(UI.payMethod); },
   payMethod(d, el, e) { e.preventDefault(); const f = $("[data-form=checkout]"); const keep = { name: f.name.value, phone: f.phone.value, area: f.area.value }; sheetCheckout(d.v); const g = $("[data-form=checkout]"); g.name.value = keep.name; g.phone.value = keep.phone; g.area.value = keep.area; },
   close() { closeSheet(); },
+  setupOpen(d) { UI.setupOpen = d.k; render(); },
+  openTask(d) { if (UI.tab !== "ai") { UI.tab = "ai"; UI.taskOpen = d.k; return go("admin", "admin"); } UI.taskOpen = UI.taskOpen === d.k ? null : d.k; render(); },
+  toggleTools() { UI.showTools = !UI.showTools; render(); },
+  remindersSheet() { sheetReminders(); },
   bell() { sheetBell(); },
   openNote(d) {
     const n = (DB.notes || []).find((x) => x.id === d.id); if (!n) return;
     n.read = true; save(); paintBell(); closeSheet(); $("#notebar").innerHTML = "";
     const g = n.go || {};
     if (g.supplier) { UI.msg = null; return sheetMsg(g.supplier, g.msg); }
-    if (g.tab && DB.me?.mode !== "supplier") { UI.tab = g.tab; UI.focusTask = g.focus || null; go("admin", "admin"); }
+    if (g.tab && DB.me?.mode !== "supplier") { UI.tab = g.tab; UI.focusTask = g.focus || null; if (g.focus) UI.taskOpen = g.focus; go("admin", "admin"); }
   },
   readAll() { (DB.notes || []).forEach((n) => (n.read = true)); save(); paintBell(); sheetBell(); },
   askNotify2() { Notification.requestPermission().then(() => sheetBell()); },
@@ -2949,7 +3014,7 @@ const A = {
   taskDone(d) {
     const st = todayState(); st.done[d.k] = Date.now();
     if (d.k === "post10" || d.k === "post17") { DB.postedDays = [...new Set([...(DB.postedDays || []), dstr()])]; }
-    save(); log("task_done", d.k); render();
+    UI.taskOpen = undefined; save(); log("task_done", d.k); render();
     const sk = streak(); toast(d.k.startsWith("post") ? (sk >= 7 ? `🏅 ${sk} days in a row — TRUSTED SELLER!` : `🔥 ${sk} day${sk > 1 ? "s" : ""} in a row! ${7 - sk} more to TRUSTED SELLER`) : "✅ Done. Nice work, Boss.");
   },
   copyPlanText(d) { copy(dailyPlan(shop())[d.k], "Copied — paste it in the app"); },
